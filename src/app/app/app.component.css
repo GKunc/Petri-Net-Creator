@@ -20,13 +20,56 @@
     margin: 0;
   }
 
-  .sidebar {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 200px;
+  #content {
+    width: 100%; 
+    margin: 0 auto;
+  }
+
+  #sidebar {
+    float: left;
+    max-width: 200px;
+    min-width: 200px;
+    height: 100vh;
     background-color: #3D518C;
+  }
+
+  #board {
+    float: left;
+    width: calc(100vw - 200px);
+    height: 100vh;
+  }
+
+  #board-header {
+    display: flex; 
+    justify-content: flex-end;
+  }
+
+  #stepper {
+    background-color: #3D518C;
+  }
+
+  .mat-step-header[aria-selected="true"] .mat-step-header .mat-step-icon-selected{ 
+    background-color: red !important;
+  }
+
+
+  #board-header {
+    width: 100%;
+    background-color: rgb(58, 57, 57);
+  }
+
+  .board-button {
+    margin: 5px;
+    color: white;
+  }
+
+  .board-button:hover {
+    cursor: pointer;
+  }
+
+  #svg-board {
+    height: 100%;
+    width: 100%;
   }
 
   .spacer {
@@ -48,6 +91,17 @@
 
   .toolbar img {
     margin: 0 16px;
+  }
+
+  .transition-icon {
+    background-color: black;
+    width: 36px;
+    height: 12px;
+  }
+
+  .net-elements-icons {
+    font-size: 36px;
+    color: black;
   }
 
   .content {
@@ -134,6 +188,9 @@
   }
 
   .square-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 36px;
     width: 36px;
     margin: 5px;
@@ -176,7 +233,7 @@
 
     .card:not(.highlight-card) {
       height: 16px;
-      margin: 8px 0;
+      /* margin: 8px 0; */
     }
 
     .card.highlight-card span {
