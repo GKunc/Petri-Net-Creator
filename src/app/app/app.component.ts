@@ -36,4 +36,20 @@ export class AppComponent {
     this.objects.push(netElement);
     netElement.draw();
   }
+
+  undo() {
+    alert("Undo");
+  }
+
+  saveNet() {
+    alert("saveNet");
+  }
+
+  createPdf() {
+    alert("Create PDF");
+  }
+
+  clear() {
+    alert("Clear");
+  }
 }

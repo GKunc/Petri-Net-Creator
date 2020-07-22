@@ -43,14 +43,14 @@
       </div>
     </div>
 
-    <div class="card-container">
+    <!-- <div class="card-container">
       <div class="card card-small" tabindex="0">
         <span class="material-icons">
           picture_as_pdf
           </span>
         <span class="button-text">Create PDF</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="card-container">
       <a class="square-link" title="Create Place">
@@ -76,22 +76,21 @@
   <div id="board">
     <div id="board-header">
       <div>
-        <span class="material-icons board-button">
-          undo
-        </span>
+        <span class="material-icons board-button" (click)="undo()">undo</span>
       </div>
 
       <div>
-        <span class="material-icons board-button">
-          save_alt
-        </span>
+        <span class="material-icons board-button" (click)="createPdf()">picture_as_pdf</span>
       </div>
 
       <div>
-        <span class="material-icons board-button">
-          close
-        </span>
+        <span class="material-icons board-button" (click)="saveNet()">save_alt</span>
       </div>
+
+      <div>
+        <span class="material-icons board-button" (click)="clear()">close</span>
+      </div>
+
     </div>
 
     <svg id="svg-board">
