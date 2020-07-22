@@ -30,22 +30,31 @@
     max-width: 200px;
     min-width: 200px;
     height: 100vh;
-    background-color: #3D518C;
+    background-color: rgb(97, 96, 96);
+    border-right: 1px solid black;
+  }
+
+  .button-text {
+    margin-left: 5px;
+  }
+
+  .card {
+    justify-content: left !important;
+  }
+
+  #stepper {
+    background-color: rgb(97, 96, 96);
   }
 
   #board {
     float: left;
-    width: calc(100vw - 200px);
+    width: calc(100vw - 201px);
     height: 100vh;
   }
 
   #board-header {
     display: flex; 
     justify-content: flex-end;
-  }
-
-  #stepper {
-    background-color: #3D518C;
   }
 
   .mat-step-header[aria-selected="true"] .mat-step-header .mat-step-icon-selected{ 

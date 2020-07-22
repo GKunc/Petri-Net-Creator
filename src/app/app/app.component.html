@@ -7,65 +7,65 @@
     </mat-horizontal-stepper>
 
     <div class="card-container">
-      <div class="card card-small" tabindex="0" style="justify-content: left !important;">
+      <div class="card card-small" tabindex="0">
         <span class="material-icons">
           library_books
         </span>
-        <span style="margin-left: 5px;">Saved Nets</span>
+        <span class="button-text">Saved Nets</span>
       </div>
     </div>
 
     <div class="card-container">
-      <div class="card card-small" tabindex="0" style="justify-content: left !important;">
+      <div class="card card-small" tabindex="0">
         <span class="material-icons">
           edit
         </span>
-        <span style="margin-left: 5px;">Create from Matrix</span>
+        <span class="button-text">Create from Matrix</span>
       </div>
     </div>
 
 
     <div class="card-container">
-      <div class="card card-small" tabindex="0" style="justify-content: left !important;">
+      <div class="card card-small" tabindex="0">
         <span class="material-icons">
           remove_red_eye
         </span> 
-        <span style="margin-left: 5px;">Show Net Matrix</span>
+        <span class="button-text">Show Net Matrix</span>
       </div> 
     </div>
 
     <div class="card-container">
-      <div class="card card-small" tabindex="0" style="justify-content: left !important;">
+      <div class="card card-small" tabindex="0">
         <span class="material-icons">
           transform
         </span> 
-        <span style="margin-left: 5px;">Minimize Net</span>
+        <span class="button-text">Minimize Net</span>
       </div>
     </div>
 
     <div class="card-container">
-      <div class="card card-small" tabindex="0" style="justify-content: left !important;">
+      <div class="card card-small" tabindex="0">
         <span class="material-icons">
           picture_as_pdf
           </span>
-        <span style="margin-left: 5px;">Create PDF</span>
+        <span class="button-text">Create PDF</span>
       </div>
     </div>
 
     <div class="card-container">
       <a class="square-link" title="Create Place">
-        <span class="material-icons net-elements-icons">
+        <span class="material-icons net-elements-icons" (click)="addPlace()">
           panorama_fish_eye
           </span>
       </a>
 
       <a class="square-link" title="Create Trainsition">
-        <span class="net-elements-icons transition-icon">
+        <span class="net-elements-icons transition-icon" (click)="addTransition()">
         </span>
       </a>
           
       <a class="square-link" title="Create Arc">
-        <span class="material-icons net-elements-icons">
+        <span class="material-icons net-elements-icons" (click)="addArc()"> 
           north_east
         </span>
       </a>
@@ -96,8 +96,12 @@
 
     <svg id="svg-board">
       <defs>
-        <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
-          <path d="M2,1 L2,10 L10,6 L2,2" style="fill:black;" />
+        <marker id="arrow" viewBox="0 0 10 10"
+        refX="1" refY="5" 
+        markerUnits="strokeWidth"
+        markerWidth="10" markerHeight="10"
+        orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="black"/>
         </marker>
       </defs>
     </svg>
