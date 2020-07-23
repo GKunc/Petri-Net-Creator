@@ -233,6 +233,10 @@
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
   }
 
+  .net-element:hover {
+    cursor: pointer;
+  }
+
   /* Responsive Styles */
   @media screen and (max-width: 767px) {
 
