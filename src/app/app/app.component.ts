@@ -4,7 +4,9 @@ import { Transition } from './shared/net-elements/models/Transition';
 import { Place } from './shared/net-elements/models/Place';
 import { INetElement } from './shared/net-elements/models/INetElement';
 import { Component } from '@angular/core';
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-root',
@@ -17,19 +19,26 @@ export class AppComponent {
 
   objects: INetElement[];
   clearBoardDialogRef: MatDialogRef<ClearBoardDialogComponent>;
+  transition_id: number;
+  place_id: number;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.objects = [];
+    this.place_id = 1;
+    this.transition_id = 1;
+    this.deleteSelectedElementsHandler();
   }
 
   addPlace() {
-    let netElement: INetElement = new Place(1, 100, 100);
+    let netElement: INetElement = new Place(this.place_id, 100, 100);
+    this.place_id++;
     this.objects.push(netElement);
     netElement.create();
   }
 
   addTransition() {
-    let netElement: INetElement = new Transition(1, 100, 100);
+    let netElement: INetElement = new Transition(this.transition_id, 100, 100);
+    this.transition_id++;
     this.objects.push(netElement);
     netElement.create();
   }
@@ -40,16 +49,35 @@ export class AppComponent {
     netElement.create();
   }
 
+  deleteSelectedElementsHandler(): void {
+    $(document).on('keypress', (event) => {
+      let elements = document.getElementsByClassName('net-element selected');
+      let board = document.getElementById('svg-board');
+      
+      if((event.which === 8 || event.which === 100)) {
+        Array.from(elements).forEach(element => {
+          console.log(element);
+          board.removeChild(element);
+        });
+      }    
+    });
+  }
+
   undo() {
-    alert("Undo");
+    this.snackBar.open("Undo operation has been performed!", "close", {
+      duration: 2000,
+    });
   }
 
   saveNet() {
-    alert("saveNet");
-  }
+    this.snackBar.open("Net Model saved!", "close", {
+      duration: 2000,
+    });  }
 
   createPdf() {
-    alert("Create PDF");
+    this.snackBar.open("PDF Created!", "close", {
+      duration: 2000,
+    });
   }
 
   openClearBoardDialog() {
@@ -69,5 +97,9 @@ export class AppComponent {
     while (board.firstChild) {
         board.removeChild(board.firstChild);
     }
+
+    this.snackBar.open("Board has been cleared!", "close", {
+      duration: 2000,
+    });
   }
 }

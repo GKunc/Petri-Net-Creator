@@ -38,14 +38,9 @@ export class Transition implements INetElement {
 
     selectedElementEvents() {
         let transition = document.getElementById(this.getDomID());
-        let board = document.getElementById('svg-board');
 
-        transition.addEventListener('dblclick', () => {
-            $(document).off('keypress');
-            $(document).on('keypress', (event) => {
-                this.delete(event);
-            });
-
+        $(transition).off('dblclick');
+        $(transition).on('dblclick', () => {
             if(transition.classList.contains('selected')) {
                 this.unselect(transition);
             } else {
@@ -54,22 +49,22 @@ export class Transition implements INetElement {
         });      
     }
 
-     select(place: HTMLElement): void {
-        place.classList.add('selected');
-        place.setAttribute('stroke', 'red');
+    select(transition: HTMLElement): void {
+        transition.classList.add('selected');
+        transition.setAttribute('stroke', 'red');
         this.is_selected = true;
     }
 
-    unselect(place: HTMLElement): void {
-        place.classList.remove('selected');
-        place.setAttribute('stroke', 'black');
+    unselect(transition: HTMLElement): void {
+        transition.classList.remove('selected');
+        transition.setAttribute('stroke', 'black');
         this.is_selected = false;
     }
 
     // probably should move to upper class and use this method
     delete(event): void {
-        console.log('delete')
         let transition = document.getElementById(this.getDomID());
+        console.log(transition)
         let board = document.getElementById('svg-board');
         if((event.which === 8 || event.which === 100) && this.is_selected) {
             board.removeChild(transition);

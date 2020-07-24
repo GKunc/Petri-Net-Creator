@@ -37,13 +37,10 @@ export class Place implements INetElement {
 
     selectedElementEvents() {
         let place = document.getElementById(this.getDomID());
-        place.addEventListener('dblclick', () => {
-            $(document).off('keypress');
-            $(document).on('keypress', (event) => {
-                if(this.is_selected) {
-                    this.delete(event);
-                }
-            });
+
+        $(place).off('dblclick');
+
+        $(place).on('dblclick', () => {
 
             if(place.classList.contains('selected')) {
                 this.unselect(place);
@@ -67,9 +64,11 @@ export class Place implements INetElement {
 
     // probably should move to upper class and use this method
     delete(event): void {
+        let place = document.getElementById(this.getDomID());
         let board = document.getElementById('svg-board');
+
         if((event.which === 8 || event.which === 100) && this.is_selected) {
-            board.removeChild(document.getElementById(this.getDomID()));
+            board.removeChild(place);
         }
     }
     
@@ -78,7 +77,7 @@ export class Place implements INetElement {
         let board = document.getElementById('svg-board');
         
         $(place).off('mousedown');
-        place.addEventListener('mousedown', () => {
+        $(place).on('mousedown', () => {
             place.classList.add('active');
             $(board).on('mousemove', (event) => {
                 place.setAttribute('cx', (event.pageX - 200).toString());
