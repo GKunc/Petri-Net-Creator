@@ -1,5 +1,4 @@
 import { HtmlElements } from './../helpers/html-elements';
-import { place_radius } from './../../constants';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
@@ -21,30 +20,32 @@ export class Place implements INetElement {
 
     create(): void {
         HtmlElements.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
-
         this.attachListeners();
     }
 
     selectedElementEvents() {
         let place = document.getElementById(this.getDomID());
+        let label = document.getElementById('label-' + this.getDomID());
         $(place).off('dblclick');
         $(place).on('dblclick', () => {
             if(place.classList.contains('selected')) {
-                this.unselect(place);
+                this.unselect(place, label);
             } else {
-                this.select(place);
+                this.select(place, label);
             }
         });      
     }
 
-    select(place: HTMLElement): void {
+    select(place: HTMLElement, label: HTMLElement): void {
         place.classList.add('selected');
+        label.classList.add('selected');
         place.setAttribute('stroke', 'red');
         this.is_selected = true;
     }
 
-    unselect(place: HTMLElement): void {
+    unselect(place: HTMLElement, label: HTMLElement): void {
         place.classList.remove('selected');
+        label.classList.remove('selected');
         place.setAttribute('stroke', 'black');
         this.is_selected = false;
     }

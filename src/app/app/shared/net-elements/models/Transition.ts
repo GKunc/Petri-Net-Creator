@@ -1,4 +1,4 @@
-import { transition_width, transition_height } from './../../constants';
+import { HtmlElements } from './../helpers/html-elements';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
@@ -19,68 +19,48 @@ export class Transition implements INetElement {
     }
 
     create(): void {
-        let transition = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        let board = document.getElementById("svg-board");
-
-        transition.setAttribute("id", "transition-" + this.id);
-        transition.setAttribute("class", "net-element transition");
-        transition.setAttribute("x", this.x_position.toString());
-        transition.setAttribute("y", this.y_position.toString());
-        transition.setAttribute("width", transition_width.toString());
-        transition.setAttribute("height", transition_height.toString());
-        transition.setAttribute("style", "cursor: pointer");
-
-        board.append(transition);
-
+        HtmlElements.createTransitionWithLabel(this.id, this.x_position, this.y_position);
         this.attachListeners();
-
     }
 
     selectedElementEvents() {
         let transition = document.getElementById(this.getDomID());
+        let label = document.getElementById('label-' + this.getDomID());
 
         $(transition).off('dblclick');
         $(transition).on('dblclick', () => {
             if(transition.classList.contains('selected')) {
-                this.unselect(transition);
+                this.unselect(transition, label);
             } else {
-                this.select(transition);
+                this.select(transition, label);
             }
         });      
     }
 
-    select(transition: HTMLElement): void {
+    select(transition: HTMLElement, label: HTMLElement): void {
         transition.classList.add('selected');
+        label.classList.add('selected');
         transition.setAttribute('stroke', 'red');
         this.is_selected = true;
     }
 
-    unselect(transition: HTMLElement): void {
+    unselect(transition: HTMLElement, label: HTMLElement): void {
         transition.classList.remove('selected');
+        label.classList.remove('selected');
         transition.setAttribute('stroke', 'black');
         this.is_selected = false;
     }
 
-    // probably should move to upper class and use this method
-    delete(event): void {
-        let transition = document.getElementById(this.getDomID());
-        console.log(transition)
-        let board = document.getElementById('svg-board');
-        if((event.which === 8 || event.which === 100) && this.is_selected) {
-            board.removeChild(transition);
-        }
-    }
-
     move(): void {
         let transition = document.getElementById(this.getDomID());
+        let label = document.getElementById('label-' + this.getDomID());
         let board = document.getElementById('svg-board');
         
         $(transition).off('mousedown');
         transition.addEventListener('mousedown', () => {
             transition.classList.add('active');
             $(board).on('mousemove', (event) => {
-                transition.setAttribute('x', (event.pageX - 235).toString());
-                transition.setAttribute('y', (event.pageY - 35).toString());
+                HtmlElements.moveTransitionWithLabel(transition, label, event.pageX, event.pageY);
             });
 
             $(board).on('mouseup', () => {

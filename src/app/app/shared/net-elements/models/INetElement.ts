@@ -1,6 +1,6 @@
 export interface INetElement {
     create(): void;
     move(): void;
-    select(element: HTMLElement): void;
-    unselect(element: HTMLElement): void;
+    select(element: HTMLElement, label: HTMLElement): void;
+    unselect(element: HTMLElement, label: HTMLElement): void;
 }

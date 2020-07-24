@@ -78,7 +78,7 @@
     width: calc(100% - 2px);
     border: 1px solid black;
   }
-
+  
   .spacer {
     flex: 1;
   }
