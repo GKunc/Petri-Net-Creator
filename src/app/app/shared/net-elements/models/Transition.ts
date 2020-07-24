@@ -1,4 +1,4 @@
-import { HtmlElements } from './../helpers/html-elements';
+import { TransitionHelper } from './../helpers/transition-helper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
@@ -19,7 +19,7 @@ export class Transition implements INetElement {
     }
 
     create(): void {
-        HtmlElements.createTransitionWithLabel(this.id, this.x_position, this.y_position);
+        TransitionHelper.createTransitionWithLabel(this.id, this.x_position, this.y_position);
         this.attachListeners();
     }
 
@@ -60,7 +60,7 @@ export class Transition implements INetElement {
         transition.addEventListener('mousedown', () => {
             transition.classList.add('active');
             $(board).on('mousemove', (event) => {
-                HtmlElements.moveTransitionWithLabel(transition, label, event.pageX, event.pageY);
+                TransitionHelper.moveTransitionWithLabel(transition, label, event.pageX, event.pageY);
             });
 
             $(board).on('mouseup', () => {

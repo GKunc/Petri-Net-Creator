@@ -1,4 +1,4 @@
-import { HtmlElements } from './../helpers/html-elements';
+import { PlaceHelper } from './../helpers/place-helper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
@@ -10,6 +10,7 @@ export class Place implements INetElement {
     y_position: number;
     color: string = 'white';
     is_selected: boolean;
+    helper: PlaceHelper;
 
     constructor(id: number, x_position: number, y_position: number) {
         this.id = id;
@@ -19,7 +20,7 @@ export class Place implements INetElement {
     }   
 
     create(): void {
-        HtmlElements.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
+        PlaceHelper.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
         this.attachListeners();
     }
 
@@ -59,7 +60,7 @@ export class Place implements INetElement {
         $(place).on('mousedown', () => {
             place.classList.add('active');
             $(board).on('mousemove', (event) => {
-                HtmlElements.movePlaceWithLabel(place, label, event.pageX, event.pageY);
+                PlaceHelper.movePlaceWithLabel(place, label, event.pageX, event.pageY);
             });
 
             $(board).on('mouseup', () => {

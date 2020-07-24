@@ -1,4 +1,4 @@
-import { HtmlElements } from './shared/net-elements/helpers/html-elements';
+import { BoardHelper } from './shared/net-elements/helpers/board-helper';
 import { ClearBoardDialogComponent } from './components/dialogs/clear-board-dialog/clear-board-dialog.component';
 import { Arc } from './shared/net-elements/models/Arc';
 import { Transition } from './shared/net-elements/models/Transition';
@@ -52,8 +52,8 @@ export class AppComponent {
 
   deleteSelectedElementsHandler(): void {
     $(document).on('keypress', (event) => {
-      let elements = HtmlElements.getSelectedElements();
-      let board = HtmlElements.getBoard();
+      let elements = BoardHelper.getSelectedElements();
+      let board = BoardHelper.getBoard();
       
       if((event.which === 8 || event.which === 100)) {
         Array.from(elements).forEach(element => {
@@ -93,7 +93,7 @@ export class AppComponent {
   }
 
   clear() {  
-    let board = HtmlElements.getBoard();
+    let board = BoardHelper.getBoard();
     while (board.firstChild) {
         board.removeChild(board.firstChild);
     }
