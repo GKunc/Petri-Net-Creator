@@ -1,3 +1,4 @@
+import { HtmlElements } from './shared/net-elements/helpers/html-elements';
 import { ClearBoardDialogComponent } from './components/dialogs/clear-board-dialog/clear-board-dialog.component';
 import { Arc } from './shared/net-elements/models/Arc';
 import { Transition } from './shared/net-elements/models/Transition';
@@ -51,12 +52,11 @@ export class AppComponent {
 
   deleteSelectedElementsHandler(): void {
     $(document).on('keypress', (event) => {
-      let elements = document.getElementsByClassName('net-element selected');
-      let board = document.getElementById('svg-board');
+      let elements = HtmlElements.getSelectedElements();
+      let board = HtmlElements.getBoard();
       
       if((event.which === 8 || event.which === 100)) {
         Array.from(elements).forEach(element => {
-          console.log(element);
           board.removeChild(element);
         });
       }    
@@ -93,7 +93,7 @@ export class AppComponent {
   }
 
   clear() {  
-    let board = document.getElementById('svg-board');
+    let board = HtmlElements.getBoard();
     while (board.firstChild) {
         board.removeChild(board.firstChild);
     }

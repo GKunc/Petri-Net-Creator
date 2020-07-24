@@ -1,3 +1,4 @@
+import { HtmlElements } from './../helpers/html-elements';
 import { place_radius } from './../../constants';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
@@ -19,29 +20,15 @@ export class Place implements INetElement {
     }   
 
     create(): void {
-        let place = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-
-        place.setAttribute("id", "place-" + this.id);
-        place.setAttribute("class", "net-element place");
-        place.setAttribute("cx", this.x_position.toString());
-        place.setAttribute("cy", this.y_position.toString());
-        place.setAttribute("r", place_radius.toString());
-        place.setAttribute("stroke", "black");
-        place.setAttribute("fill", this.color);
-        place.setAttribute("style", "cursor: pointer");
-
-        document.getElementById("svg-board").append(place);
+        HtmlElements.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
 
         this.attachListeners();
     }
 
     selectedElementEvents() {
         let place = document.getElementById(this.getDomID());
-
         $(place).off('dblclick');
-
         $(place).on('dblclick', () => {
-
             if(place.classList.contains('selected')) {
                 this.unselect(place);
             } else {
@@ -61,27 +48,17 @@ export class Place implements INetElement {
         place.setAttribute('stroke', 'black');
         this.is_selected = false;
     }
-
-    // probably should move to upper class and use this method
-    delete(event): void {
-        let place = document.getElementById(this.getDomID());
-        let board = document.getElementById('svg-board');
-
-        if((event.which === 8 || event.which === 100) && this.is_selected) {
-            board.removeChild(place);
-        }
-    }
     
     move(): void {
         let place = document.getElementById(this.getDomID());
+        let label = document.getElementById('label-' + this.getDomID());
         let board = document.getElementById('svg-board');
         
         $(place).off('mousedown');
         $(place).on('mousedown', () => {
             place.classList.add('active');
             $(board).on('mousemove', (event) => {
-                place.setAttribute('cx', (event.pageX - 200).toString());
-                place.setAttribute('cy', (event.pageY - 15).toString());
+                HtmlElements.movePlaceWithLabel(place, label, event.pageX, event.pageY);
             });
 
             $(board).on('mouseup', () => {
@@ -99,7 +76,6 @@ export class Place implements INetElement {
     private attachListeners(): void {
         this.selectedElementEvents();
         this.move();
-        // this.connect();
     }
 
     private getDomID(): string {
