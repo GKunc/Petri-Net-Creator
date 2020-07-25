@@ -1,5 +1,5 @@
-import { BoardHelper } from './board-helper';
-import { place_radius, place_fill_color } from '../../constants';
+import { place_radius, place_fill_color } from './../../app/shared/constants';
+import { BoardHelper } from './BoardHelper';
 
 export class PlaceHelper {
     

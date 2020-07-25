@@ -1,10 +1,7 @@
-import { BoardHelper } from './shared/net-elements/helpers/board-helper';
+import { NetRepository } from '../api/repositories/NetRepository';
+import { BoardHelper } from '../api/helpers/BoardHelper';
 import { ClearBoardDialogComponent } from './components/dialogs/clear-board-dialog/clear-board-dialog.component';
-import { Arc } from './shared/net-elements/models/Arc';
-import { Transition } from './shared/net-elements/models/Transition';
-import { Place } from './shared/net-elements/models/Place';
-import { INetElement } from './shared/net-elements/models/INetElement';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as $ from 'jquery';
@@ -18,36 +15,26 @@ import * as $ from 'jquery';
 export class AppComponent {
   title = 'Petri Nets Creator';
 
-  objects: INetElement[];
   clearBoardDialogRef: MatDialogRef<ClearBoardDialogComponent>;
   transition_id: number;
   place_id: number;
+  netRepository: NetRepository;
 
-  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
-    this.objects = [];
-    this.place_id = 1;
-    this.transition_id = 1;
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar, @Inject(NetRepository)netRepository: NetRepository) {
+    this.netRepository = netRepository;
     this.deleteSelectedElementsHandler();
   }
 
   addPlace() {
-    let netElement: INetElement = new Place(this.place_id, 100, 100);
-    this.place_id++;
-    this.objects.push(netElement);
-    netElement.create();
+    this.netRepository.createPlace();
   }
 
   addTransition() {
-    let netElement: INetElement = new Transition(this.transition_id, 100, 100);
-    this.transition_id++;
-    this.objects.push(netElement);
-    netElement.create();
+    this.netRepository.createTransition();
   }
 
   addArc() {
-    let netElement: INetElement = new Arc(1, 2);
-    this.objects.push(netElement);
-    netElement.create();
+    this.netRepository.createArc();
   }
 
   deleteSelectedElementsHandler(): void {

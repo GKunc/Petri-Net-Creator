@@ -1,4 +1,4 @@
-import { PlaceHelper } from './../helpers/place-helper';
+import { PlaceHelper } from '../helpers/PlaceHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 

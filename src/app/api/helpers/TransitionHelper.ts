@@ -1,5 +1,5 @@
-import { BoardHelper } from './board-helper';
-import { transition_width, transition_height } from '../../constants';
+import { transition_width, transition_height } from './../../app/shared/constants';
+import { BoardHelper } from './BoardHelper';
 
 export class TransitionHelper {
 

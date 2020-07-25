@@ -1,4 +1,4 @@
-import { TransitionHelper } from './../helpers/transition-helper';
+import { TransitionHelper } from '../helpers/TransitionHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
