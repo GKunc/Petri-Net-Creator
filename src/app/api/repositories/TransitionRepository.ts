@@ -6,11 +6,19 @@ import { INetElement } from './../models/INetElement';
     providedIn: 'root'
 })
 export class TransitionRepository {
+    current_id: number;
 
-    constructor() {}
+    constructor() {
+        this.current_id = 1;
+    }
 
-    create(id: number): void {
-        let netElement: INetElement = new Transition(id, 100, 100);
+    create(): void {
+        let netElement: INetElement = new Transition(this.current_id, 100, 100);
         netElement.create();
+        this.current_id++;
+    }
+
+    resetIDs(): void {
+        this.current_id = 1;
     }
 }

@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuStepOneComponent } from './app/components/board/side-menu/menu-step-one/menu-step-one.component';
 import { MenuStepTwoComponent } from './app/components/board/side-menu/menu-step-two/menu-step-two.component';
 import { MenuStepThreeComponent } from './app/components/board/side-menu/menu-step-three/menu-step-three.component';
+import { BoardComponent } from './app/components/board/board.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MenuStepThreeComponent } from './app/components/board/side-menu/menu-st
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,

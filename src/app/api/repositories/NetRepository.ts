@@ -12,7 +12,6 @@ export class NetRepository {
     arcRepository: ArcRepository;
 
     current_place_id: number;
-    current_transition_id: number;
 
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository, 
@@ -21,22 +20,22 @@ export class NetRepository {
             this.placeRepository = placeRepository;
             this.transitionRepository = transitionRepository;
             this.arcRepository = arcRepository;
-
-            this.current_place_id = 1;
-            this.current_transition_id = 1;
     }
 
     createPlace() {
-        this.placeRepository.create(this.current_place_id);
-        this.current_place_id++;
+        this.placeRepository.create();
     }
 
     createTransition() {
-        this.transitionRepository.create(this.current_transition_id);
-        this.current_transition_id++;
+        this.transitionRepository.create();
     }
 
     createArc() {
         this.arcRepository.create(1, 2);
+    }
+
+    resetIDs(): void {
+        this.placeRepository.resetIDs();
+        this.transitionRepository.resetIDs();
     }
 }

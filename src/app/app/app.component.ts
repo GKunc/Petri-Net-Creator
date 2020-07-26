@@ -16,8 +16,6 @@ export class AppComponent {
   title = 'Petri Nets Creator';
 
   clearBoardDialogRef: MatDialogRef<ClearBoardDialogComponent>;
-  transition_id: number;
-  place_id: number;
   netRepository: NetRepository;
 
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar, @Inject(NetRepository)netRepository: NetRepository) {
@@ -74,6 +72,8 @@ export class AppComponent {
       shouldClearBoard => {
         if(shouldClearBoard) {
           this.clear();
+          BoardHelper.addArrowHeadMarker();
+          this.netRepository.resetIDs();
         }
       }
     );    

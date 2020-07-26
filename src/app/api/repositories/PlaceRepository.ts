@@ -6,10 +6,19 @@ import { Place } from './../models/Place';
     providedIn: 'root'
 })
 export class PlaceRepository {
-    constructor() {}
+    current_id: number;
 
-    create(id: number): void {
-        let netElement: INetElement = new Place(id, 100, 100);
+    constructor() {
+        this.current_id = 1;
+    }
+
+    create(): void {
+        let netElement: INetElement = new Place(this.current_id, 100, 100);
         netElement.create();
+        this.current_id++;
+    }
+
+    resetIDs(): void {
+        this.current_id = 1;
     }
 }
