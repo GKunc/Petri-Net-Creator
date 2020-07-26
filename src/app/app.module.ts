@@ -8,11 +8,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MenuStepOneComponent } from './app/components/board/side-menu/menu-step-one/menu-step-one.component';
+import { MenuStepTwoComponent } from './app/components/board/side-menu/menu-step-two/menu-step-two.component';
+import { MenuStepThreeComponent } from './app/components/board/side-menu/menu-step-three/menu-step-three.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClearBoardDialogComponent,
+    MenuStepOneComponent,
+    MenuStepTwoComponent,
+    MenuStepThreeComponent,
   ],
   imports: [
     BrowserModule,
