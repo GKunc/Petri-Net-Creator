@@ -1,5 +1,6 @@
 export interface INetElement {
-    create(): void;
+    getID(): number | string;
+    create(...args): void;
     move(): void;
     select(element: HTMLElement, label: HTMLElement): void;
     unselect(element: HTMLElement, label: HTMLElement): void;

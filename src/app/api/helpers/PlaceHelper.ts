@@ -37,4 +37,10 @@ export class PlaceHelper {
         label.setAttribute('x', (x_position - 200).toString());
         label.setAttribute('y', (y_position - 15).toString());
     }
+
+    static getPlacePositionByID(id: number): [number, number] {
+        let domID = "place-" + id;
+        let domElement = document.getElementById(domID);
+        return [parseInt(domElement.getAttribute('cx')), parseInt(domElement.getAttribute('cy'))];
+    }
 }

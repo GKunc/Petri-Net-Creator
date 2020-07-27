@@ -36,4 +36,10 @@ export class TransitionHelper {
         label.setAttribute('x', (x_position - 200).toString());
         label.setAttribute('y', (y_position - 25).toString());
     }
+
+    static getPlaceTransitionByID(id: number): [number, number] {
+        let domID = "transition-" + id;
+        let domElement = document.getElementById(domID);
+        return [parseInt(domElement.getAttribute('x')), parseInt(domElement.getAttribute('y'))];
+    }
 }

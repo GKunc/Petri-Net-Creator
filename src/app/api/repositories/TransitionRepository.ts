@@ -13,7 +13,7 @@ export class TransitionRepository {
     }
 
     create(): void {
-        let netElement: INetElement = new Transition(this.current_id, 100, 100);
+        let netElement: Transition = new Transition(this.current_id, 100, 100);
         netElement.create();
         this.current_id++;
     }

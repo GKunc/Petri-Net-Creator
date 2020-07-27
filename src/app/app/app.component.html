@@ -1,18 +1,26 @@
 <div id="content">
   <div id="sidebar">
-    <mat-horizontal-stepper id="stepper">
-      <mat-step></mat-step>
-      <mat-step></mat-step>
-      <mat-step></mat-step>
+    <mat-horizontal-stepper id="stepper" labelPosition="bottom">
+      <mat-step>
+        <ng-template matStepLabel>Create</ng-template>
+        <app-menu-step-one 
+          (addPlace)="addPlace()"
+          (addTransition)="addTransition()"
+          (addArc)="addArc()">
+        </app-menu-step-one>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Inspect</ng-template>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Simulate</ng-template>
+      </mat-step>
     </mat-horizontal-stepper>
 
-    <app-menu-step-one 
-      (addPlace)="addPlace()"
-      (addTransition)="addTransition()"
-      (addArc)="addArc()">
-    </app-menu-step-one>
   </div>
-  
+
   <app-board
     (openClearBoardDialog)="openClearBoardDialog()"
     (saveNet)="saveNet()"

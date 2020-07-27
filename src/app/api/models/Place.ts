@@ -19,6 +19,10 @@ export class Place implements INetElement {
         this.is_selected = false;
     }   
 
+    getID(): number {
+        return this.id;
+    }
+
     create(): void {
         PlaceHelper.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
         this.attachListeners();

@@ -1,3 +1,4 @@
+import { ArcHelper } from './../api/helpers/ArcHelper';
 import { NetRepository } from '../api/repositories/NetRepository';
 import { BoardHelper } from '../api/helpers/BoardHelper';
 import { ClearBoardDialogComponent } from './components/dialogs/clear-board-dialog/clear-board-dialog.component';
@@ -21,6 +22,7 @@ export class AppComponent {
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar, @Inject(NetRepository)netRepository: NetRepository) {
     this.netRepository = netRepository;
     this.deleteSelectedElementsHandler();
+    this.connectElementsHandler();
   }
 
   addPlace() {
@@ -33,6 +35,14 @@ export class AppComponent {
 
   addArc() {
     this.netRepository.createArc();
+  }
+
+  connectElementsHandler(): void {
+    $(document).on('keypress', (event) => {
+      if(event.which === 67 || event.which == 99) {
+          ArcHelper.connect();
+      }
+    }); 
   }
 
   deleteSelectedElementsHandler(): void {

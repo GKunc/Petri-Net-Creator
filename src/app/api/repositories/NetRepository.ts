@@ -1,7 +1,10 @@
+import { Place } from './../models/Place';
+import { INetElement } from './../models/INetElement';
 import { ArcRepository } from './ArcRepository';
 import { TransitionRepository } from './TransitionRepository';
 import { PlaceRepository } from './PlaceRepository';
 import { Injectable, Inject } from '@angular/core';
+import { Transition } from '../models/Transition';
 
 @Injectable({
     providedIn: 'root'
@@ -31,7 +34,9 @@ export class NetRepository {
     }
 
     createArc() {
-        this.arcRepository.create(1, 2);
+        let start_element: INetElement = new Place(1, 500, 500);
+        let end_element: INetElement = new Transition(1, 300, 400);
+        this.arcRepository.create(start_element, end_element);
     }
 
     resetIDs(): void {

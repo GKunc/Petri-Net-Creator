@@ -13,7 +13,7 @@ export class PlaceRepository {
     }
 
     create(): void {
-        let netElement: INetElement = new Place(this.current_id, 100, 100);
+        let netElement: Place = new Place(this.current_id, 100, 100);
         netElement.create();
         this.current_id++;
     }
