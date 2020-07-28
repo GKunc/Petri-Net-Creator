@@ -3,6 +3,12 @@ export class BoardHelper {
         return document.getElementsByClassName('selected');
     }
 
+    static getSelectedElementsWithoutLabels(): Element[] {
+        return Array.from(this.getSelectedElements()).filter(selectedEelemnt => {
+            return !selectedEelemnt.getAttribute('id').startsWith('label');
+        })
+    }
+
     static getBoard(): HTMLElement {
         return document.getElementById('svg-board');
     }

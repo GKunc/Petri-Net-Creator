@@ -6,17 +6,10 @@ const place_id_prefix = 'place-';
 
 export class Place implements INetElement {
     id: number;
-    x_position: number;
-    y_position: number;
     color: string = 'white';
-    is_selected: boolean;
-    helper: PlaceHelper;
 
-    constructor(id: number, x_position: number, y_position: number) {
+    constructor(id: number) {
         this.id = id;
-        this.x_position = x_position;
-        this.y_position = y_position;
-        this.is_selected = false;
     }   
 
     getID(): number {
@@ -24,7 +17,7 @@ export class Place implements INetElement {
     }
 
     create(): void {
-        PlaceHelper.createPlaceWtihLabel(this.id, this.x_position, this.y_position);
+        PlaceHelper.createPlaceWtihLabel(this.id, 100, 100);
         this.attachListeners();
     }
 
@@ -45,14 +38,12 @@ export class Place implements INetElement {
         place.classList.add('selected');
         label.classList.add('selected');
         place.setAttribute('stroke', 'red');
-        this.is_selected = true;
     }
 
     unselect(place: HTMLElement, label: HTMLElement): void {
         place.classList.remove('selected');
         label.classList.remove('selected');
         place.setAttribute('stroke', 'black');
-        this.is_selected = false;
     }
     
     move(): void {
@@ -63,10 +54,13 @@ export class Place implements INetElement {
         $(place).off('mousedown');
         $(place).on('mousedown', () => {
             place.classList.add('active');
+
+            $(board).off('mousemove');
             $(board).on('mousemove', (event) => {
                 PlaceHelper.movePlaceWithLabel(place, label, event.pageX, event.pageY);
             });
 
+            $(board).off('mouseup');
             $(board).on('mouseup', () => {
                 $(board).off('mousemove');
                 place.classList.remove('active');

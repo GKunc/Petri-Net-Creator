@@ -6,14 +6,13 @@ import { Place } from '../models/Place';
 
 export class ArcHelper {
     static connect(): void {
-        alert('connect')
     }
 
-    static getCurrentPositionOfElemnet(netElement: INetElement): [number, number] {
-        if(netElement instanceof Place) {
-            return PlaceHelper.getPlacePositionByID(netElement.getID());
-        } else if(netElement instanceof Transition) {
-            return TransitionHelper.getPlaceTransitionByID(netElement.getID());
+    static getCurrentPositionOfElemnet(id: number, type: string): [number, number] {
+        if(type === 'place') {
+            return PlaceHelper.getPlacePositionByID(id);
+        } else if(type === 'transition') {
+            return TransitionHelper.getPlaceTransitionByID(id);
         }
     }
 }

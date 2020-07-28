@@ -6,19 +6,31 @@ import { INetElement } from './../models/INetElement';
     providedIn: 'root'
 })
 export class TransitionRepository {
+    transtions: Transition[];
     current_id: number;
 
     constructor() {
+        this.transtions = [];
         this.current_id = 1;
     }
 
     create(): void {
-        let netElement: Transition = new Transition(this.current_id, 100, 100);
-        netElement.create();
+        let transition: Transition = new Transition(this.current_id);
+        transition.create();
         this.current_id++;
+        this.transtions.push(transition);
     }
 
     resetIDs(): void {
+        this.transtions = [];
         this.current_id = 1;
+    }
+
+    getAll(): Transition[] {
+        return this.transtions;
+    }
+
+    getByID(id: number): Transition {
+        return this.transtions.find(transition => transition.getID() === id);
     }
 }

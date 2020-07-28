@@ -31,11 +31,13 @@ export class PlaceHelper {
     }
 
     static movePlaceWithLabel(place: HTMLElement, label: HTMLElement, x_position: number, y_position: number): void {
-        place.setAttribute('cx', (x_position - 200).toString());
-        place.setAttribute('cy', (y_position - 15).toString());
+        const x = (x_position - 200);
+        const y = (y_position - 15);
+        place.setAttribute('cx', x.toString());
+        place.setAttribute('cy', y.toString());
 
-        label.setAttribute('x', (x_position - 200).toString());
-        label.setAttribute('y', (y_position - 15).toString());
+        label.setAttribute('x', x.toString());
+        label.setAttribute('y', y.toString());
     }
 
     static getPlacePositionByID(id: number): [number, number] {

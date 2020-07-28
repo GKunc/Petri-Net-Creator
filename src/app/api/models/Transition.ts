@@ -6,16 +6,10 @@ const transition_id_prefix = 'transition-';
 
 export class Transition implements INetElement {
     id: number;
-    x_position: number;
-    y_position: number;
-    is_selected: boolean;
     color: string = "white";
 
-    constructor(id: number, x_position: number, y_position: number) {
+    constructor(id: number) {
         this.id = id;
-        this.x_position = x_position;
-        this.y_position = y_position;
-        this.is_selected = false;
     }
 
     getID(): number {
@@ -23,7 +17,7 @@ export class Transition implements INetElement {
     }
     
     create(): void {
-        TransitionHelper.createTransitionWithLabel(this.id, this.x_position, this.y_position);
+        TransitionHelper.createTransitionWithLabel(this.id, 100, 100);
         this.attachListeners();
     }
 
@@ -45,14 +39,12 @@ export class Transition implements INetElement {
         transition.classList.add('selected');
         label.classList.add('selected');
         transition.setAttribute('stroke', 'red');
-        this.is_selected = true;
     }
 
     unselect(transition: HTMLElement, label: HTMLElement): void {
         transition.classList.remove('selected');
         label.classList.remove('selected');
         transition.setAttribute('stroke', 'black');
-        this.is_selected = false;
     }
 
     move(): void {
@@ -77,7 +69,6 @@ export class Transition implements INetElement {
     private attachListeners(): void {
         this.selectedElementEvents();
         this.move();
-        // this.connect();
     }
 
     private getDomID(): string {

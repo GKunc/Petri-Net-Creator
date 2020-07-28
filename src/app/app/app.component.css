@@ -31,6 +31,16 @@
   :host ::ng-deep .mat-horizontal-content-container {
     padding:0 !important;
   }
+  
+  ::ng-deep snack-bar-container.error {
+    background-color: red;
+    color: white;    
+  }
+
+  ::ng-deep snack-bar-container.error button {
+      background-color:red;
+      color: white;
+  }
 
   #stepper {
     background-color: #023E7D;
