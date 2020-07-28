@@ -1,3 +1,4 @@
+import { BoardHelper } from './../helpers/BoardHelper';
 import { PlaceHelper } from '../helpers/PlaceHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
@@ -38,12 +39,14 @@ export class Place implements INetElement {
         place.classList.add('selected');
         label.classList.add('selected');
         place.setAttribute('stroke', 'red');
+        BoardHelper.selectedElements.push(place.getAttribute('id'));
     }
 
     unselect(place: HTMLElement, label: HTMLElement): void {
         place.classList.remove('selected');
         label.classList.remove('selected');
         place.setAttribute('stroke', 'black');
+        BoardHelper.removeSelectedElementFromListByID(place.getAttribute('id'));
     }
     
     move(): void {

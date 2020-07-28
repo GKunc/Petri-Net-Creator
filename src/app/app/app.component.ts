@@ -78,15 +78,13 @@ export class AppComponent {
   openClearBoardDialog() {
     this.clearBoardDialogRef = this.dialog.open(ClearBoardDialogComponent);
 
-    this.clearBoardDialogRef.afterClosed().subscribe(
-      shouldClearBoard => {
+    this.clearBoardDialogRef.afterClosed().subscribe(shouldClearBoard => {
         if(shouldClearBoard) {
           this.clear();
           BoardHelper.addArrowHeadMarker();
           this.netRepository.resetIDs();
         }
-      }
-    );    
+      });    
   }
 
   clear() {  

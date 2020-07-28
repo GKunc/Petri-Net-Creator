@@ -14,8 +14,24 @@ export class ArcRepository {
         let isValid = this.validateConnection(selectedElements);
         if(isValid) {
             let arc = new Arc(1, 1); // id of start and end element
-            // arc.create(cooridantes[0], cooridantes[1], cooridantes[2], cooridantes[3]);
+            let [x1, y1] = this.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
+            let [x2, y2] = this.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
+            arc.create(x1, y1, x2, y2);
+            BoardHelper.removeSelection();
         }
+    }
+
+    getCoorinatesOfElement(id: string): [number, number] {
+        let x: number, y: number;
+        let element: Element = document.getElementById(id);
+        if(element.getAttribute("id").includes("place")) {
+            x = parseInt(element.getAttribute('cx'));
+            y = parseInt(element.getAttribute('cy'));
+        } else {
+            x = parseInt(element.getAttribute('x'));
+            y = parseInt(element.getAttribute('y'));
+        }
+        return [x, y];
     }
 
     validateConnection(selectedElements: Element[]): boolean {

@@ -1,4 +1,6 @@
 export class BoardHelper {
+    static selectedElements: string[] = [];
+
     static getSelectedElements(): HTMLCollection {
         return document.getElementsByClassName('selected');
     }
@@ -7,6 +9,16 @@ export class BoardHelper {
         return Array.from(this.getSelectedElements()).filter(selectedEelemnt => {
             return !selectedEelemnt.getAttribute('id').startsWith('label');
         })
+    }
+
+    static removeSelection(): void {
+        Array.from(this.getSelectedElements()).forEach(element => {
+            element.classList.remove('selected');
+            if(!element.getAttribute('id').includes('label')) {
+                element.setAttribute('stroke', 'black');
+            }
+        });
+        this.selectedElements = [];
     }
 
     static getBoard(): HTMLElement {
@@ -40,5 +52,12 @@ export class BoardHelper {
         marker.appendChild(path);
         defs.appendChild(marker);
         this.getBoard().appendChild(defs);
+    }
+
+    static removeSelectedElementFromListByID(id: string) {
+        let index = this.selectedElements.indexOf(id);
+        if (index !== -1) {
+            this.selectedElements.splice(index, 1);
+        }
     }
 }

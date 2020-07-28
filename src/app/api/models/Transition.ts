@@ -1,3 +1,4 @@
+import { BoardHelper } from './../helpers/BoardHelper';
 import { TransitionHelper } from '../helpers/TransitionHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
@@ -39,12 +40,14 @@ export class Transition implements INetElement {
         transition.classList.add('selected');
         label.classList.add('selected');
         transition.setAttribute('stroke', 'red');
+        BoardHelper.selectedElements.push(transition.getAttribute('id'));
     }
 
     unselect(transition: HTMLElement, label: HTMLElement): void {
         transition.classList.remove('selected');
         label.classList.remove('selected');
         transition.setAttribute('stroke', 'black');
+        BoardHelper.removeSelectedElementFromListByID(transition.getAttribute('id'));
     }
 
     move(): void {

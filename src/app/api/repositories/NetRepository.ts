@@ -14,6 +14,8 @@ export class NetRepository {
     transitionRepository: TransitionRepository;
     arcRepository: ArcRepository;
 
+    selectedElements: [];
+
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository, 
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
@@ -21,6 +23,8 @@ export class NetRepository {
             this.placeRepository = placeRepository;
             this.transitionRepository = transitionRepository;
             this.arcRepository = arcRepository;
+
+            this.selectedElements = [];
     }
 
     createPlace() {
