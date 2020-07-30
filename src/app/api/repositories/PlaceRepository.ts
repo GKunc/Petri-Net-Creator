@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { INetElement } from './../models/INetElement';
 import { Place } from './../models/Place';
 
 @Injectable({

@@ -1,37 +1,35 @@
+import { ArcHelper, IArcHelper } from './../helpers/ArcHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BoardHelper } from './../helpers/BoardHelper';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Arc } from './../models/Arc';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ArcRepository {
-    constructor(private snackBar: MatSnackBar) {}
+    helper: IArcHelper;
+
+    constructor(private snackBar: MatSnackBar, @Inject(ArcHelper) helper: IArcHelper) {
+        this.helper = helper;
+    }
     
     create(): void {
         let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
         let isValid = this.validateConnection(selectedElements);
         if(isValid) {
-            let arc = new Arc(1, 1); // id of start and end element
-            let [x1, y1] = this.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
-            let [x2, y2] = this.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
-            arc.create(x1, y1, x2, y2);
+            let arc = new Arc(this.helper); // id of start and end element
+            arc.create();
             BoardHelper.removeSelection();
         }
     }
 
-    getCoorinatesOfElement(id: string): [number, number] {
-        let x: number, y: number;
-        let element: Element = document.getElementById(id);
-        if(element.getAttribute("id").includes("place")) {
-            x = parseInt(element.getAttribute('cx'));
-            y = parseInt(element.getAttribute('cy'));
-        } else {
-            x = parseInt(element.getAttribute('x'));
-            y = parseInt(element.getAttribute('y'));
-        }
-        return [x, y];
+    private connectToNearestEndOfPlace() {
+
+    }
+
+    private connectToNearestEndOfTransition() {
+
     }
 
     validateConnection(selectedElements: Element[]): boolean {

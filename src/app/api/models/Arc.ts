@@ -1,18 +1,37 @@
+import { IArcHelper, ArcHelper } from './../helpers/ArcHelper';
+import { BoardHelper } from './../helpers/BoardHelper';
 import { INetElement } from './INetElement';
+import * as $ from 'jquery';
+import { Inject } from '@angular/core';
+
+const arc_id_prefix = 'arc-';
 
 export class Arc implements INetElement {
     id: string;
     color: string = "black";
+    helper: IArcHelper;
 
-    constructor(start_id: number, end_id: number) {
-        this.id = start_id + '-' + end_id;
+    constructor(@Inject(ArcHelper) helper: IArcHelper) {
+        this.helper = helper;
+        this.id = 
+            document.getElementById(BoardHelper.selectedElements[0]).getAttribute('id') + 
+            '-' + 
+            document.getElementById(BoardHelper.selectedElements[1]).getAttribute('id');
     }
 
     getID(): string {
         return this.id;
     }
 
-    create(start_x: number, start_y: number, end_x: number, end_y: number): void {
+    create(): void {
+        let [start_x, start_y] = this.helper.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
+        let [end_x, end_y] = this.helper.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
+        
+        [start_x, start_y, end_x, end_y] = 
+            this.helper.connectToNearestEnd(
+                                    BoardHelper.selectedElements[0], start_x, start_y,
+                                     end_x, end_y);
+
         let arc = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
         arc.setAttribute("id", "arc-" + this.id);
@@ -24,22 +43,39 @@ export class Arc implements INetElement {
         arc.setAttribute("stroke", "black");
         arc.setAttribute("marker-end", "url(#arrow)");
         document.getElementById("svg-board").append(arc);
-    }
 
-    private getElementCoordinates(): [number, number] {
-
-        return [10, 10];
+        this.selectedElementEvents();
     }
 
     move(): void {
         throw new Error("Method not implemented.");
     }
 
-    select(): void {
-        throw new Error("Method not implemented.");
+    selectedElementEvents() {
+        let arc = document.getElementById(this.getDomID());
+        $(arc).off('dblclick');
+        $(arc).on('dblclick', () => {
+            if(arc.classList.contains('selected')) {
+                this.unselect(arc);
+            } else {
+                this.select(arc);
+            }
+        });      
     }
 
-    unselect(): void {
-        throw new Error("Method not implemented.");
+    select(arc: HTMLElement): void {
+        arc.classList.add('selected');
+        arc.setAttribute('stroke', 'red');
+        BoardHelper.selectedElements.push(arc.getAttribute('id'));    
+    }
+
+    unselect(arc: HTMLElement): void {
+        arc.classList.remove('selected');
+        arc.setAttribute('stroke', 'black');
+        BoardHelper.removeSelectedElementFromListByID(arc.getAttribute('id'));    
+    }
+
+    private getDomID(): string {
+        return arc_id_prefix + this.id;
     }
 }
