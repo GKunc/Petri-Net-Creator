@@ -1,16 +1,7 @@
-import { Injectable } from '@angular/core';
 
-export interface IArcHelper {
-    getCoorinatesOfElement(id: string): [number, number];
-    connectToNearestEnd(start_id: string, start_x: number, start_y: number, end_x: number, end_y: number): [number, number, number, number];
-}
+export class ArcHelper {
 
-@Injectable({
-    providedIn: 'root'
-})
-export class ArcHelper implements IArcHelper {
-
-    getCoorinatesOfElement(id: string): [number, number] {
+    static getCoorinatesOfElement(id: string): [number, number] {
         let x: number, y: number;
         let element: Element = document.getElementById(id);
         if(element.getAttribute("id").includes("place")) {
@@ -23,7 +14,7 @@ export class ArcHelper implements IArcHelper {
         return [x, y];
     }
 
-    connectToNearestEnd(
+    static  connectToNearestEnd(
         start_id: string, start_x: number, start_y: number,
         end_x: number, end_y: number
     ): [number, number, number, number] {
@@ -40,7 +31,7 @@ export class ArcHelper implements IArcHelper {
     }
 
 
-    private adjustArrowPosition(
+    static adjustArrowPosition(
         start_id: string, start_x: number, start_y: number,
         end_x: number, end_y: number
     ): [number, number, number, number] {
@@ -87,25 +78,45 @@ export class ArcHelper implements IArcHelper {
         }
 
         else if(start_x - end_x < -80) {
-            if(start_y - end_y < 100) {
-                
-                [start_x, start_y, end_x, end_y] = 
-                    this.adjustPlaceTopLeft(start_x, start_y, end_x, end_y);
+            if(start_y - end_y < 50) {
+                if(start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] = 
+                        this.adjustPlaceTopLeft(start_x, start_y, end_x, end_y);
+                } else {
+                    [start_x, start_y, end_x, end_y] = 
+                        this.adjustTransitionTopLeft(start_x, start_y, end_x, end_y);
+                }
             }
             else {
-                [start_x, start_y, end_x, end_y] = 
-                    this.adjustPlaceBottomLeft(start_x, start_y, end_x, end_y);
+                if(start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] = 
+                        this.adjustPlaceBottomLeft(start_x, start_y, end_x, end_y);
+                } else {
+                    [start_x, start_y, end_x, end_y] = 
+                        this.adjustTransitionBottomLeft(start_x, start_y, end_x, end_y);
+                }
             }
         }
 
         else if(start_x - end_x > 100) {
-            if(start_y - end_y < 100) {
-                [start_x, start_y, end_x, end_y] =
-                    this.adjustPlaceTopRight(start_x, start_y, end_x, end_y);
+            if(start_y - end_y < 50) {
+                if(start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] =
+                        this.adjustPlaceTopRight(start_x, start_y, end_x, end_y);
+                } else {
+                    [start_x, start_y, end_x, end_y] =
+                        this.adjustTransitionTopRight(start_x, start_y, end_x, end_y);
+                }
+                    
             }
             else {
-                [start_x, start_y, end_x, end_y] = 
-                    this.adjustPlaceBottomRight(start_x, start_y, end_x, end_y);
+                if(start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] = 
+                        this.adjustPlaceBottomRight(start_x, start_y, end_x, end_y);
+                } else {
+                    [start_x, start_y, end_x, end_y] =
+                        this.adjustTransitionBottomRight(start_x, start_y, end_x, end_y);
+                }
             }
         } else {
             alert('Unhandled position')
@@ -117,54 +128,70 @@ export class ArcHelper implements IArcHelper {
     ///////////////////////
     // Place Adjustments //
     ///////////////////////
-    private adjustPlaceTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y += 30, end_x += 35, end_y -= 3];
+    static adjustPlaceTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x, start_y + 30, end_x + 35, end_y - 3];
     }
 
-    private adjustPlaceTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x += 21.2, start_y += 21.2, end_x, end_y -= 3];
+    static adjustPlaceTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 21.2, start_y + 21.2, end_x + 25, end_y - 3];
     }
 
-    private adjustPlaceTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x -= 21.2, start_y += 21.2, end_x += 70, end_y -= 3];
+    static adjustPlaceTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x - 21.2, start_y + 21.2, end_x + 45, end_y - 3];
     }
 
-    private adjustPlaceBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y -= 30, end_x += 35, end_y += 25];
+    static adjustPlaceBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x, start_y - 30, end_x + 35, end_y + 25];
     }
 
-    private adjustPlaceBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x += 21.2, start_y -= 21.2, end_x, end_y += 23];
+    static adjustPlaceBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 21.2, start_y - 21.2, end_x + 25, end_y + 23];
     }
 
-    private adjustPlaceBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x -= 21.2, start_y -= 21.2, end_x += 70, end_y += 25];
+    static adjustPlaceBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x - 21.2, start_y - 21.2, end_x + 45, end_y + 25];
     }
 
-    private adjustPlaceLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x += 30, start_y, end_x -= 8, end_y += 12];
+    static adjustPlaceLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 30, start_y, end_x - 8, end_y + 12];
     }
 
-    private adjustPlaceRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x -= 30, start_y, end_x += 75, end_y += 10];
+    static adjustPlaceRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x - 30, start_y, end_x + 75, end_y + 10];
     }
 
     ////////////////////////////
     // Transition Adjustments //
     ////////////////////////////
-    private adjustTransitionTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
+    static adjustTransitionTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
         return [start_x + 35, start_y + 20, end_x, end_y - 39];
     }
 
-    private adjustTransitionBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x, end_y + 39];
+    static adjustTransitionTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 35, start_y + 20, end_x - 30, end_y - 25];
     }
 
-    private adjustTransitionLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+    static adjustTransitionTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 35, start_y + 20, end_x + 30, end_y - 25];
+    }
+
+    static adjustTransitionBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 35, start_y, end_x, end_y + 35];
+    }
+
+    static adjustTransitionBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 35, start_y, end_x - 30, end_y + 25];
+    }
+
+    static adjustTransitionBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+        return [start_x + 35, start_y, end_x + 30, end_y + 25];
+    }
+
+    static adjustTransitionLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
         return [start_x + 70, start_y + 10, end_x - 39, end_y];
     }
 
-    private adjustTransitionRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
+    static adjustTransitionRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
         return [start_x, start_y + 10, end_x + 39, end_y];
     }
 }

@@ -20,8 +20,7 @@ export class AppComponent {
 
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar, @Inject(NetRepository) netRepository: NetRepository) {
     this.netRepository = netRepository;
-    this.deleteSelectedElementsHandler();
-    this.connectElementsHandler();
+    this.keyPressEventsHandler();
   }
 
   addPlace() {
@@ -36,24 +35,30 @@ export class AppComponent {
     this.netRepository.createArc();
   }
 
-  connectElementsHandler(): void {
+  keyPressEventsHandler(): void {
+    $(document).off('keypress');
     $(document).on('keypress', (event) => {
       if(event.which === 67 || event.which == 99) {
         this.netRepository.createArc();
       }
+      else if(event.which === 8 || event.which === 100) {
+        this.deleteSelectedElements();
+      }
     }); 
   }
 
-  deleteSelectedElementsHandler(): void {
-    $(document).on('keypress', (event) => {
-      let elements = BoardHelper.getSelectedElements();
-      let board = BoardHelper.getBoard();
-      
-      if((event.which === 8 || event.which === 100)) {
-        Array.from(elements).forEach(element => {
-          board.removeChild(element);
-        });
-      }    
+  private deleteSelectedElements(): void {
+    let elements = BoardHelper.getSelectedElements();
+    let board = BoardHelper.getBoard();
+
+    Array.from(elements).forEach(element => {
+      board.removeChild(element);
+      let id = element.getAttribute('id').split('-');
+      if(id[0] === 'place') {
+        this.netRepository.placeRepository.deleteElementByID(parseInt(id[1]));
+      } else if(id[0] === 'transition')  {
+        this.netRepository.transitionRepository.deleteElementByID(parseInt(id[1]));
+      }
     });
   }
 
@@ -81,7 +86,7 @@ export class AppComponent {
         if(shouldClearBoard) {
           this.clear();
           BoardHelper.addArrowHeadMarker();
-          this.netRepository.resetIDs();
+          this.netRepository.removeAllElements();
         }
       });    
   }
@@ -92,6 +97,7 @@ export class AppComponent {
         board.removeChild(board.firstChild);
     }
 
+    BoardHelper.selectedElements = [];
     this.snackBar.open("Board has been cleared!", "close", {
       duration: 2000,
     });

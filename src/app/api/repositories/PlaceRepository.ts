@@ -20,7 +20,7 @@ export class PlaceRepository {
         this.places.push(place);
     }
 
-    resetIDs(): void {
+    removeAll(): void {
         this.places = [];
         this.current_id = 1;
     }
@@ -31,5 +31,12 @@ export class PlaceRepository {
 
     getByID(id: number): Place {
         return this.places.find(place => place.getID() === id);
+    }
+    
+    deleteElementByID(id: number): void {
+        let index = this.places.indexOf(this.getByID(id));
+        if (index !== -1) {
+            this.places.splice(index, 1);
+        }
     }
 }

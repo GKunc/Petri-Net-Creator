@@ -21,7 +21,7 @@
             "aot": true,
             "allowedCommonJsDependencies": [
               "jquery"
-           ],
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -122,6 +122,10 @@
               "devServerTarget": "Angular:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }

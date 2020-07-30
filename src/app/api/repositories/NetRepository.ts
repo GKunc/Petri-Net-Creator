@@ -40,8 +40,8 @@ export class NetRepository {
         this.arcRepository.create();
     }
 
-    resetIDs(): void {
-        this.placeRepository.resetIDs();
-        this.transitionRepository.resetIDs();
+    removeAllElements(): void {
+        this.placeRepository.removeAll();
+        this.transitionRepository.removeAll();
     }
 }

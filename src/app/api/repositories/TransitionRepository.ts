@@ -6,11 +6,11 @@ import { INetElement } from './../models/INetElement';
     providedIn: 'root'
 })
 export class TransitionRepository {
-    transtions: Transition[];
+    transitions: Transition[];
     current_id: number;
 
     constructor() {
-        this.transtions = [];
+        this.transitions = [];
         this.current_id = 1;
     }
 
@@ -18,19 +18,26 @@ export class TransitionRepository {
         let transition: Transition = new Transition(this.current_id);
         transition.create();
         this.current_id++;
-        this.transtions.push(transition);
+        this.transitions.push(transition);
     }
 
-    resetIDs(): void {
-        this.transtions = [];
+    removeAll(): void {
+        this.transitions = [];
         this.current_id = 1;
     }
 
     getAll(): Transition[] {
-        return this.transtions;
+        return this.transitions;
     }
 
     getByID(id: number): Transition {
-        return this.transtions.find(transition => transition.getID() === id);
+        return this.transitions.find(transition => transition.getID() === id);
+    }
+
+    deleteElementByID(id: number): void {
+        let index = this.transitions.indexOf(this.getByID(id));
+        if (index !== -1) {
+            this.transitions.splice(index, 1);
+        }
     }
 }

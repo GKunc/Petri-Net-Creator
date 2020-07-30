@@ -1,18 +1,15 @@
-import { IArcHelper, ArcHelper } from './../helpers/ArcHelper';
+import { ArcHelper } from './../helpers/ArcHelper';
 import { BoardHelper } from './../helpers/BoardHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
-import { Inject } from '@angular/core';
 
 const arc_id_prefix = 'arc-';
 
 export class Arc implements INetElement {
     id: string;
     color: string = "black";
-    helper: IArcHelper;
 
-    constructor(@Inject(ArcHelper) helper: IArcHelper) {
-        this.helper = helper;
+    constructor() {
         this.id = 
             document.getElementById(BoardHelper.selectedElements[0]).getAttribute('id') + 
             '-' + 
@@ -24,11 +21,11 @@ export class Arc implements INetElement {
     }
 
     create(): void {
-        let [start_x, start_y] = this.helper.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
-        let [end_x, end_y] = this.helper.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
+        let [start_x, start_y] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
+        let [end_x, end_y] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
         
         [start_x, start_y, end_x, end_y] = 
-            this.helper.connectToNearestEnd(
+        ArcHelper.connectToNearestEnd(
                                     BoardHelper.selectedElements[0], start_x, start_y,
                                      end_x, end_y);
 

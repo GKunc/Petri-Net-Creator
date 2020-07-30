@@ -1,4 +1,4 @@
-import { ArcHelper, IArcHelper } from './../helpers/ArcHelper';
+import { ArcHelper } from './../helpers/ArcHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BoardHelper } from './../helpers/BoardHelper';
 import { Injectable, Inject } from '@angular/core';
@@ -8,17 +8,14 @@ import { Arc } from './../models/Arc';
     providedIn: 'root'
 })
 export class ArcRepository {
-    helper: IArcHelper;
 
-    constructor(private snackBar: MatSnackBar, @Inject(ArcHelper) helper: IArcHelper) {
-        this.helper = helper;
-    }
+    constructor(private snackBar: MatSnackBar) {}
     
     create(): void {
         let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
         let isValid = this.validateConnection(selectedElements);
         if(isValid) {
-            let arc = new Arc(this.helper); // id of start and end element
+            let arc = new Arc(); // id of start and end element
             arc.create();
             BoardHelper.removeSelection();
         }
