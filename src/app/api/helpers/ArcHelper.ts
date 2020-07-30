@@ -1,5 +1,49 @@
+import * as $ from 'jquery';
 
 export class ArcHelper {
+    static moveArrow(id: string): void {
+        
+        ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
+            console.log(arrowID);
+            let startID = arrowID.split(":")[0];
+            let endID = arrowID.split(":")[1];
+
+            let [x1, y1] = this.getCoorinatesOfElement(startID);
+            let [x2, y2] = this.getCoorinatesOfElement(endID);
+            [x1, y1, x2, y2] = this.connectToNearestEnd(startID, x1, y1, x2, y2);
+
+            $(document.getElementById(arrowID)).attr("x1", x1);
+            $(document.getElementById(arrowID)).attr("y1", y1);
+            $(document.getElementById(arrowID)).attr("x2", x2);
+            $(document.getElementById(arrowID)).attr("y2", y2);
+            // if(startID === id) {
+
+            //     this.connectToNearestEnd(startID, x1, y1, x2, y2);
+            //     // set good coords
+            //     $(document.getElementById(arrowID)).attr("x1", x1);
+            //     $(document.getElementById(arrowID)).attr("y1", y1);
+            //     $(document.getElementById(arrowID)).attr("x2", x2);
+            //     $(document.getElementById(arrowID)).attr("y2", y2);
+            // } else if(endID === id) {
+            //     $(document.getElementById(arrowID)).attr("x2", event.pageX);
+            //     $(document.getElementById(arrowID)).attr("y2", event.pageY);
+            // }
+        });
+    }
+
+    static getConnectedArrowsIDs(id: string): string[] {
+        let allArrows = Array.from(document.getElementsByClassName("arc"));
+        let connectedElementsIDs = [];
+        allArrows.forEach(arrow => {
+            let arrowID: string = arrow.getAttribute('id');
+            let startID = arrowID.split(":")[0];
+            let endID = arrowID.split(":")[1];
+            if(startID === id || endID === id) {
+                connectedElementsIDs.push(arrowID);
+            }
+        });
+        return connectedElementsIDs;
+    }
 
     static getCoorinatesOfElement(id: string): [number, number] {
         let x: number, y: number;

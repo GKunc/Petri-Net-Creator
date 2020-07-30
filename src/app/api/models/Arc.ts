@@ -12,7 +12,7 @@ export class Arc implements INetElement {
     constructor() {
         this.id = 
             document.getElementById(BoardHelper.selectedElements[0]).getAttribute('id') + 
-            '-' + 
+            ':' + 
             document.getElementById(BoardHelper.selectedElements[1]).getAttribute('id');
     }
 
@@ -31,7 +31,7 @@ export class Arc implements INetElement {
 
         let arc = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-        arc.setAttribute("id", "arc-" + this.id);
+        arc.setAttribute("id", this.id);
         arc.setAttribute("class", "net-element arc");
         arc.setAttribute("x1", start_x.toString());
         arc.setAttribute("y1", start_y.toString());

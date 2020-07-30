@@ -1,3 +1,4 @@
+import { ArcHelper } from './../helpers/ArcHelper';
 import { BoardHelper } from './../helpers/BoardHelper';
 import { TransitionHelper } from '../helpers/TransitionHelper';
 import { INetElement } from './INetElement';
@@ -60,6 +61,7 @@ export class Transition implements INetElement {
             transition.classList.add('active');
             $(board).on('mousemove', (event) => {
                 TransitionHelper.moveTransitionWithLabel(transition, label, event.pageX, event.pageY);
+                ArcHelper.moveArrow(this.getDomID());
             });
 
             $(board).on('mouseup', () => {
