@@ -1,3 +1,4 @@
+import { ArcHelper } from './../helpers/ArcHelper';
 import { BoardHelper } from './../helpers/BoardHelper';
 import { PlaceHelper } from '../helpers/PlaceHelper';
 import { INetElement } from './INetElement';
@@ -61,6 +62,7 @@ export class Place implements INetElement {
             $(board).off('mousemove');
             $(board).on('mousemove', (event) => {
                 PlaceHelper.movePlaceWithLabel(place, label, event.pageX, event.pageY);
+                ArcHelper.moveArrow(this.getDomID());
             });
 
             $(board).off('mouseup');

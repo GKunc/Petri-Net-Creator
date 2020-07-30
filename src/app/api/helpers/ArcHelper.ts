@@ -2,7 +2,6 @@ import * as $ from 'jquery';
 
 export class ArcHelper {
     static moveArrow(id: string): void {
-        
         ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
             console.log(arrowID);
             let startID = arrowID.split(":")[0];
@@ -16,18 +15,6 @@ export class ArcHelper {
             $(document.getElementById(arrowID)).attr("y1", y1);
             $(document.getElementById(arrowID)).attr("x2", x2);
             $(document.getElementById(arrowID)).attr("y2", y2);
-            // if(startID === id) {
-
-            //     this.connectToNearestEnd(startID, x1, y1, x2, y2);
-            //     // set good coords
-            //     $(document.getElementById(arrowID)).attr("x1", x1);
-            //     $(document.getElementById(arrowID)).attr("y1", y1);
-            //     $(document.getElementById(arrowID)).attr("x2", x2);
-            //     $(document.getElementById(arrowID)).attr("y2", y2);
-            // } else if(endID === id) {
-            //     $(document.getElementById(arrowID)).attr("x2", event.pageX);
-            //     $(document.getElementById(arrowID)).attr("y2", event.pageY);
-            // }
         });
     }
 
