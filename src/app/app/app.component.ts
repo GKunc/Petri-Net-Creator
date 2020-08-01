@@ -24,22 +24,48 @@ export class AppComponent {
   }
 
   addPlace() {
-    this.netRepository.createPlace();
+    BoardHelper.setDefualtCursor();
+    BoardHelper.getBoard().classList.add('cursor-place');
+    
+    $(BoardHelper.getBoard()).on('click', (event) => {
+      this.netRepository.createPlace(event.pageX, event.pageY);
+    });
   }
 
   addTransition() {
-    this.netRepository.createTransition();
+    BoardHelper.setDefualtCursor();
+    BoardHelper.getBoard().classList.add('cursor-transition');
+
+    $(BoardHelper.getBoard()).on('click', (event) => {
+      this.netRepository.createTransition(event.pageX, event.pageY);
+    });
   }
 
   addArc() {
+    BoardHelper.setDefualtCursor();
+    BoardHelper.getBoard().classList.add('cursor-arc');
+    // click first element and second
     this.netRepository.createArc();
   }
 
   keyPressEventsHandler(): void {
     $(document).off('keypress');
+    $(document).on('keydown', (event) => {
+       if(event.keyCode === 27) { 
+        BoardHelper.setDefualtCursor();
+      }
+    });
+
     $(document).on('keypress', (event) => {
+      console.log(event.which)
       if(event.which === 67 || event.which == 99) {
-        this.netRepository.createArc();
+        this.addArc();
+      }
+      else if(event.which === 80 || event.which == 112) {
+        this.addPlace();  
+      }
+      else if(event.which === 84 || event.which == 116) {
+        this.addTransition();  
       }
       else if(event.which === 8 || event.which === 100) {
         this.deleteSelectedElements();

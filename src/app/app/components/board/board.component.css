@@ -26,9 +26,20 @@
   #svg-board {
     height: calc(100% - 30px);
     width: calc(100%);
-    /* border: 1px solid black; */
   }
 
   .net-element:hover {
-    cursor: pointer;
+    cursor: move;
+  }
+
+  .cursor-transition {
+    cursor: url('../../../../assets/transitionCursor.ico'), auto;
+  }
+
+  .cursor-place {
+    cursor: url('../../../../assets/placeCursor.ico'), auto;
+  }
+
+  .cursor-arc {
+    cursor: url('../../../../assets/arcCursor.ico'), auto;
   }

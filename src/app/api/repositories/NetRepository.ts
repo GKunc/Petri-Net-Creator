@@ -27,13 +27,13 @@ export class NetRepository {
             this.selectedElements = [];
     }
 
-    createPlace() {
-        this.placeRepository.create();
+    createPlace(x: number, y: number) {
+        this.placeRepository.create(x, y);
 
     }
 
-    createTransition() {
-        this.transitionRepository.create();
+    createTransition(x: number, y: number) {
+        this.transitionRepository.create(x, y);
     }
 
     createArc() {

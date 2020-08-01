@@ -1,5 +1,20 @@
+import * as $ from 'jquery';
+
 export class BoardHelper {
     static selectedElements: string[] = [];
+
+    static setDefualtCursor(): void {
+        $(this.getBoard()).off('click');
+
+        let classList = this.getBoard().classList;
+        if(classList.contains('cursor-place')) {
+            this.getBoard().classList.remove('cursor-place');
+        } else if(classList.contains('cursor-transition')) {
+            this.getBoard().classList.remove('cursor-transition');
+        } else if(classList.contains('cursor-arc')) {
+            this.getBoard().classList.remove('cursor-arc');
+        }
+    }
 
     static getSelectedElements(): HTMLCollection {
         return document.getElementsByClassName('selected');

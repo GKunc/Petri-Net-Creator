@@ -13,9 +13,9 @@ export class PlaceRepository {
         this.current_id = 1;
     }
 
-    create(): void {
+    create(x: number, y: number): void {
         let place: Place = new Place(this.current_id);
-        place.create();
+        place.create(x, y);
         this.current_id++;
         this.places.push(place);
     }

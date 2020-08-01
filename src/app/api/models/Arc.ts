@@ -38,6 +38,7 @@ export class Arc implements INetElement {
         arc.setAttribute("x2", end_x.toString());
         arc.setAttribute("y2", end_y.toString());
         arc.setAttribute("stroke", "black");
+        arc.setAttribute("stroke-width", "1");
         arc.setAttribute("marker-end", "url(#arrow)");
         document.getElementById("svg-board").append(arc);
 

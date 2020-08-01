@@ -18,8 +18,8 @@ export class Transition implements INetElement {
         return this.id;
     }
     
-    create(): void {
-        TransitionHelper.createTransitionWithLabel(this.id, 100, 100);
+    create(x_position: number, y_position: number): void {
+        TransitionHelper.createTransitionWithLabel(this.id, x_position - 200, y_position - 25);
         this.attachListeners();
     }
 

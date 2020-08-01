@@ -45,9 +45,6 @@
     background-color: #023E7D;
   }
 
-  .net-element:hover {
-    cursor: pointer;
-  }
   .mat-step-header {
     flex-direction: column;
   }

@@ -12,6 +12,7 @@ export class PlaceHelper {
         place.setAttribute("cy", y_position.toString());
         place.setAttribute("r", place_radius.toString());
         place.setAttribute("stroke", "black");
+        place.setAttribute("stroke-width", '2');
         place.setAttribute("fill", place_fill_color);
         place.setAttribute("style", "cursor: pointer");
         

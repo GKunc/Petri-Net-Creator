@@ -18,8 +18,8 @@ export class Place implements INetElement {
         return this.id;
     }
 
-    create(): void {
-        PlaceHelper.createPlaceWtihLabel(this.id, 100, 100);
+    create(x: number, y: number): void {
+        PlaceHelper.createPlaceWtihLabel(this.id, x - 170, y);
         this.attachListeners();
     }
 

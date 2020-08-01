@@ -21,14 +21,6 @@ export class ArcRepository {
         }
     }
 
-    private connectToNearestEndOfPlace() {
-
-    }
-
-    private connectToNearestEndOfTransition() {
-
-    }
-
     validateConnection(selectedElements: Element[]): boolean {
         if(!this.validateNumberOfElements(selectedElements) ||
             !this.validateObjectsType(selectedElements) ||

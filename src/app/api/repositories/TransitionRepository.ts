@@ -14,9 +14,9 @@ export class TransitionRepository {
         this.current_id = 1;
     }
 
-    create(): void {
+    create(x: number, y: number): void {
         let transition: Transition = new Transition(this.current_id);
-        transition.create();
+        transition.create(x, y);
         this.current_id++;
         this.transitions.push(transition);
     }
