@@ -90,7 +90,7 @@ export class BoardHelper {
                     else if(element.classList.contains('transition')) {
                         TransitionHelper.moveTransitionWithLabel(element, label, event.pageX, event.pageY);
                     }
-                    ArcHelper.moveArrow(elementID);
+                    ArcHelper.moveArrowWithElement(elementID);
                 });
     
                 $(this.getBoard()).off('mouseup');

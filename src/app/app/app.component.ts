@@ -62,11 +62,7 @@ export class AppComponent {
             $(transition).on('dblclick', () => {
               $(transition).off('dblclick');
               this.netRepository.createArc();
-
-              PlaceHelper.setPointerCursor();
-              TransitionHelper.setPointerCursor();
-              BoardHelper.selectedElementEvent();
-              this.addArc();
+              this.resetArcCreation();
             });
           });    
         } 
@@ -76,18 +72,20 @@ export class AppComponent {
             $(place).on('dblclick', () => {
               $(place).off('dblclick');
               this.netRepository.createArc();
-
-              PlaceHelper.setPointerCursor();
-              TransitionHelper.setPointerCursor();
-              BoardHelper.selectedElementEvent();
-              this.addArc();
+              this.resetArcCreation();
             });
           });        
         }
 
       });
     });
-    // this.netRepository.createArc();
+  }
+
+  private resetArcCreation(): void {
+    PlaceHelper.setPointerCursor();
+    TransitionHelper.setPointerCursor();
+    BoardHelper.selectedElementEvent();
+    this.addArc();
   }
 
   keyPressEventsHandler(): void {
@@ -124,6 +122,7 @@ export class AppComponent {
     }); 
   }
 
+  // delete arcs connected to object
   private deleteSelectedElements(): void {
     let elements = BoardHelper.getSelectedElements();
     let board = BoardHelper.getBoard();

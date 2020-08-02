@@ -1,7 +1,11 @@
 import * as $ from 'jquery';
 
 export class ArcHelper {
-    static moveArrow(id: string): void {
+    static moveArrow(): void {
+        
+    }
+
+    static moveArrowWithElement(id: string): void {
         ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
             let startID = arrowID.split(":")[0];
             let endID = arrowID.split(":")[1];
