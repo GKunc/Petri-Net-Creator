@@ -196,34 +196,34 @@ export class ArcHelper {
     // Transition Adjustments //
     ////////////////////////////
     static adjustTransitionTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x, end_y - 39];
+        return [start_x + 35, start_y + 20, end_x, end_y - 30];
     }
 
     static adjustTransitionTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x - 30, end_y - 25];
+        return [start_x + 35, start_y + 20, end_x - 20, end_y - 20];
     }
 
     static adjustTransitionTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x + 30, end_y - 25];
+        return [start_x + 35, start_y + 20, end_x + 20, end_y - 20];
     }
 
     static adjustTransitionBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x, end_y + 35];
+        return [start_x + 35, start_y, end_x, end_y + 30];
     }
 
     static adjustTransitionBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x - 30, end_y + 25];
+        return [start_x + 35, start_y, end_x - 20, end_y + 20];
     }
 
     static adjustTransitionBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x + 30, end_y + 25];
+        return [start_x + 35, start_y, end_x + 20, end_y + 20];
     }
 
     static adjustTransitionLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 70, start_y + 10, end_x - 39, end_y];
+        return [start_x + 70, start_y + 10, end_x - 30, end_y];
     }
 
     static adjustTransitionRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y + 10, end_x + 39, end_y];
+        return [start_x, start_y + 10, end_x + 30, end_y];
     }
 }
