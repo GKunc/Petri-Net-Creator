@@ -1,7 +1,14 @@
+import { TransitionHelper } from './TransitionHelper';
+import { ArcHelper } from './ArcHelper';
+import { PlaceHelper } from './PlaceHelper';
 import * as $ from 'jquery';
 
 export class BoardHelper {
     static selectedElements: string[] = [];
+
+    static getAll(): HTMLCollection {
+        return document.getElementsByClassName('net-element');
+    }
 
     static setDefualtCursor(): void {
         $(this.getBoard()).off('click');
@@ -40,14 +47,6 @@ export class BoardHelper {
         return document.getElementById('svg-board');
     }
 
-    static removeSelectionOfLabel(element: SVGElement): void {
-        element.addEventListener('mousedown', function(e){
-            if (e.detail > 1){
-                e.preventDefault();
-            }
-        });
-    }
-
     static addArrowHeadMarker() {
         let defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
         let marker = document.createElementNS("http://www.w3.org/2000/svg", 'marker');
@@ -74,5 +73,61 @@ export class BoardHelper {
         if (index !== -1) {
             this.selectedElements.splice(index, 1);
         }
+    }
+
+    static moveElementEvent(): void {        
+        Array.from(this.getAll()).forEach((element) => {
+            $(element).off('mousedown');
+            $(element).on('mousedown', () => {
+                let elementID = element.getAttribute('id');
+                let label = document.getElementById('label-' + elementID);
+                element.classList.add('active');
+                $(this.getBoard()).off('mousemove');
+                $(this.getBoard()).on('mousemove', (event) => {
+                    if(element.classList.contains('place')) {
+                        PlaceHelper.movePlaceWithLabel(element, label, event.pageX, event.pageY);
+                    }
+                    else if(element.classList.contains('transition')) {
+                        TransitionHelper.moveTransitionWithLabel(element, label, event.pageX, event.pageY);
+                    }
+                    ArcHelper.moveArrow(elementID);
+                });
+    
+                $(this.getBoard()).off('mouseup');
+                $(this.getBoard()).on('mouseup', () => {
+                    $(this.getBoard()).off('mousemove');
+                    element.classList.remove('active');
+                });
+            });
+        });
+       
+    }
+
+    static selectedElementEvent() {
+        Array.from(this.getAll()).forEach((element) => {
+            $(element).off('dblclick');
+            $(element).on('dblclick', () => {
+                let label = document.getElementById('label-' + element.getAttribute('id'));
+                if(element.classList.contains('selected')) {
+                    this.unselect(element, label);
+                } else {
+                    this.select(element, label);
+                }
+            });
+        });       
+    }
+
+    static select(element: Element, label: HTMLElement): void {
+        element.classList.add('selected');
+        label.classList.add('selected');
+        element.setAttribute('stroke', 'red');
+        BoardHelper.selectedElements.push(element.getAttribute('id'));
+    }
+
+    static unselect(element: Element, label: HTMLElement): void {
+        element.classList.remove('selected');
+        label.classList.remove('selected');
+        element.setAttribute('stroke', 'black');
+        BoardHelper.removeSelectedElementFromListByID(element.getAttribute('id'));
     }
 }

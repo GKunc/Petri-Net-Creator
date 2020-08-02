@@ -1,5 +1,7 @@
+import { TransitionHelper } from '../api/helpers/TransitionHelper';
 import { NetRepository } from '../api/repositories/NetRepository';
 import { BoardHelper } from '../api/helpers/BoardHelper';
+import { PlaceHelper } from '../api/helpers/PlaceHelper';
 import { ClearBoardDialogComponent } from './components/dialogs/clear-board-dialog/clear-board-dialog.component';
 import { Component, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -42,10 +44,50 @@ export class AppComponent {
   }
 
   addArc() {
+    // after user clicks esc it behaves as on creation of elements
+    // check transient notifications
+    // improve connection
+    // when label clicked select element
+    // align items 
+
     BoardHelper.setDefualtCursor();
     BoardHelper.getBoard().classList.add('cursor-arc');
-    // click first element and second
-    this.netRepository.createArc();
+
+    Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
+      $(element).on('dblclick', () => {
+        $(element).off('dblclick');
+        if(element.classList.contains('place')) {
+          PlaceHelper.setDisabledCursor();
+          Array.from(TransitionHelper.getAll()).forEach((transition) => {
+            $(transition).on('dblclick', () => {
+              $(transition).off('dblclick');
+              this.netRepository.createArc();
+
+              PlaceHelper.setPointerCursor();
+              TransitionHelper.setPointerCursor();
+              BoardHelper.selectedElementEvent();
+              this.addArc();
+            });
+          });    
+        } 
+        else if(element.classList.contains('transition')) {
+          TransitionHelper.setDisabledCursor();
+          Array.from(PlaceHelper.getAll()).forEach((place) => {
+            $(place).on('dblclick', () => {
+              $(place).off('dblclick');
+              this.netRepository.createArc();
+
+              PlaceHelper.setPointerCursor();
+              TransitionHelper.setPointerCursor();
+              BoardHelper.selectedElementEvent();
+              this.addArc();
+            });
+          });        
+        }
+
+      });
+    });
+    // this.netRepository.createArc();
   }
 
   keyPressEventsHandler(): void {
@@ -53,11 +95,20 @@ export class AppComponent {
     $(document).on('keydown', (event) => {
        if(event.keyCode === 27) { 
         BoardHelper.setDefualtCursor();
+        Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
+          $(element).off('dblclick');
+        });
+
+        PlaceHelper.setPointerCursor();
+        TransitionHelper.setPointerCursor();
+        BoardHelper.removeSelection();
+
+        BoardHelper.moveElementEvent();
+        BoardHelper.selectedElementEvent();
       }
     });
 
     $(document).on('keypress', (event) => {
-      console.log(event.which)
       if(event.which === 67 || event.which == 99) {
         this.addArc();
       }

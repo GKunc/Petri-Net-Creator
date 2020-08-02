@@ -41,5 +41,6 @@
   }
 
   .cursor-arc {
-    cursor: url('../../../../assets/arcCursor.ico'), auto;
+    /* cursor: grab; */
+    cursor: url('../../../../assets/arcCursor.ico') 10 10, auto;
   }
