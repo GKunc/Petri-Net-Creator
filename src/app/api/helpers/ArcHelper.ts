@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 
 export class ArcHelper {
     static moveArrow(): void {
-        
+
     }
 
     static moveArrowWithElement(id: string): void {
@@ -111,7 +111,7 @@ export class ArcHelper {
             }
         }
 
-        else if(start_x - end_x < -80) {
+        else if(start_x - end_x <= -80) {
             if(start_y - end_y < 50) {
                 if(start_id === 'place') {
                     [start_x, start_y, end_x, end_y] = 
@@ -132,7 +132,7 @@ export class ArcHelper {
             }
         }
 
-        else if(start_x - end_x > 100) {
+        else if(start_x - end_x >= 100) {
             if(start_y - end_y < 50) {
                 if(start_id === 'place') {
                     [start_x, start_y, end_x, end_y] =
@@ -152,8 +152,6 @@ export class ArcHelper {
                         this.adjustTransitionBottomRight(start_x, start_y, end_x, end_y);
                 }
             }
-        } else {
-            alert('Unhandled position')
         }
 
         return [start_x, start_y, end_x, end_y];
@@ -163,35 +161,35 @@ export class ArcHelper {
     // Place Adjustments //
     ///////////////////////
     static adjustPlaceTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y + 30, end_x + 35, end_y - 3];
+        return [start_x, start_y + 25, end_x + 35, end_y - 3];
     }
 
     static adjustPlaceTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 21.2, start_y + 21.2, end_x + 25, end_y - 3];
+        return [start_x + 25, start_y, end_x + 25, end_y - 3];
     }
 
     static adjustPlaceTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 21.2, start_y + 21.2, end_x + 45, end_y - 3];
+        return [start_x - 25, start_y, end_x + 45, end_y - 3];
     }
 
     static adjustPlaceBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y - 30, end_x + 35, end_y + 25];
+        return [start_x, start_y - 25, end_x + 35, end_y + 25];
     }
 
     static adjustPlaceBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 21.2, start_y - 21.2, end_x + 25, end_y + 23];
+        return [start_x + 25, start_y, end_x + 25, end_y + 23];
     }
 
     static adjustPlaceBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 21.2, start_y - 21.2, end_x + 45, end_y + 25];
+        return [start_x - 25, start_y, end_x + 45, end_y + 25];
     }
 
     static adjustPlaceLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 30, start_y, end_x - 8, end_y + 12];
+        return [start_x + 25, start_y, end_x - 8, end_y + 12];
     }
 
     static adjustPlaceRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 30, start_y, end_x + 75, end_y + 10];
+        return [start_x - 25, start_y, end_x + 75, end_y + 10];
     }
 
     ////////////////////////////
