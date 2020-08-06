@@ -1,36 +1,26 @@
-name: Build and Deploy
+name: CI
 
+# Controls when the action will run. Triggers the workflow on push or pull request 
+# events but only for the master branch
 on:
   push:
-    branches:
-      - 'master'
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
-    name: Build and Test
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Use Node 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build:ci
-      - name: Unit Tests
-        run: npm run test:ci
-      - name: E2E Tests
-        run: npm run test:ci
-      - uses: actions/checkout@v2
-      - name: All things angular
-        uses: AhsanAyaz/angular-deploy-gh-pages-actions
-        with:
-          github_access_token: ${{ secrets.ACCESS_TOKEN }} # see the Configuration section for how you can create secrets
-          build_configuration: production # The build environment for the app. please look configurations in your angular.json
-          base_href: /Petri-Net-Creator/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
-          deploy_branch: gh-pages # The branch the action should deploy to.
-          angular_dist_build_folder: dist/Petri-Net-Creator
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: test action
+      uses: colbyhill21/angular-full-ci/@v1.0
+      with:
+        testcommand: run test:ci
