@@ -24,24 +24,25 @@ jobs:
         run: npm run test:ci
       - name: E2E Tests
         run: npm run test:ci
-      - name: Archive build
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: deploy_dist
-          path: dist
+      - name: Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm run build
       - name: Archive code coverage result
         if: success()
         uses: actions/upload-artifact@v1
         with:
           name: deploy_coverage
           path: coverage
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: build # The folder the action should deploy.
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to gh-pages
-        run: npm run deploy
       - name: Checkout
         uses: actions/checkout@v1
       - name: Download build
