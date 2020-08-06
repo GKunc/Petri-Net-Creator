@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "build:ci": "ng build --prod --sourceMap=false --base-href /Petri-Net-Creator/",
     "test:ci": "ng test --watch=false --code-coverage --source-map true --browsers=ChromeHeadless",
-    "e2e:ci": "ng test --watch=false --code-coverage --source-map true --browsers=ChromeHeadless"
+    "e2e:ci": "ng test --watch=false --code-coverage --source-map true --browsers=ChromeHeadless",
+    "deploy": "ng deploy --base-href=/Petri-Net-Creator/"
   },
   "private": true,
   "dependencies": {
