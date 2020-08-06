@@ -10,7 +10,10 @@ export class MenuStepOneComponent implements OnInit {
   @Output("addPlace") addNewPlace: EventEmitter<any> = new EventEmitter();
   @Output("addTransition") addNewTransition: EventEmitter<any> = new EventEmitter();
   @Output("addArc") addNewArc: EventEmitter<any> = new EventEmitter();
-  
+  @Output("addToken") addNewToken: EventEmitter<any> = new EventEmitter();
+  @Output("deleteElement") deleteNetElement: EventEmitter<any> = new EventEmitter();
+  @Output("justifyElements") justifyNetElements: EventEmitter<any> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
@@ -25,5 +28,17 @@ export class MenuStepOneComponent implements OnInit {
 
   addArc(): void {
     this.addNewArc.emit();
+  }
+
+  addToken(): void {
+    this.addNewToken.emit();
+  }
+
+  deleteElement(): void {
+    this.deleteNetElement.emit();
+  }
+
+  justifyElements(): void {
+    this.justifyNetElements.emit();
   }
 }

@@ -25,33 +25,31 @@ export class AppComponent {
     this.keyPressEventsHandler();
   }
 
-  addPlace() {
+  addPlace(): void {
     BoardHelper.setDefualtCursor();
     BoardHelper.getBoard().classList.add('cursor-place');
-    
+    $('.net-element').off('dblclick');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createPlace(event.pageX, event.pageY);
     });
   }
 
-  addTransition() {
+  addTransition(): void {
     BoardHelper.setDefualtCursor();
     BoardHelper.getBoard().classList.add('cursor-transition');
-
+    $('.net-element').off('dblclick');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createTransition(event.pageX, event.pageY);
     });
   }
 
-  addArc() {
-    // after user clicks esc it behaves as on creation of elements
-    // check transient notifications
-    // improve connection
+  addArc(): void {
     // when label clicked select element
     // align items 
 
     BoardHelper.setDefualtCursor();
     BoardHelper.getBoard().classList.add('cursor-arc');
+    $('.net-element').off('click');
 
     Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
       $(element).on('dblclick', () => {
@@ -76,14 +74,62 @@ export class AppComponent {
             });
           });        
         }
-
       });
+    });
+  }
+
+  addToken(): void {
+    BoardHelper.setDefualtCursor();
+    BoardHelper.getBoard().classList.add('cursor-token');
+    $('.net-element').off('click');
+
+    $('.place').on('click', (event) => {
+      let id = parseInt(event.target.getAttribute('id').split('-')[1]);
+      let x = parseInt(event.target.getAttribute('cx'));
+      let y = parseInt(event.target.getAttribute('cy'));    
+      if(document.getElementById("token-" + id) === null) {
+        this.netRepository.createToken(id, x + 170, y);
+      } else {
+        this.snackBar.open(
+          "Cannot create second token in the same place!", 
+          "Got it!", 
+          { panelClass: ['error'] }
+      );
+      }
+    });
+  }
+
+  deleteElement(): void {
+    BoardHelper.setDefualtCursor();
+    BoardHelper.getBoard().classList.add('cursor-delete');
+
+    $('.net-element').on('click', (event) => {
+      let elementID = event.target.getAttribute('id');
+      let [elementType, ID] = elementID.split('-');
+      let labelID = 'label-' + elementID;
+      let board = BoardHelper.getBoard();
+      console.log(labelID)
+      board.removeChild(event.target);
+      board.removeChild(document.getElementById(labelID));
+
+      if(elementType === 'place') {
+        this.netRepository.placeRepository.deleteElementByID(parseInt(ID));
+      } else if(elementType === 'transition')  {
+        this.netRepository.transitionRepository.deleteElementByID(parseInt(ID));
+      }
+    });
+  }
+
+  justifyElements(): void {
+    this.snackBar.open("Justify Elements!", "close", {
+      duration: 2000,
     });
   }
 
   private resetArcCreation(): void {
     PlaceHelper.setPointerCursor();
     TransitionHelper.setPointerCursor();
+    BoardHelper.removeSelection();
     BoardHelper.selectedElementEvent();
     this.addArc();
   }
@@ -107,35 +153,22 @@ export class AppComponent {
     });
 
     $(document).on('keypress', (event) => {
-      if(event.which === 67 || event.which == 99) {
+      if(event.which === 65 || event.which == 97) { // a/A
         this.addArc();
       }
-      else if(event.which === 80 || event.which == 112) {
+      else if(event.which === 80 || event.which == 112) { // p/P
         this.addPlace();  
       }
-      else if(event.which === 84 || event.which == 116) {
-        this.addTransition();  
+      else if(event.which === 84 || event.which == 116) { // t/T
+        this.addTransition();   
       }
-      else if(event.which === 8 || event.which === 100) {
-        this.deleteSelectedElements();
+      else if(event.which === 83 || event.which == 115) { // s/S
+        this.addToken();  
+      }
+      else if(event.which === 8 || event.which === 100) { // d/D
+        this.deleteElement();
       }
     }); 
-  }
-
-  // delete arcs connected to object
-  private deleteSelectedElements(): void {
-    let elements = BoardHelper.getSelectedElements();
-    let board = BoardHelper.getBoard();
-
-    Array.from(elements).forEach(element => {
-      board.removeChild(element);
-      let id = element.getAttribute('id').split('-');
-      if(id[0] === 'place') {
-        this.netRepository.placeRepository.deleteElementByID(parseInt(id[1]));
-      } else if(id[0] === 'transition')  {
-        this.netRepository.transitionRepository.deleteElementByID(parseInt(id[1]));
-      }
-    });
   }
 
   undo() {

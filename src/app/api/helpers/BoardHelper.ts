@@ -20,6 +20,10 @@ export class BoardHelper {
             this.getBoard().classList.remove('cursor-transition');
         } else if(classList.contains('cursor-arc')) {
             this.getBoard().classList.remove('cursor-arc');
+        } else if(classList.contains('cursor-token')) {
+            this.getBoard().classList.remove('cursor-token');
+        } else if(classList.contains('cursor-delete')) {
+            this.getBoard().classList.remove('cursor-delete');
         }
     }
 

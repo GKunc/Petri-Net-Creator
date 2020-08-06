@@ -6,16 +6,22 @@
         <app-menu-step-one 
           (addPlace)="addPlace()"
           (addTransition)="addTransition()"
-          (addArc)="addArc()">
+          (addArc)="addArc()"
+          (addToken)="addToken()"
+          (justifyElements)="justifyElements()"
+          (deleteElement)="deleteElement()">
         </app-menu-step-one>
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Inspect</ng-template>
+        <ng-template matStepLabel>Net</ng-template>
+        <app-menu-step-two>
+        </app-menu-step-two>
+
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Simulate</ng-template>
+        <ng-template matStepLabel>Sim</ng-template>
       </mat-step>
     </mat-horizontal-stepper>
 

@@ -12,13 +12,13 @@ export class ArcRepository {
     constructor(private snackBar: MatSnackBar) {}
     
     create(): void {
-        let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
-        let isValid = this.validateConnection(selectedElements);
-        if(isValid) {
+        // let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
+        // let isValid = this.validateConnection(selectedElements);
+        // if(isValid) {
             let arc = new Arc(); // id of start and end element
             arc.create();
-            BoardHelper.removeSelection();
-        }
+            // BoardHelper.removeSelection();
+        // }
     }
 
     validateConnection(selectedElements: Element[]): boolean {

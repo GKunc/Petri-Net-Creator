@@ -41,6 +41,13 @@
   }
 
   .cursor-arc {
-    /* cursor: grab; */
     cursor: url('../../../../assets/arcCursor.ico') 10 10, auto;
+  }
+
+  .cursor-token {
+    cursor: url('../../../../assets/token.ico'), auto;
+  }
+
+  .cursor-delete {
+    cursor: url('../../../../assets/delete.ico'), auto;
   }
