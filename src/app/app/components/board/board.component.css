@@ -1,0 +1,35 @@
+ #board-header {
+    height: 30px;
+    display: flex; 
+    justify-content: flex-end;
+    width: (100vw - 200px);
+    background-color: #0466C8;
+  }
+
+  #board {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 5px);
+  }
+
+  .board-button {
+    margin: 5px;
+    color: white;
+  }
+
+  .board-button:hover {
+    cursor: pointer;
+  }
+
+  #svg-board {
+    height: calc(100% - 30px);
+    width: calc(100%);
+  }
+
+  .net-element:hover {
+    cursor: move;
+  }
+
+

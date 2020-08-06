@@ -1,0 +1,43 @@
+<div id="content">
+  <div id="sidebar">
+    <mat-horizontal-stepper id="stepper" labelPosition="bottom">
+      <mat-step>
+        <ng-template matStepLabel>Create</ng-template>
+        <app-menu-step-one 
+          (addPlace)="addPlace()"
+          (addTransition)="addTransition()"
+          (addArc)="addArc()"
+          (addToken)="addToken()"
+          (justifyElements)="justifyElements()"
+          (deleteElement)="deleteElement()">
+        </app-menu-step-one>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Net</ng-template>
+        <app-menu-step-two>
+        </app-menu-step-two>
+
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Sim</ng-template>
+      </mat-step>
+    </mat-horizontal-stepper>
+
+  </div>
+
+  <app-board
+    [placeCursor]="placeCursor"
+    [transitionCursor]="transitionCursor"
+    [arcCursor]="arcCursor"
+    [tokenCursor]="tokenCursor"
+    [deleteCursor]="deleteCursor"
+    (openClearBoardDialog)="openClearBoardDialog()"
+    (saveNet)="saveNet()"
+    (createPdf)="createPdf()"
+    >
+  </app-board>
+</div>
+
+
