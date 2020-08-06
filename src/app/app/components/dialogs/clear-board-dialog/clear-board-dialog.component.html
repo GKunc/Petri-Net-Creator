@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Delete all elements?</h2>
+<mat-dialog-content>
+  This will delete all elements that are currently on this page and cannot be undone.
+</mat-dialog-content>
+<mat-dialog-actions>
+  <mat-dialog-actions>
+    <button mat-raised-button color="basic" (click)="close()">Keep Changes</button>
+    <button  mat-raised-button color="warn" (click)="delete()">Delete</button>
+  </mat-dialog-actions>
+</mat-dialog-actions>

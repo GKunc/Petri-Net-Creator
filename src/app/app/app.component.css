@@ -1,0 +1,67 @@
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  #sidebar {
+    float: left;
+    max-width: 200px;
+    min-width: 200px;
+    height: 100vh;
+    overflow: auto;
+    background-color: #023E7D;
+  }
+
+  :host ::ng-deep .mat-horizontal-content-container {
+    padding:0 !important;
+  }
+  
+  ::ng-deep snack-bar-container.error {
+    background-color: red;
+    color: white;    
+  }
+
+  ::ng-deep snack-bar-container.error button {
+      background-color:red;
+      color: white;
+  }
+
+  #stepper {
+    background-color: #023E7D;
+  }
+
+  .mat-step-header {
+    flex-direction: column;
+  }
+
+  /** custom CSS as per your :required */
+::ng-deep .mat-horizontal-stepper-header {
+  box-sizing: border-box;
+  flex-direction: column-reverse !important;
+  height: auto;
+  padding: 24px;
+}
+
+::ng-deep .mat-horizontal-stepper-header .mat-step-label {
+  padding: 0px 0px 16px !important;
+}
+
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before, ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after{
+  top: 68px !important;
+}
