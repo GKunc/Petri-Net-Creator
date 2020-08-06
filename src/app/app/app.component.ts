@@ -46,7 +46,6 @@ export class AppComponent {
 
   private cursorImageMove(): void {
     $(BoardHelper.getBoard()).on('mousemove', (event) => {
-      console.log(event.pageX, event.pageY)
       let element = document.getElementById('cursor-image');
       if(element.classList.contains('cursor-place')) {
         $(element).attr('cx', event.pageX - 200);
@@ -66,7 +65,7 @@ export class AppComponent {
   addPlace(): void {
     this.setDefaultCursor();
     this.placeCursor = true;
-    // document.getElementById('cursor-img').classList.add('cursor-place');
+
     $('.net-element').off('dblclick');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createPlace(event.pageX, event.pageY);
@@ -76,8 +75,7 @@ export class AppComponent {
   addTransition(): void {
     this.setDefaultCursor();
     this.transitionCursor = true;
-    // BoardHelper.setDefualtCursor();
-    // document.getElementById('cursor-img').classList.add('cursor-transition');
+
     $('.net-element').off('dblclick');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createTransition(event.pageX, event.pageY);
@@ -185,7 +183,9 @@ export class AppComponent {
         Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
           $(element).off('dblclick');
         });
-
+        
+        $(BoardHelper.getBoard()).off('mousemove');
+        
         PlaceHelper.setPointerCursor();
         TransitionHelper.setPointerCursor();
         BoardHelper.removeSelection();

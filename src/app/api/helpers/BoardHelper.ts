@@ -34,6 +34,10 @@ export class BoardHelper {
         return document.getElementById('svg-board');
     }
 
+    static getCursorSvgElement(): HTMLElement {
+        return document.getElementById('cursors');
+    }
+
     static addArrowHeadMarker() {
         let defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
         let marker = document.createElementNS("http://www.w3.org/2000/svg", 'marker');
@@ -52,7 +56,7 @@ export class BoardHelper {
         
         marker.appendChild(path);
         defs.appendChild(marker);
-        this.getBoard().appendChild(defs);
+        this.getBoard().insertBefore(defs, this.getCursorSvgElement());
     }
 
     static removeSelectedElementFromListByID(id: string) {

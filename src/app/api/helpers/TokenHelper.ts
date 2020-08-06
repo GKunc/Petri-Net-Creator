@@ -10,6 +10,7 @@ export class TokenHelper {
 
     static createToken(id: number, x_position: number, y_position: number): void {
         let token = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        let cursors = document.getElementById('cursors');
 
         token.setAttribute("id", "token-" + id);
         token.setAttribute("class", "net-element token");
@@ -22,6 +23,6 @@ export class TokenHelper {
         token.setAttribute("style", "cursor: pointer");
         
         let board = document.getElementById('svg-board');
-        board.append(token);
+        board.insertBefore(token, cursors);
    }
 }

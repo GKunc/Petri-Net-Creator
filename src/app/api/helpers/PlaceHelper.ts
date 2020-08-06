@@ -22,7 +22,8 @@ export class PlaceHelper {
 
     static createPlaceWtihLabel(id: number, x_position: number, y_position: number): void {
         let place = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-
+        let cursors = document.getElementById('cursors');
+        
         place.setAttribute("id", "place-" + id);
         place.setAttribute("class", "net-element place");
         place.setAttribute("cx", x_position.toString());
@@ -46,8 +47,8 @@ export class PlaceHelper {
         text.innerHTML = 'p' + id;
 
         let board = document.getElementById('svg-board');
-        board.append(place);
-        board.append(text);
+        board.insertBefore(place, cursors);
+        board.insertBefore(text, cursors);
         place.addEventListener('mousedown', function(e){
             if (e.detail > 1){
                 e.preventDefault();

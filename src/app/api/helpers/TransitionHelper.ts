@@ -22,6 +22,7 @@ export class TransitionHelper {
 
     static createTransitionWithLabel(id: number, x_position: number, y_position: number): void {
         let transition = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        let cursors = document.getElementById('cursors');
 
         transition.setAttribute("id", "transition-" + id);
         transition.setAttribute("class", "net-element transition");
@@ -46,8 +47,8 @@ export class TransitionHelper {
         text.innerHTML = 't' + id;
 
         let board = document.getElementById('svg-board');
-        board.append(transition);
-        board.append(text);
+        board.insertBefore(transition, cursors);
+        board.insertBefore(text, cursors);
         transition.addEventListener('mousedown', function(e){
             if (e.detail > 1){
                 e.preventDefault();

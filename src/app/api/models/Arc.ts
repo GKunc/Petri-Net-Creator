@@ -30,6 +30,7 @@ export class Arc implements INetElement {
                                      end_x, end_y);
 
         let arc = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        let cursors = document.getElementById('cursors');
 
         arc.setAttribute("id", this.id);
         arc.setAttribute("class", "net-element arc");
@@ -40,7 +41,7 @@ export class Arc implements INetElement {
         arc.setAttribute("stroke", "black");
         arc.setAttribute("stroke-width", "1");
         arc.setAttribute("marker-end", "url(#arrow)");
-        document.getElementById("svg-board").append(arc);
+        document.getElementById("svg-board").insertBefore(arc, cursors);
 
         this.selectedElementEvents();
     }
