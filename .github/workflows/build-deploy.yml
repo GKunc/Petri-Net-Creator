@@ -24,34 +24,13 @@ jobs:
         run: npm run test:ci
       - name: E2E Tests
         run: npm run test:ci
-      - name: Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-        run: |
-          npm run build
-      - name: Archive code coverage result
-        if: success()
-        uses: actions/upload-artifact@v1
+      - uses: actions/checkout@v2
+      - name: All things angular
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions
         with:
-          name: deploy_coverage
-          path: coverage
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.5.9
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: build # The folder the action should deploy.
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Download build
-        uses: actions/download-artifact@v1
-        with:
-          name: deploy_dist
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: deploy_dist
+          github_access_token: ${{ secrets.ACCESS_TOKEN }} # see the Configuration section for how you can create secrets
+          build_configuration: production # The build environment for the app. please look configurations in your angular.json
+          base_href: /Petri-Net-Creator/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
+          deploy_branch: gh-pages # The branch the action should deploy to.
+          angular_dist_build_folder: dist/Petri-Net-Creator
+
