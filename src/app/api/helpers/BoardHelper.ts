@@ -10,23 +10,6 @@ export class BoardHelper {
         return document.getElementsByClassName('net-element');
     }
 
-    static setDefualtCursor(): void {
-        $(this.getBoard()).off('click');
-
-        let classList = this.getBoard().classList;
-        if(classList.contains('cursor-place')) {
-            this.getBoard().classList.remove('cursor-place');
-        } else if(classList.contains('cursor-transition')) {
-            this.getBoard().classList.remove('cursor-transition');
-        } else if(classList.contains('cursor-arc')) {
-            this.getBoard().classList.remove('cursor-arc');
-        } else if(classList.contains('cursor-token')) {
-            this.getBoard().classList.remove('cursor-token');
-        } else if(classList.contains('cursor-delete')) {
-            this.getBoard().classList.remove('cursor-delete');
-        }
-    }
-
     static getSelectedElements(): HTMLCollection {
         return document.getElementsByClassName('selected');
     }

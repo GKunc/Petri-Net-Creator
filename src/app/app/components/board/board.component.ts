@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-board',
@@ -9,8 +9,14 @@ export class BoardComponent implements OnInit {
   @Output("createPdf") createPdfEmitter: EventEmitter<any> = new EventEmitter();
   @Output("saveNet") saveNetEmitter: EventEmitter<any> = new EventEmitter();
   @Output("openClearBoardDialog") openClearBoardDialogEmitter: EventEmitter<any> = new EventEmitter();
+  
+  @Input() placeCursor: boolean;
+  @Input() transitionCursor: boolean;
+  @Input() arcCursor: boolean;
+  @Input() tokenCursor: boolean;
+  @Input() deleteCursor: boolean;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
   }

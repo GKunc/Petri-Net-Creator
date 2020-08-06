@@ -19,7 +19,7 @@ export class Place implements INetElement {
     }
 
     create(x: number, y: number): void {
-        PlaceHelper.createPlaceWtihLabel(this.id, x - 170, y);
+        PlaceHelper.createPlaceWtihLabel(this.id, x - 205, y - 25);
         this.attachListeners();
     }
 

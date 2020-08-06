@@ -32,22 +32,4 @@
     cursor: move;
   }
 
-  .cursor-transition {
-    cursor: url('../../../../assets/transitionCursor.ico'), auto;
-  }
 
-  .cursor-place {
-    cursor: url('../../../../assets/placeCursor.ico'), auto;
-  }
-
-  .cursor-arc {
-    cursor: url('../../../../assets/arcCursor.ico') 10 10, auto;
-  }
-
-  .cursor-token {
-    cursor: url('../../../../assets/token.ico'), auto;
-  }
-
-  .cursor-delete {
-    cursor: url('../../../../assets/delete.ico'), auto;
-  }
