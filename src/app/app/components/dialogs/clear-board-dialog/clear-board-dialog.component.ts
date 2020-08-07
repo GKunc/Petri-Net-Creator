@@ -14,12 +14,12 @@ export class ClearBoardDialogComponent {
     this.deleteChanges = false;
   }
 
-  delete() {
+  delete(): void {
     this.deleteChanges = true;
     this.dialogRef.close(this.deleteChanges);
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close(this.deleteChanges);
   }
 }

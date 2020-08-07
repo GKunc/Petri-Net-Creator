@@ -6,10 +6,10 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  @Output("createPdf") createPdfEmitter: EventEmitter<any> = new EventEmitter();
-  @Output("saveNet") saveNetEmitter: EventEmitter<any> = new EventEmitter();
-  @Output("openClearBoardDialog") openClearBoardDialogEmitter: EventEmitter<any> = new EventEmitter();
-  
+  @Output() createPdf: EventEmitter<any> = new EventEmitter();
+  @Output() saveNet: EventEmitter<any> = new EventEmitter();
+  @Output() openClearBoardDialog: EventEmitter<any> = new EventEmitter();
+
   @Input() placeCursor: boolean;
   @Input() transitionCursor: boolean;
   @Input() arcCursor: boolean;
@@ -21,15 +21,15 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createPdf(): void {
-    this.createPdfEmitter.emit();
+  createPdfEvent(): void {
+    this.createPdf.emit();
   }
 
-  saveNet(): void {
-    this.saveNetEmitter.emit();
+  saveNetEvent(): void {
+    this.saveNet.emit();
   }
 
-  openClearBoardDialog(): void {
-    this.openClearBoardDialogEmitter.emit();
+  openClearBoardDialogEvent(): void {
+    this.openClearBoardDialog.emit();
   }
 }

@@ -13,7 +13,7 @@ export class TokenRepository {
     }
 
     create(id: number, x: number, y: number): void {
-        let token: Token = new Token(id);
+        const token: Token = new Token(id);
         token.create(x, y);
         this.tokens.push(token);
     }
@@ -29,9 +29,9 @@ export class TokenRepository {
     getByID(id: number): Token {
         return this.tokens.find(place => place.getID() === id);
     }
-    
+
     deleteElementByID(id: number): void {
-        let index = this.tokens.indexOf(this.getByID(id));
+        const index = this.tokens.indexOf(this.getByID(id));
         if (index !== -1) {
             this.tokens.splice(index, 1);
         }

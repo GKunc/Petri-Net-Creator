@@ -1,8 +1,8 @@
-export const place_radius = 25;
-export const place_fill_color = "white";
+export const PLACE_RADIUS = 25;
+export const PLACE_FILL_COLOR = 'white';
 
-export const token_radius = 10;
-export const token_fill_color = "black";
+export const TOKEN_RADIUS = 10;
+export const TOKEN_FILL_COLOR = 'black';
 
-export const transition_width = 70;
-export const transition_height = 20;
+export const TRANSITION_WIDTH = 70;
+export const TRANSITION_HEIGHT = 20;

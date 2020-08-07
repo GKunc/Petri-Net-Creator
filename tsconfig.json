@@ -16,5 +16,14 @@
     {
       "path": "./e2e/tsconfig.json"
     }
-]
+  ],
+  "compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"sourceMap": true,
+		"outDir": "out",
+		"noImplicitAny": true,
+		"noUnusedParameters": true,
+    "noUnusedLocals": true
+  }
 }

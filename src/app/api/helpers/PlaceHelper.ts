@@ -1,8 +1,8 @@
-import { place_radius, place_fill_color } from './../../app/shared/constants';
+import { PLACE_RADIUS, PLACE_FILL_COLOR } from './../../app/shared/constants';
 import * as $ from 'jquery';
 
 export class PlaceHelper {
-    
+
     static getAll(): HTMLCollection {
         return document.getElementsByClassName('place');
     }
@@ -10,46 +10,46 @@ export class PlaceHelper {
     static setDisabledCursor(): void {
         Array.from(this.getAll()).forEach((place) => {
             $(place).off('dblclick');
-            place.setAttribute("style", "cursor: not-allowed");
+            place.setAttribute('style', 'cursor: not-allowed');
         });
     }
 
     static setPointerCursor(): void {
         Array.from(this.getAll()).forEach((place) => {
-            place.setAttribute("style", "cursor: pointer");
+            place.setAttribute('style', 'cursor: pointer');
           });
     }
 
     static createPlaceWtihLabel(id: number, x_position: number, y_position: number): void {
-        let place = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        let cursors = document.getElementById('cursors');
-        
-        place.setAttribute("id", "place-" + id);
-        place.setAttribute("class", "net-element place");
-        place.setAttribute("cx", x_position.toString());
-        place.setAttribute("cy", y_position.toString());
-        place.setAttribute("r", place_radius.toString());
-        place.setAttribute("stroke", "black");
-        place.setAttribute("stroke-width", '2');
-        place.setAttribute("fill", place_fill_color);
-        place.setAttribute("style", "cursor: pointer");
-        
-        let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("id", "label-place-" + id);
-        text.setAttribute("x", x_position.toString());
-        text.setAttribute("y", y_position.toString());
-        text.setAttribute("fill", "black");
-        text.setAttribute("dy", ".3em");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-size", "20px");
-        text.setAttribute("style", "cursor: pointer");
+        const place = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const cursors = document.getElementById('cursors');
+
+        place.setAttribute('id', 'place-' + id);
+        place.setAttribute('class', 'net-element place');
+        place.setAttribute('cx', x_position.toString());
+        place.setAttribute('cy', y_position.toString());
+        place.setAttribute('r', PLACE_RADIUS.toString());
+        place.setAttribute('stroke', 'black');
+        place.setAttribute('stroke-width', '2');
+        place.setAttribute('fill', PLACE_FILL_COLOR);
+        place.setAttribute('style', 'cursor: pointer');
+
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('id', 'label-place-' + id);
+        text.setAttribute('x', x_position.toString());
+        text.setAttribute('y', y_position.toString());
+        text.setAttribute('fill', 'black');
+        text.setAttribute('dy', '.3em');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '20px');
+        text.setAttribute('style', 'cursor: pointer');
 
         text.innerHTML = 'p' + id;
 
-        let board = document.getElementById('svg-board');
+        const board = document.getElementById('svg-board');
         board.insertBefore(place, cursors);
         board.insertBefore(text, cursors);
-        place.addEventListener('mousedown', function(e){
+        place.addEventListener('mousedown', (e) => {
             if (e.detail > 1){
                 e.preventDefault();
             }
@@ -67,8 +67,8 @@ export class PlaceHelper {
     }
 
     static getPlacePositionByID(id: number): [number, number] {
-        let domID = "place-" + id;
-        let domElement = document.getElementById(domID);
-        return [parseInt(domElement.getAttribute('cx')), parseInt(domElement.getAttribute('cy'))];
+        const domID = 'place-' + id;
+        const domElement = document.getElementById(domID);
+        return [Number(domElement.getAttribute('cx')), Number(domElement.getAttribute('cy'))];
     }
 }

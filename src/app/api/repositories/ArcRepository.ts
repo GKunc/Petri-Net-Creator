@@ -10,19 +10,19 @@ import { Arc } from './../models/Arc';
 export class ArcRepository {
 
     constructor(private snackBar: MatSnackBar) {}
-    
+
     create(): void {
         // let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
         // let isValid = this.validateConnection(selectedElements);
         // if(isValid) {
-            let arc = new Arc(); // id of start and end element
+            const arc = new Arc(); // id of start and end element
             arc.create();
             // BoardHelper.removeSelection();
         // }
     }
 
     validateConnection(selectedElements: Element[]): boolean {
-        if(!this.validateNumberOfElements(selectedElements) ||
+        if (!this.validateNumberOfElements(selectedElements) ||
             !this.validateObjectsType(selectedElements) ||
             !this.validateIfElementIsArc(selectedElements)) {
             return false;
@@ -31,38 +31,38 @@ export class ArcRepository {
     }
 
     private validateNumberOfElements(selectedElements: Element[]): boolean {
-        if(selectedElements.length !== 2) {
+        if (selectedElements.length !== 2) {
             this.snackBar.open(
-                "Bad number of elements selected. Please select exactly 2 elements!", 
-                "Got it!", 
+                'Bad number of elements selected. Please select exactly 2 elements!',
+                'Got it!',
                 { panelClass: ['error'] }
             );
             return false;
-        } 
+        }
         return true;
     }
 
     private validateObjectsType(selectedElements: Element[]): boolean {
-        if(selectedElements[0].getAttribute('class') === selectedElements[1].getAttribute('class')) {
+        if (selectedElements[0].getAttribute('class') === selectedElements[1].getAttribute('class')) {
             this.snackBar.open(
-                "Cannot connect two elements of same type!", 
-                "Got it!", 
+                'Cannot connect two elements of same type!',
+                'Got it!',
                 { panelClass: ['error'] }
             );
             return false;
-        } 
+        }
         return true;
     }
 
     private validateIfElementIsArc(selectedElements: Element[]): boolean {
-        if(selectedElements[0].getAttribute('class').includes('arc') || selectedElements[1].getAttribute('class').includes('arc')) {
+        if (selectedElements[0].getAttribute('class').includes('arc') || selectedElements[1].getAttribute('class').includes('arc')) {
             this.snackBar.open(
-                "Cannot connect two elements of same type!", 
-                "Got it!", 
+                'Cannot connect two elements of same type!',
+                'Got it!',
                 { panelClass: ['error'] }
             );
             return false;
-        } 
+        }
         return true;
     }
 }

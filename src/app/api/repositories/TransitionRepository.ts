@@ -7,23 +7,23 @@ import { INetElement } from './../models/INetElement';
 })
 export class TransitionRepository {
     transitions: Transition[];
-    current_id: number;
+    currentID: number;
 
     constructor() {
         this.transitions = [];
-        this.current_id = 1;
+        this.currentID = 1;
     }
 
     create(x: number, y: number): void {
-        let transition: Transition = new Transition(this.current_id);
+        const transition: Transition = new Transition(this.currentID);
         transition.create(x, y);
-        this.current_id++;
+        this.currentID++;
         this.transitions.push(transition);
     }
 
     removeAll(): void {
         this.transitions = [];
-        this.current_id = 1;
+        this.currentID = 1;
     }
 
     getAll(): Transition[] {
@@ -35,7 +35,7 @@ export class TransitionRepository {
     }
 
     deleteElementByID(id: number): void {
-        let index = this.transitions.indexOf(this.getByID(id));
+        const index = this.transitions.indexOf(this.getByID(id));
         if (index !== -1) {
             this.transitions.splice(index, 1);
         }

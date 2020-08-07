@@ -7,28 +7,28 @@ export class ArcHelper {
 
     static moveArrowWithElement(id: string): void {
         ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
-            let startID = arrowID.split(":")[0];
-            let endID = arrowID.split(":")[1];
+            const startID = arrowID.split(':')[0];
+            const endID = arrowID.split(':')[1];
 
             let [x1, y1] = this.getCoorinatesOfElement(startID);
             let [x2, y2] = this.getCoorinatesOfElement(endID);
             [x1, y1, x2, y2] = this.connectToNearestEnd(startID, x1, y1, x2, y2);
 
-            $(document.getElementById(arrowID)).attr("x1", x1);
-            $(document.getElementById(arrowID)).attr("y1", y1);
-            $(document.getElementById(arrowID)).attr("x2", x2);
-            $(document.getElementById(arrowID)).attr("y2", y2);
+            $(document.getElementById(arrowID)).attr('x1', x1);
+            $(document.getElementById(arrowID)).attr('y1', y1);
+            $(document.getElementById(arrowID)).attr('x2', x2);
+            $(document.getElementById(arrowID)).attr('y2', y2);
         });
     }
 
     static getConnectedArrowsIDs(id: string): string[] {
-        let allArrows = Array.from(document.getElementsByClassName("arc"));
-        let connectedElementsIDs = [];
+        const allArrows = Array.from(document.getElementsByClassName('arc'));
+        const connectedElementsIDs = [];
         allArrows.forEach(arrow => {
-            let arrowID: string = arrow.getAttribute('id');
-            let startID = arrowID.split(":")[0];
-            let endID = arrowID.split(":")[1];
-            if(startID === id || endID === id) {
+            const arrowID: string = arrow.getAttribute('id');
+            const startID = arrowID.split(':')[0];
+            const endID = arrowID.split(':')[1];
+            if (startID === id || endID === id) {
                 connectedElementsIDs.push(arrowID);
             }
         });
@@ -37,13 +37,13 @@ export class ArcHelper {
 
     static getCoorinatesOfElement(id: string): [number, number] {
         let x: number, y: number;
-        let element: Element = document.getElementById(id);
-        if(element.getAttribute("id").includes("place")) {
-            x = parseInt(element.getAttribute('cx'));
-            y = parseInt(element.getAttribute('cy'));
+        const element: Element = document.getElementById(id);
+        if (element.getAttribute('id').includes('place')) {
+            x = Number(element.getAttribute('cx'));
+            y = Number(element.getAttribute('cy'));
         } else {
-            x = parseInt(element.getAttribute('x'));
-            y = parseInt(element.getAttribute('y'));
+            x = Number(element.getAttribute('x'));
+            y = Number(element.getAttribute('y'));
         }
         return [x, y];
     }
@@ -53,15 +53,15 @@ export class ArcHelper {
         end_x: number, end_y: number
     ): [number, number, number, number] {
 
-            if(start_id.includes('place')) {
-                [start_x, start_y, end_x, end_y] = 
+            if (start_id.includes('place')) {
+                [start_x, start_y, end_x, end_y] =
                     this.adjustArrowPosition('place', start_x, start_y, end_x, end_y);
-            } else if(start_id.includes('transition')) {
-                [start_x, start_y, end_x, end_y] = 
+            } else if (start_id.includes('transition')) {
+                [start_x, start_y, end_x, end_y] =
                 this.adjustArrowPosition('transition', start_x, start_y, end_x, end_y);
             }
 
-        return [start_x, start_y, end_x, end_y];
+            return [start_x, start_y, end_x, end_y];
     }
 
 
@@ -70,38 +70,38 @@ export class ArcHelper {
         end_x: number, end_y: number
     ): [number, number, number, number] {
 
-        if(start_x - end_x > -80 && start_x - end_x < 100) {
-            if(start_y - end_y < 0) {
-                if(start_id === 'place') {
+        if (start_x - end_x > -80 && start_x - end_x < 100) {
+            if (start_y - end_y < 0) {
+                if (start_id === 'place') {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceTop(start_x, start_y, end_x, end_y);
                 } else {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionTop(start_x, start_y, end_x, end_y);
                 }
-            } 
+            }
             else {
-                if(start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] = 
+                if (start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceBottom(start_x, start_y, end_x, end_y);
                 } else {
-                    [start_x, start_y, end_x, end_y] = 
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionBottom(start_x, start_y, end_x, end_y);
                 }
             }
-        } 
-        else if(start_y - end_y > -80 && start_y - end_y < 100) {
-            if(start_x - end_x < 0) {
-                if(start_id === 'place') {
+        }
+        else if (start_y - end_y > -80 && start_y - end_y < 100) {
+            if (start_x - end_x < 0) {
+                if (start_id === 'place') {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceLeft(start_x, start_y, end_x, end_y);
                 } else {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionLeft(start_x, start_y, end_x, end_y);
                 }
-            } 
+            }
             else {
-                if(start_id === 'place') {
+                if (start_id === 'place') {
                         [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceRight(start_x, start_y, end_x, end_y);
                 }else {
@@ -111,41 +111,41 @@ export class ArcHelper {
             }
         }
 
-        else if(start_x - end_x <= -80) {
-            if(start_y - end_y < 50) {
-                if(start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] = 
+        else if (start_x - end_x <= -80) {
+            if (start_y - end_y < 50) {
+                if (start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceTopLeft(start_x, start_y, end_x, end_y);
                 } else {
-                    [start_x, start_y, end_x, end_y] = 
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionTopLeft(start_x, start_y, end_x, end_y);
                 }
             }
             else {
-                if(start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] = 
+                if (start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceBottomLeft(start_x, start_y, end_x, end_y);
                 } else {
-                    [start_x, start_y, end_x, end_y] = 
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionBottomLeft(start_x, start_y, end_x, end_y);
                 }
             }
         }
 
-        else if(start_x - end_x >= 100) {
-            if(start_y - end_y < 50) {
-                if(start_id === 'place') {
+        else if (start_x - end_x >= 100) {
+            if (start_y - end_y < 50) {
+                if (start_id === 'place') {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceTopRight(start_x, start_y, end_x, end_y);
                 } else {
                     [start_x, start_y, end_x, end_y] =
                         this.adjustTransitionTopRight(start_x, start_y, end_x, end_y);
                 }
-                    
+
             }
             else {
-                if(start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] = 
+                if (start_id === 'place') {
+                    [start_x, start_y, end_x, end_y] =
                         this.adjustPlaceBottomRight(start_x, start_y, end_x, end_y);
                 } else {
                     [start_x, start_y, end_x, end_y] =

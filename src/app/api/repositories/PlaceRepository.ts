@@ -6,23 +6,23 @@ import { Place } from './../models/Place';
 })
 export class PlaceRepository {
     places: Place[];
-    current_id: number;
+    currentID: number;
 
     constructor() {
         this.places = [];
-        this.current_id = 1;
+        this.currentID = 1;
     }
 
     create(x: number, y: number): void {
-        let place: Place = new Place(this.current_id);
+        const place: Place = new Place(this.currentID);
         place.create(x, y);
-        this.current_id++;
+        this.currentID++;
         this.places.push(place);
     }
 
     removeAll(): void {
         this.places = [];
-        this.current_id = 1;
+        this.currentID = 1;
     }
 
     getAll(): Place[] {
@@ -32,9 +32,9 @@ export class PlaceRepository {
     getByID(id: number): Place {
         return this.places.find(place => place.getID() === id);
     }
-    
+
     deleteElementByID(id: number): void {
-        let index = this.places.indexOf(this.getByID(id));
+        const index = this.places.indexOf(this.getByID(id));
         if (index !== -1) {
             this.places.splice(index, 1);
         }

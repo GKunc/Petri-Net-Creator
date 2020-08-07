@@ -1,28 +1,26 @@
-import { token_radius, token_fill_color } from './../../app/shared/constants';
-import { place_radius, place_fill_color } from '../../app/shared/constants';
-import * as $ from 'jquery';
+import { TOKEN_FILL_COLOR, TOKEN_RADIUS } from './../../app/shared/constants';
 
 export class TokenHelper {
-    
+
     static getAll(): HTMLCollection {
         return document.getElementsByClassName('token');
     }
 
     static createToken(id: number, x_position: number, y_position: number): void {
-        let token = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        let cursors = document.getElementById('cursors');
+        const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const cursors = document.getElementById('cursors');
 
-        token.setAttribute("id", "token-" + id);
-        token.setAttribute("class", "net-element token");
-        token.setAttribute("cx", x_position.toString());
-        token.setAttribute("cy", y_position.toString());
-        token.setAttribute("r", token_radius.toString());
-        token.setAttribute("stroke", "black");
-        token.setAttribute("stroke-width", '2');
-        token.setAttribute("fill", token_fill_color);
-        token.setAttribute("style", "cursor: pointer");
-        
-        let board = document.getElementById('svg-board');
+        token.setAttribute('id', 'token-' + id);
+        token.setAttribute('class', 'net-element token');
+        token.setAttribute('cx', x_position.toString());
+        token.setAttribute('cy', y_position.toString());
+        token.setAttribute('r', TOKEN_RADIUS.toString());
+        token.setAttribute('stroke', 'black');
+        token.setAttribute('stroke-width', '2');
+        token.setAttribute('fill', TOKEN_FILL_COLOR);
+        token.setAttribute('style', 'cursor: pointer');
+
+        const board = document.getElementById('svg-board');
         board.insertBefore(token, cursors);
    }
 }

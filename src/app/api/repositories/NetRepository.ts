@@ -19,7 +19,7 @@ export class NetRepository {
     selectedElements: [];
 
     constructor(
-        @Inject(PlaceRepository) placeRepository: PlaceRepository, 
+        @Inject(PlaceRepository) placeRepository: PlaceRepository,
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
         @Inject(ArcRepository) arcRepository: ArcRepository,
         @Inject(TokenRepository) tokenRepository: TokenRepository) {

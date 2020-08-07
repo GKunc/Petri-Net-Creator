@@ -4,15 +4,15 @@ import { PlaceHelper } from '../helpers/PlaceHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
-const place_id_prefix = 'place-';
+const PLACE_PREFIX = 'place-';
 
 export class Place implements INetElement {
     id: number;
-    color: string = 'white';
+    color = 'white';
 
     constructor(id: number) {
         this.id = id;
-    }   
+    }
 
     getID(): number {
         return this.id;
@@ -29,6 +29,6 @@ export class Place implements INetElement {
     }
 
     private getDomID(): string {
-        return place_id_prefix + this.id;
+        return PLACE_PREFIX + this.id;
     }
 }

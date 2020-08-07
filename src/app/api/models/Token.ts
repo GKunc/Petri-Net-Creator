@@ -5,14 +5,13 @@ import { PlaceHelper } from '../helpers/PlaceHelper';
 import { INetElement } from './INetElement';
 import * as $ from 'jquery';
 
-const place_id_prefix = 'token-';
 
 export class Token implements INetElement {
     id: number;
 
     constructor(id: number) {
         this.id = id;
-    }   
+    }
 
     getID(): number {
         return this.id;
@@ -26,9 +25,5 @@ export class Token implements INetElement {
     private attachListeners(): void {
         // BoardHelper.selectedElementEvent();
         // BoardHelper.moveElementEvent();
-    }
-
-    private getDomID(): string {
-        return place_id_prefix + this.id;
     }
 }
