@@ -21,23 +21,23 @@ export class Arc implements INetElement {
     }
 
     create(): void {
-        let [start_x, start_y] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
-        let [end_x, end_y] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
+        let [startX, startY] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[0]);
+        let [endX, endY] = ArcHelper.getCoorinatesOfElement(BoardHelper.selectedElements[1]);
 
-        [start_x, start_y, end_x, end_y] =
+        [startX, startY, endX, endY] =
         ArcHelper.connectToNearestEnd(
-                                    BoardHelper.selectedElements[0], start_x, start_y,
-                                     end_x, end_y);
+                                    BoardHelper.selectedElements[0], startX, startY,
+                                     endX, endY);
 
         const arc = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         const cursors = document.getElementById('cursors');
 
         arc.setAttribute('id', this.id);
         arc.setAttribute('class', 'net-element arc');
-        arc.setAttribute('x1', start_x.toString());
-        arc.setAttribute('y1', start_y.toString());
-        arc.setAttribute('x2', end_x.toString());
-        arc.setAttribute('y2', end_y.toString());
+        arc.setAttribute('x1', startX.toString());
+        arc.setAttribute('y1', startY.toString());
+        arc.setAttribute('x2', endX.toString());
+        arc.setAttribute('y2', endY.toString());
         arc.setAttribute('stroke', 'black');
         arc.setAttribute('stroke-width', '1');
         arc.setAttribute('marker-end', 'url(#arrow)');

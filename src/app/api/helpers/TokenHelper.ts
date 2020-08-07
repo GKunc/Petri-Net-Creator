@@ -6,14 +6,14 @@ export class TokenHelper {
         return document.getElementsByClassName('token');
     }
 
-    static createToken(id: number, x_position: number, y_position: number): void {
+    static createToken(id: number, xPosition: number, yPosition: number): void {
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
 
         token.setAttribute('id', 'token-' + id);
         token.setAttribute('class', 'net-element token');
-        token.setAttribute('cx', x_position.toString());
-        token.setAttribute('cy', y_position.toString());
+        token.setAttribute('cx', xPosition.toString());
+        token.setAttribute('cy', yPosition.toString());
         token.setAttribute('r', TOKEN_RADIUS.toString());
         token.setAttribute('stroke', 'black');
         token.setAttribute('stroke-width', '2');

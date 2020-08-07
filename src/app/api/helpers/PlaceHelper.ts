@@ -20,14 +20,14 @@ export class PlaceHelper {
           });
     }
 
-    static createPlaceWtihLabel(id: number, x_position: number, y_position: number): void {
+    static createPlaceWtihLabel(id: number, xPosition: number, yPosition: number): void {
         const place = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
 
         place.setAttribute('id', 'place-' + id);
         place.setAttribute('class', 'net-element place');
-        place.setAttribute('cx', x_position.toString());
-        place.setAttribute('cy', y_position.toString());
+        place.setAttribute('cx', xPosition.toString());
+        place.setAttribute('cy', yPosition.toString());
         place.setAttribute('r', PLACE_RADIUS.toString());
         place.setAttribute('stroke', 'black');
         place.setAttribute('stroke-width', '2');
@@ -36,8 +36,8 @@ export class PlaceHelper {
 
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('id', 'label-place-' + id);
-        text.setAttribute('x', x_position.toString());
-        text.setAttribute('y', y_position.toString());
+        text.setAttribute('x', xPosition.toString());
+        text.setAttribute('y', yPosition.toString());
         text.setAttribute('fill', 'black');
         text.setAttribute('dy', '.3em');
         text.setAttribute('text-anchor', 'middle');
@@ -56,9 +56,9 @@ export class PlaceHelper {
         });
    }
 
-    static movePlaceWithLabel(place: Element, label: HTMLElement, x_position: number, y_position: number): void {
-        const x = (x_position - 200);
-        const y = (y_position - 15);
+    static movePlaceWithLabel(place: Element, label: HTMLElement, xPosition: number, yPosition: number): void {
+        const x = (xPosition - 200);
+        const y = (yPosition - 15);
         place.setAttribute('cx', x.toString());
         place.setAttribute('cy', y.toString());
 

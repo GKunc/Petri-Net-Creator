@@ -36,7 +36,8 @@ export class ArcHelper {
     }
 
     static getCoorinatesOfElement(id: string): [number, number] {
-        let x: number, y: number;
+        let x: number;
+        let y: number;
         const element: Element = document.getElementById(id);
         if (element.getAttribute('id').includes('place')) {
             x = Number(element.getAttribute('cx'));
@@ -49,181 +50,181 @@ export class ArcHelper {
     }
 
     static  connectToNearestEnd(
-        start_id: string, start_x: number, start_y: number,
-        end_x: number, end_y: number
+        startID: string, startX: number, startY: number,
+        endX: number, endY: number
     ): [number, number, number, number] {
 
-            if (start_id.includes('place')) {
-                [start_x, start_y, end_x, end_y] =
-                    this.adjustArrowPosition('place', start_x, start_y, end_x, end_y);
-            } else if (start_id.includes('transition')) {
-                [start_x, start_y, end_x, end_y] =
-                this.adjustArrowPosition('transition', start_x, start_y, end_x, end_y);
+            if (startID.includes('place')) {
+                [startX, startY, endX, endY] =
+                    this.adjustArrowPosition('place', startX, startY, endX, endY);
+            } else if (startID.includes('transition')) {
+                [startX, startY, endX, endY] =
+                this.adjustArrowPosition('transition', startX, startY, endX, endY);
             }
 
-            return [start_x, start_y, end_x, end_y];
+            return [startX, startY, endX, endY];
     }
 
 
     static adjustArrowPosition(
-        start_id: string, start_x: number, start_y: number,
-        end_x: number, end_y: number
+        startID: string, startX: number, startY: number,
+        endX: number, endY: number
     ): [number, number, number, number] {
 
-        if (start_x - end_x > -80 && start_x - end_x < 100) {
-            if (start_y - end_y < 0) {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceTop(start_x, start_y, end_x, end_y);
+        if (startX - endX > -80 && startX - endX < 100) {
+            if (startY - endY < 0) {
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceTop(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionTop(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionTop(startX, startY, endX, endY);
                 }
             }
             else {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceBottom(start_x, start_y, end_x, end_y);
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceBottom(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionBottom(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionBottom(startX, startY, endX, endY);
                 }
             }
         }
-        else if (start_y - end_y > -80 && start_y - end_y < 100) {
-            if (start_x - end_x < 0) {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceLeft(start_x, start_y, end_x, end_y);
+        else if (startY - endY > -80 && startY - endY < 100) {
+            if (startX - endX < 0) {
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceLeft(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionLeft(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionLeft(startX, startY, endX, endY);
                 }
             }
             else {
-                if (start_id === 'place') {
-                        [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceRight(start_x, start_y, end_x, end_y);
+                if (startID === 'place') {
+                        [startX, startY, endX, endY] =
+                        this.adjustPlaceRight(startX, startY, endX, endY);
                 }else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionRight(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionRight(startX, startY, endX, endY);
                 }
             }
         }
 
-        else if (start_x - end_x <= -80) {
-            if (start_y - end_y < 50) {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceTopLeft(start_x, start_y, end_x, end_y);
+        else if (startX - endX <= -80) {
+            if (startY - endY < 50) {
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceTopLeft(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionTopLeft(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionTopLeft(startX, startY, endX, endY);
                 }
             }
             else {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceBottomLeft(start_x, start_y, end_x, end_y);
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceBottomLeft(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionBottomLeft(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionBottomLeft(startX, startY, endX, endY);
                 }
             }
         }
 
-        else if (start_x - end_x >= 100) {
-            if (start_y - end_y < 50) {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceTopRight(start_x, start_y, end_x, end_y);
+        else if (startX - endX >= 100) {
+            if (startY - endY < 50) {
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceTopRight(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionTopRight(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionTopRight(startX, startY, endX, endY);
                 }
 
             }
             else {
-                if (start_id === 'place') {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustPlaceBottomRight(start_x, start_y, end_x, end_y);
+                if (startID === 'place') {
+                    [startX, startY, endX, endY] =
+                        this.adjustPlaceBottomRight(startX, startY, endX, endY);
                 } else {
-                    [start_x, start_y, end_x, end_y] =
-                        this.adjustTransitionBottomRight(start_x, start_y, end_x, end_y);
+                    [startX, startY, endX, endY] =
+                        this.adjustTransitionBottomRight(startX, startY, endX, endY);
                 }
             }
         }
 
-        return [start_x, start_y, end_x, end_y];
+        return [startX, startY, endX, endY];
     }
 
     ///////////////////////
     // Place Adjustments //
     ///////////////////////
-    static adjustPlaceTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y + 25, end_x + 35, end_y - 3];
+    static adjustPlaceTop(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX, startY + 25, endX + 35, endY - 3];
     }
 
-    static adjustPlaceTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 25, start_y, end_x + 25, end_y - 3];
+    static adjustPlaceTopLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 25, startY, endX + 25, endY - 3];
     }
 
-    static adjustPlaceTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 25, start_y, end_x + 45, end_y - 3];
+    static adjustPlaceTopRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX - 25, startY, endX + 45, endY - 3];
     }
 
-    static adjustPlaceBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y - 25, end_x + 35, end_y + 25];
+    static adjustPlaceBottom(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX, startY - 25, endX + 35, endY + 25];
     }
 
-    static adjustPlaceBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 25, start_y, end_x + 25, end_y + 23];
+    static adjustPlaceBottomLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 25, startY, endX + 25, endY + 23];
     }
 
-    static adjustPlaceBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 25, start_y, end_x + 45, end_y + 25];
+    static adjustPlaceBottomRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX - 25, startY, endX + 45, endY + 25];
     }
 
-    static adjustPlaceLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 25, start_y, end_x - 8, end_y + 12];
+    static adjustPlaceLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 25, startY, endX - 8, endY + 12];
     }
 
-    static adjustPlaceRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x - 25, start_y, end_x + 75, end_y + 10];
+    static adjustPlaceRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX - 25, startY, endX + 75, endY + 10];
     }
 
     ////////////////////////////
     // Transition Adjustments //
     ////////////////////////////
-    static adjustTransitionTop(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x, end_y - 30];
+    static adjustTransitionTop(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY + 20, endX, endY - 30];
     }
 
-    static adjustTransitionTopLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x - 20, end_y - 20];
+    static adjustTransitionTopLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY + 20, endX - 20, endY - 20];
     }
 
-    static adjustTransitionTopRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y + 20, end_x + 20, end_y - 20];
+    static adjustTransitionTopRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY + 20, endX + 20, endY - 20];
     }
 
-    static adjustTransitionBottom(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x, end_y + 30];
+    static adjustTransitionBottom(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY, endX, endY + 30];
     }
 
-    static adjustTransitionBottomLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x - 20, end_y + 20];
+    static adjustTransitionBottomLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY, endX - 20, endY + 20];
     }
 
-    static adjustTransitionBottomRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 35, start_y, end_x + 20, end_y + 20];
+    static adjustTransitionBottomRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 35, startY, endX + 20, endY + 20];
     }
 
-    static adjustTransitionLeft(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x + 70, start_y + 10, end_x - 30, end_y];
+    static adjustTransitionLeft(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX + 70, startY + 10, endX - 30, endY];
     }
 
-    static adjustTransitionRight(start_x, start_y, end_x, end_y): [number, number, number, number] {
-        return [start_x, start_y + 10, end_x + 30, end_y];
+    static adjustTransitionRight(startX, startY, endX, endY): [number, number, number, number] {
+        return [startX, startY + 10, endX + 30, endY];
     }
 }

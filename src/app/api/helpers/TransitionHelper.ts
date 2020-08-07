@@ -20,14 +20,14 @@ export class TransitionHelper {
         });
     }
 
-    static createTransitionWithLabel(id: number, x_position: number, y_position: number): void {
+    static createTransitionWithLabel(id: number, xPosition: number, yPosition: number): void {
         const transition = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         const cursors = document.getElementById('cursors');
 
         transition.setAttribute('id', 'transition-' + id);
         transition.setAttribute('class', 'net-element transition');
-        transition.setAttribute('x', x_position.toString());
-        transition.setAttribute('y', y_position.toString());
+        transition.setAttribute('x', xPosition.toString());
+        transition.setAttribute('y', yPosition.toString());
         transition.setAttribute('width', TRANSITION_WIDTH.toString());
         transition.setAttribute('height', TRANSITION_HEIGHT.toString());
         transition.setAttribute('stroke', 'black');
@@ -37,8 +37,8 @@ export class TransitionHelper {
 
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('id', 'label-transition-' + id);
-        text.setAttribute('x', (x_position + 35).toString());
-        text.setAttribute('y', (y_position + 10).toString());
+        text.setAttribute('x', (xPosition + 35).toString());
+        text.setAttribute('y', (yPosition + 10).toString());
         text.setAttribute('fill', 'black');
         text.setAttribute('dy', '.3em');
         text.setAttribute('text-anchor', 'middle');
@@ -56,12 +56,12 @@ export class TransitionHelper {
         });
     }
 
-    static moveTransitionWithLabel(transition: Element, label: HTMLElement, x_position: number, y_position: number): void {
-        transition.setAttribute('x', (x_position - 235).toString());
-        transition.setAttribute('y', (y_position - 35).toString());
+    static moveTransitionWithLabel(transition: Element, label: HTMLElement, xPosition: number, yPosition: number): void {
+        transition.setAttribute('x', (xPosition - 235).toString());
+        transition.setAttribute('y', (yPosition - 35).toString());
 
-        label.setAttribute('x', (x_position - 200).toString());
-        label.setAttribute('y', (y_position - 25).toString());
+        label.setAttribute('x', (xPosition - 200).toString());
+        label.setAttribute('y', (yPosition - 25).toString());
     }
 
     static getPlaceTransitionByID(id: number): [number, number] {
