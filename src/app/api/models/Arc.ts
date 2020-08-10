@@ -10,14 +10,44 @@ export class Arc implements INetElement {
     color = 'black';
 
     constructor() {
-        this.id =
-            document.getElementById(BoardHelper.selectedElements[0]).getAttribute('id') +
-            ':' +
-            document.getElementById(BoardHelper.selectedElements[1]).getAttribute('id');
+        this.id = '';
+            // document.getElementById(BoardHelper.selectedElements[0]).getAttribute('id') +
+            // ':' +
+            // document.getElementById(BoardHelper.selectedElements[1]).getAttribute('id');
     }
 
     getID(): string {
         return this.id;
+    }
+
+    createNew(ID: string): void {
+        this.id = ID + ':';
+        const startElement = document.getElementById(ID);
+        let xPosition;
+        let yPosition;
+        console.log(ID);
+        if (ID.includes('place')) {
+            xPosition = startElement.getAttribute('cx');
+            yPosition = Number(startElement.getAttribute('cy')) + 25;
+        }
+        else if (ID.includes('transition')) {
+            xPosition = startElement.getAttribute('x');
+            yPosition = startElement.getAttribute('y');
+        }
+
+        const arc = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        const cursors = document.getElementById('cursors');
+
+        arc.setAttribute('id', this.id);
+        arc.setAttribute('class', 'net-element arc');
+        arc.setAttribute('x1', xPosition);
+        arc.setAttribute('y1', yPosition);
+        arc.setAttribute('x2', xPosition);
+        arc.setAttribute('y2', yPosition);
+        arc.setAttribute('stroke', 'black');
+        arc.setAttribute('stroke-width', '1');
+        arc.setAttribute('marker-end', 'url(#arrow)');
+        document.getElementById('svg-board').insertBefore(arc, cursors);
     }
 
     create(): void {
@@ -44,10 +74,6 @@ export class Arc implements INetElement {
         document.getElementById('svg-board').insertBefore(arc, cursors);
 
         this.selectedElementEvents();
-    }
-
-    move(): void {
-        throw new Error('Method not implemented.');
     }
 
     selectedElementEvents(): void {

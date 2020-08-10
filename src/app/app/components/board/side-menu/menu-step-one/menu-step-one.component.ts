@@ -8,7 +8,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class MenuStepOneComponent implements OnInit {
   @Output() addPlace: EventEmitter<any> = new EventEmitter();
   @Output() addTransition: EventEmitter<any> = new EventEmitter();
-  @Output() addArc: EventEmitter<any> = new EventEmitter();
+  @Output() addNewArc: EventEmitter<any> = new EventEmitter();
   @Output() addToken: EventEmitter<any> = new EventEmitter();
   @Output() deleteElement: EventEmitter<any> = new EventEmitter();
   @Output() justifyElements: EventEmitter<any> = new EventEmitter();
@@ -26,7 +26,7 @@ export class MenuStepOneComponent implements OnInit {
   }
 
   addArcEvent(): void {
-    this.addArc.emit();
+    this.addNewArc.emit();
   }
 
   addTokenEvent(): void {

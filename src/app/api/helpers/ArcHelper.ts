@@ -5,6 +5,12 @@ export class ArcHelper {
 
     }
 
+    static moveArrowWithCursor(ID: string, xPosition: number, yPosition: number): void {
+        const arrow = document.getElementById(ID + ':');
+        $(arrow).attr('x2', xPosition.toString());
+        $(arrow).attr('y2', yPosition.toString());
+    }
+
     static moveArrowWithElement(id: string): void {
         ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
             const startID = arrowID.split(':')[0];

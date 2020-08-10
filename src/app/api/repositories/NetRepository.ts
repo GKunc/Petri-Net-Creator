@@ -40,6 +40,10 @@ export class NetRepository {
         this.transitionRepository.create(x, y);
     }
 
+    createNewArc(ID: string): void {
+        this.arcRepository.createNew(ID);
+    }
+
     createArc(): void {
         this.arcRepository.create();
     }

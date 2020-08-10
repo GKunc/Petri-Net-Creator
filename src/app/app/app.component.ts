@@ -1,3 +1,4 @@
+import { ArcHelper } from './../api/helpers/ArcHelper';
 import { TransitionHelper } from '../api/helpers/TransitionHelper';
 import { NetRepository } from '../api/repositories/NetRepository';
 import { BoardHelper } from '../api/helpers/BoardHelper';
@@ -82,9 +83,62 @@ export class AppComponent {
     });
   }
 
+  addNewArc(): void {
+    this.setDefaultCursor();
+    this.arcCursor = true;
+
+    $('.net-element').off('click');
+    Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
+      $(element).on('click', () => {
+        $('.net-element').off('click');
+        this.cursorImageMove();
+        this.netRepository.createNewArc(element.getAttribute('id'));
+        if (element.classList.contains('place')) {
+          PlaceHelper.setDisabledCursor();
+        }
+        else if (element.classList.contains('transition')) {
+          TransitionHelper.setDisabledCursor();
+        }
+
+        $(BoardHelper.getBoard()).on('mousemove', (event) => {
+          ArcHelper.moveArrowWithCursor(
+            element.getAttribute('id'),
+            event.pageX - 205,
+            event.pageY - 35
+            );
+        });
+
+        Array.from(document.getElementsByClassName('net-element')).forEach((endElement) => {
+          $(endElement).on('click', () => {
+            $(endElement).off('click');
+            $(element).off('mousemove');
+            const arrow = document.getElementById(element.getAttribute('id') + ':');
+            this.attachArcToEndElement(endElement, arrow);
+            this.resetArcCreation();
+          });
+        });
+      });
+    });
+  }
+
+  attachArcToEndElement(endElement: Element, arrow: Element): void {
+    let xPosition;
+    let yPosition;
+    if (endElement.classList.contains('place')) {
+        xPosition = endElement.getAttribute('cx');
+        yPosition = Number(endElement.getAttribute('cy'));
+    }
+    else if (endElement.classList.contains('transition')) {
+        xPosition = endElement.getAttribute('x');
+        yPosition = endElement.getAttribute('y');
+    }
+
+    arrow.setAttribute('x2', xPosition);
+    arrow.setAttribute('y2', yPosition);
+  }
+
   addArc(): void {
     // when label clicked select element
-    // align items
     this.setDefaultCursor();
     this.arcCursor = true;
 
@@ -172,7 +226,8 @@ export class AppComponent {
     TransitionHelper.setPointerCursor();
     BoardHelper.removeSelection();
     BoardHelper.selectedElementEvent();
-    this.addArc();
+    $('.net-element').off();
+    this.addNewArc();
   }
 
   keyPressEventsHandler(): void {
@@ -197,7 +252,7 @@ export class AppComponent {
 
     $(document).on('keypress', (event) => {
       if (event.key === 'a' || event.key === 'A') { // a/A
-        this.addArc();
+        this.addNewArc();
       }
       else if (event.key === 'p' || event.key === 'P') { // p/P
         this.addPlace();

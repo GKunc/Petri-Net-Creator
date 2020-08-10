@@ -11,14 +11,14 @@ export class ArcRepository {
 
     constructor(private snackBar: MatSnackBar) {}
 
+    createNew(ID: string): void {
+        const arc = new Arc(); // id of start and end element
+        arc.createNew(ID);
+    }
+
     create(): void {
-        // let selectedElements: Element[] = BoardHelper.getSelectedElementsWithoutLabels();
-        // let isValid = this.validateConnection(selectedElements);
-        // if(isValid) {
-            const arc = new Arc(); // id of start and end element
-            arc.create();
-            // BoardHelper.removeSelection();
-        // }
+        const arc = new Arc(); // id of start and end element
+        arc.create();
     }
 
     validateConnection(selectedElements: Element[]): boolean {
