@@ -67,7 +67,7 @@ export class AppComponent {
     this.setDefaultCursor();
     this.placeCursor = true;
 
-    $('.net-element').off('dblclick');
+    $('.net-element').off('click');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createPlace(event.pageX, event.pageY);
     });
@@ -77,28 +77,24 @@ export class AppComponent {
     this.setDefaultCursor();
     this.transitionCursor = true;
 
-    $('.net-element').off('dblclick');
+    $('.net-element').off('click');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createTransition(event.pageX, event.pageY);
     });
   }
 
-  addNewArc(): void {
+  addArc(): void {
     this.setDefaultCursor();
     this.arcCursor = true;
 
     $('.net-element').off('click');
     Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
       $(element).on('click', () => {
-        $('.net-element').off('click');
+        $('.net-element').off();
+        $(BoardHelper.getBoard()).off();
+
         this.cursorImageMove();
-        this.netRepository.createNewArc(element.getAttribute('id'));
-        if (element.classList.contains('place')) {
-          PlaceHelper.setDisabledCursor();
-        }
-        else if (element.classList.contains('transition')) {
-          TransitionHelper.setDisabledCursor();
-        }
+        this.netRepository.createArc(element.getAttribute('id'));
 
         $(BoardHelper.getBoard()).on('mousemove', (event) => {
           ArcHelper.moveArrowWithCursor(
@@ -108,12 +104,22 @@ export class AppComponent {
             );
         });
 
-        Array.from(document.getElementsByClassName('net-element')).forEach((endElement) => {
+        let endElementClass: string;
+        if (element.classList.contains('place')) {
+          PlaceHelper.setDisabledCursor();
+          endElementClass = 'transition';
+        }
+        else if (element.classList.contains('transition')) {
+          TransitionHelper.setDisabledCursor();
+          endElementClass = 'place';
+        }
+
+        Array.from(document.getElementsByClassName(endElementClass)).forEach((endElement) => {
           $(endElement).on('click', () => {
             $(endElement).off('click');
             $(element).off('mousemove');
             const arrow = document.getElementById(element.getAttribute('id') + ':');
-            this.attachArcToEndElement(endElement, arrow);
+            this.attachArcToEndElement(element, endElement, arrow);
             this.resetArcCreation();
           });
         });
@@ -121,55 +127,17 @@ export class AppComponent {
     });
   }
 
-  attachArcToEndElement(endElement: Element, arrow: Element): void {
-    let xPosition;
-    let yPosition;
-    if (endElement.classList.contains('place')) {
-        xPosition = endElement.getAttribute('cx');
-        yPosition = Number(endElement.getAttribute('cy'));
-    }
-    else if (endElement.classList.contains('transition')) {
-        xPosition = endElement.getAttribute('x');
-        yPosition = endElement.getAttribute('y');
-    }
+  attachArcToEndElement(startElement: Element, endElement: Element, arrow: Element): void {
+    let [x1, y1] = ArcHelper.getCoorinatesOfElement(startElement.getAttribute('id'));
+    let [x2, y2] = ArcHelper.getCoorinatesOfElement(endElement.getAttribute('id'));
+    [x1, y1, x2, y2] = ArcHelper.connectToNearestEnd(
+      startElement.getAttribute('id'),
+      x1, y1, x2, y2);
 
-    arrow.setAttribute('x2', xPosition);
-    arrow.setAttribute('y2', yPosition);
-  }
-
-  addArc(): void {
-    // when label clicked select element
-    this.setDefaultCursor();
-    this.arcCursor = true;
-
-    $('.net-element').off('click');
-    Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
-      $(element).on('dblclick', () => {
-        $(element).off('dblclick');
-        this.cursorImageMove();
-
-        if (element.classList.contains('place')) {
-          PlaceHelper.setDisabledCursor();
-          Array.from(TransitionHelper.getAll()).forEach((transition) => {
-            $(transition).on('dblclick', () => {
-              $(transition).off('dblclick');
-              this.netRepository.createArc();
-              this.resetArcCreation();
-            });
-          });
-        }
-        else if (element.classList.contains('transition')) {
-          TransitionHelper.setDisabledCursor();
-          Array.from(PlaceHelper.getAll()).forEach((place) => {
-            $(place).on('dblclick', () => {
-              $(place).off('dblclick');
-              this.netRepository.createArc();
-              this.resetArcCreation();
-            });
-          });
-        }
-      });
-    });
+    arrow.setAttribute('id', arrow.getAttribute('id') + endElement.getAttribute('id'));
+    console.log(x1, y1, x2, y2);
+    arrow.setAttribute('x2', x2.toString());
+    arrow.setAttribute('y2', y2.toString());
   }
 
   addToken(): void {
@@ -212,6 +180,13 @@ export class AppComponent {
         this.netRepository.transitionRepository.deleteElementByID(Number(ID));
       }
       this.cursorImageMove();
+      this.deleteElement();
+    });
+  }
+
+  defaultCursor(): void {
+    this.snackBar.open('Default cursor!', 'close', {
+      duration: 2000,
     });
   }
 
@@ -224,10 +199,8 @@ export class AppComponent {
   private resetArcCreation(): void {
     PlaceHelper.setPointerCursor();
     TransitionHelper.setPointerCursor();
-    BoardHelper.removeSelection();
-    BoardHelper.selectedElementEvent();
     $('.net-element').off();
-    this.addNewArc();
+    this.addArc();
   }
 
   keyPressEventsHandler(): void {
@@ -236,7 +209,7 @@ export class AppComponent {
        if (event.key === 'd') {
         this.setDefaultCursor();
         Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
-          $(element).off('dblclick');
+          $(element).off('click');
         });
 
         $(BoardHelper.getBoard()).off('mousemove');
@@ -246,13 +219,12 @@ export class AppComponent {
         BoardHelper.removeSelection();
 
         BoardHelper.moveElementEvent();
-        BoardHelper.selectedElementEvent();
       }
     });
 
     $(document).on('keypress', (event) => {
       if (event.key === 'a' || event.key === 'A') { // a/A
-        this.addNewArc();
+        this.addArc();
       }
       else if (event.key === 'p' || event.key === 'P') { // p/P
         this.addPlace();

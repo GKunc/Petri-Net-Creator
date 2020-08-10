@@ -2,7 +2,7 @@
     <div class="card-container">
       <div class="card card-small" tabindex="0">
         <span class="material-icons">library_books</span>
-        <span class="button-text">Saved Nets</span>
+        <span class="button-text">Example Nets</span>
       </div>
     </div>
 
@@ -32,19 +32,22 @@
         <span class="net-elements-icons transition-icon">
         </span>
       </a>
-    </div>
 
-    <div class="card-container">
       <a class="square-link" matTooltip="Create Arc" matTooltipPosition="above" (click)="addArcEvent()">
         <span class="material-icons net-elements-icons" >north_east</span>
       </a>
+    </div>
 
+    <div class="card-container">
       <a class="square-link" matTooltip="Add Token" matTooltipPosition="above" (click)="addTokenEvent()">
         <span class="material-icons net-elements-icons token-icon">brightness_1</span>
       </a>
 
       <a class="square-link" matTooltip="Delete Element" matTooltipPosition="above" (click)="deleteElementEvent()">
         <span class="material-icons net-elements-icons">delete</span>
+      </a>
+      <a class="square-link" matTooltip="Default Cursor" matTooltipPosition="above" (click)="defaultCursorEvent()">
+        <span id='default-cursor-icon'></span>  
       </a>
     </div>  
 

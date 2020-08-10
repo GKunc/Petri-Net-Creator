@@ -56,7 +56,8 @@ export class ArcHelper {
     }
 
     static  connectToNearestEnd(
-        startID: string, startX: number, startY: number,
+        startID: string,
+        startX: number, startY: number,
         endX: number, endY: number
     ): [number, number, number, number] {
 

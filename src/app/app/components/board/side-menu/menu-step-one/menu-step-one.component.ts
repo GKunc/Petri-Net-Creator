@@ -12,6 +12,7 @@ export class MenuStepOneComponent implements OnInit {
   @Output() addToken: EventEmitter<any> = new EventEmitter();
   @Output() deleteElement: EventEmitter<any> = new EventEmitter();
   @Output() justifyElements: EventEmitter<any> = new EventEmitter();
+  @Output() defaultCursor: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -35,6 +36,10 @@ export class MenuStepOneComponent implements OnInit {
 
   deleteElementEvent(): void {
     this.deleteElement.emit();
+  }
+
+  defaultCursorEvent(): void {
+    this.defaultCursor.emit();
   }
 
   justifyElementsEvent(): void {

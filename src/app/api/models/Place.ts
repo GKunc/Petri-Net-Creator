@@ -24,7 +24,6 @@ export class Place implements INetElement {
     }
 
     private attachListeners(): void {
-        BoardHelper.selectedElementEvent();
         BoardHelper.moveElementEvent();
     }
 

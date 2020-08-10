@@ -9,13 +9,14 @@ export class TransitionHelper {
 
     static setPointerCursor(): void {
         Array.from(this.getAll()).forEach((transition) => {
+            $(transition).off('click');
             transition.setAttribute('style', 'cursor: pointer');
         });
     }
 
     static setDisabledCursor(): void {
         Array.from(this.getAll()).forEach((transition) => {
-            $(transition).off('dblclick');
+            $(transition).off('click');
             transition.setAttribute('style', 'cursor: not-allowed');
         });
     }

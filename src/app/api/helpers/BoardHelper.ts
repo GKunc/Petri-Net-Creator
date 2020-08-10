@@ -94,20 +94,6 @@ export class BoardHelper {
 
     }
 
-    static selectedElementEvent(): void {
-        Array.from(this.getAll()).forEach((element) => {
-            $(element).off('dblclick');
-            $(element).on('dblclick', () => {
-                const label = document.getElementById('label-' + element.getAttribute('id'));
-                if (element.classList.contains('selected')) {
-                    this.unselect(element, label);
-                } else {
-                    this.select(element, label);
-                }
-            });
-        });
-    }
-
     static select(element: Element, label: HTMLElement): void {
         element.classList.add('selected');
         label.classList.add('selected');

@@ -9,13 +9,14 @@ export class PlaceHelper {
 
     static setDisabledCursor(): void {
         Array.from(this.getAll()).forEach((place) => {
-            $(place).off('dblclick');
+            $(place).off('click');
             place.setAttribute('style', 'cursor: not-allowed');
         });
     }
 
     static setPointerCursor(): void {
         Array.from(this.getAll()).forEach((place) => {
+            $(place).off('click');
             place.setAttribute('style', 'cursor: pointer');
           });
     }

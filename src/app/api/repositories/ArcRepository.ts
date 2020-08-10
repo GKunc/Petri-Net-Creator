@@ -1,7 +1,5 @@
-import { ArcHelper } from './../helpers/ArcHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BoardHelper } from './../helpers/BoardHelper';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Arc } from './../models/Arc';
 
 @Injectable({
@@ -11,58 +9,8 @@ export class ArcRepository {
 
     constructor(private snackBar: MatSnackBar) {}
 
-    createNew(ID: string): void {
+    create(ID: string): void {
         const arc = new Arc(); // id of start and end element
-        arc.createNew(ID);
-    }
-
-    create(): void {
-        const arc = new Arc(); // id of start and end element
-        arc.create();
-    }
-
-    validateConnection(selectedElements: Element[]): boolean {
-        if (!this.validateNumberOfElements(selectedElements) ||
-            !this.validateObjectsType(selectedElements) ||
-            !this.validateIfElementIsArc(selectedElements)) {
-            return false;
-        }
-        return true;
-    }
-
-    private validateNumberOfElements(selectedElements: Element[]): boolean {
-        if (selectedElements.length !== 2) {
-            this.snackBar.open(
-                'Bad number of elements selected. Please select exactly 2 elements!',
-                'Got it!',
-                { panelClass: ['error'] }
-            );
-            return false;
-        }
-        return true;
-    }
-
-    private validateObjectsType(selectedElements: Element[]): boolean {
-        if (selectedElements[0].getAttribute('class') === selectedElements[1].getAttribute('class')) {
-            this.snackBar.open(
-                'Cannot connect two elements of same type!',
-                'Got it!',
-                { panelClass: ['error'] }
-            );
-            return false;
-        }
-        return true;
-    }
-
-    private validateIfElementIsArc(selectedElements: Element[]): boolean {
-        if (selectedElements[0].getAttribute('class').includes('arc') || selectedElements[1].getAttribute('class').includes('arc')) {
-            this.snackBar.open(
-                'Cannot connect two elements of same type!',
-                'Got it!',
-                { panelClass: ['error'] }
-            );
-            return false;
-        }
-        return true;
+        arc.create(ID);
     }
 }
