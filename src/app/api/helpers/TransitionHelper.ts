@@ -43,14 +43,14 @@ export class TransitionHelper {
         text.setAttribute('fill', 'black');
         text.setAttribute('dy', '.3em');
         text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('font-size', '20px');
+        text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer');
         text.innerHTML = 't' + id;
 
         const board = document.getElementById('svg-board');
         board.insertBefore(transition, cursors);
         board.insertBefore(text, cursors);
-        transition.addEventListener('mousedown', (e) => {
+        $(transition).on('mousedown', (e) => {
             if (e.detail > 1){
                 e.preventDefault();
             }

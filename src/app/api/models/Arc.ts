@@ -22,7 +22,6 @@ export class Arc implements INetElement {
         const startElement = document.getElementById(ID);
         let xPosition;
         let yPosition;
-        console.log(ID);
         if (ID.includes('place')) {
             xPosition = startElement.getAttribute('cx');
             yPosition = startElement.getAttribute('cy');

@@ -38,11 +38,11 @@ export class PlaceHelper {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('id', 'label-place-' + id);
         text.setAttribute('x', xPosition.toString());
-        text.setAttribute('y', yPosition.toString());
+        text.setAttribute('y', (yPosition - 17).toString());
         text.setAttribute('fill', 'black');
         text.setAttribute('dy', '.3em');
         text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('font-size', '20px');
+        text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer');
 
         text.innerHTML = 'p' + id;
@@ -50,7 +50,7 @@ export class PlaceHelper {
         const board = document.getElementById('svg-board');
         board.insertBefore(place, cursors);
         board.insertBefore(text, cursors);
-        place.addEventListener('mousedown', (e) => {
+        $(place).on('mousedown', (e) => {
             if (e.detail > 1){
                 e.preventDefault();
             }

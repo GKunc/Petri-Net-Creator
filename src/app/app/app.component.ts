@@ -35,8 +35,6 @@ export class AppComponent {
   }
 
   private setDefaultCursor(): void {
-    $(BoardHelper.getBoard()).off('click');
-
     this.placeCursor = false;
     this.transitionCursor = false;
     this.arcCursor = false;
@@ -45,9 +43,18 @@ export class AppComponent {
     this.cursorImageMove();
   }
 
+  private resetEventHandlers(): void {
+    $(BoardHelper.getBoard()).off();
+    $('.net-element').off();
+    this.cursorImageMove();
+  }
+
   private cursorImageMove(): void {
     $(BoardHelper.getBoard()).on('mousemove', (event) => {
       const element = document.getElementById('cursor-image');
+      if (element === null) {
+        return;
+      }
       if (element.classList.contains('cursor-place')) {
         $(element).attr('cx', event.pageX - 200);
         $(element).attr('cy', event.pageY - 20);
@@ -64,30 +71,30 @@ export class AppComponent {
   }
 
   addPlace(): void {
+    this.resetEventHandlers();
     this.setDefaultCursor();
     this.placeCursor = true;
 
-    $('.net-element').off('click');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createPlace(event.pageX, event.pageY);
     });
   }
 
   addTransition(): void {
+    this.resetEventHandlers();
     this.setDefaultCursor();
     this.transitionCursor = true;
 
-    $('.net-element').off('click');
     $(BoardHelper.getBoard()).on('click', (event) => {
       this.netRepository.createTransition(event.pageX, event.pageY);
     });
   }
 
   addArc(): void {
+    this.resetEventHandlers();
     this.setDefaultCursor();
     this.arcCursor = true;
 
-    $('.net-element').off('click');
     Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
       $(element).on('click', () => {
         $('.net-element').off();
@@ -135,16 +142,15 @@ export class AppComponent {
       x1, y1, x2, y2);
 
     arrow.setAttribute('id', arrow.getAttribute('id') + endElement.getAttribute('id'));
-    console.log(x1, y1, x2, y2);
     arrow.setAttribute('x2', x2.toString());
     arrow.setAttribute('y2', y2.toString());
   }
 
   addToken(): void {
+    this.resetEventHandlers();
     this.setDefaultCursor();
     this.tokenCursor = true;
 
-    $('.net-element').off('click');
     $('.place').on('click', (event) => {
       const id = Number(event.target.getAttribute('id').split('-')[1]);
       const x = Number(event.target.getAttribute('cx'));
@@ -163,6 +169,7 @@ export class AppComponent {
   }
 
   deleteElement(): void {
+    this.resetEventHandlers();
     this.setDefaultCursor();
     this.deleteCursor = true;
 
@@ -185,9 +192,12 @@ export class AppComponent {
   }
 
   defaultCursor(): void {
-    this.snackBar.open('Default cursor!', 'close', {
-      duration: 2000,
-    });
+    // remove unattached arrow
+    this.setDefaultCursor();
+    this.resetEventHandlers();
+    PlaceHelper.setPointerCursor();
+    TransitionHelper.setPointerCursor();
+    BoardHelper.moveElementEvent();
   }
 
   justifyElements(): void {
@@ -199,26 +209,14 @@ export class AppComponent {
   private resetArcCreation(): void {
     PlaceHelper.setPointerCursor();
     TransitionHelper.setPointerCursor();
-    $('.net-element').off();
     this.addArc();
   }
 
   keyPressEventsHandler(): void {
-    $(document).off('keypress');
+    this.resetEventHandlers();
     $(document).on('keydown', (event) => {
-       if (event.key === 'd') {
-        this.setDefaultCursor();
-        Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
-          $(element).off('click');
-        });
-
-        $(BoardHelper.getBoard()).off('mousemove');
-
-        PlaceHelper.setPointerCursor();
-        TransitionHelper.setPointerCursor();
-        BoardHelper.removeSelection();
-
-        BoardHelper.moveElementEvent();
+       if (event.key === 'Escape') {
+        this.defaultCursor();
       }
     });
 
