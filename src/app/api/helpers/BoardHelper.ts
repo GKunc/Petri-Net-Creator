@@ -1,3 +1,4 @@
+import { TokenHelper } from './TokenHelper';
 import { TransitionHelper } from './TransitionHelper';
 import { ArcHelper } from './ArcHelper';
 import { PlaceHelper } from './PlaceHelper';
@@ -77,6 +78,10 @@ export class BoardHelper {
                 $(this.getBoard()).on('mousemove', (event) => {
                     if (element.classList.contains('place')) {
                         PlaceHelper.movePlaceWithLabel(element, label, event.pageX, event.pageY);
+                        const token = document.getElementById('token-' + elementID);
+                        if (token !== null && token !== undefined) {
+                            TokenHelper.moveToken(token, event.pageX, event.pageY);
+                        }
                     }
                     else if (element.classList.contains('transition')) {
                         TransitionHelper.moveTransitionWithLabel(element, label, event.pageX, event.pageY);

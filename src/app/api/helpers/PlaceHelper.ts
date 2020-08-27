@@ -64,7 +64,9 @@ export class PlaceHelper {
         place.setAttribute('cy', y.toString());
 
         label.setAttribute('x', x.toString());
-        label.setAttribute('y', y.toString());
+        label.setAttribute('y', (y - 17).toString());
+
+
     }
 
     static getPlacePositionByID(id: number): [number, number] {

@@ -10,7 +10,7 @@ export class TokenHelper {
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
 
-        token.setAttribute('id', 'token-' + id);
+        token.setAttribute('id', 'token-place-' + id);
         token.setAttribute('class', 'net-element token');
         token.setAttribute('cx', xPosition.toString());
         token.setAttribute('cy', yPosition.toString());
@@ -23,4 +23,11 @@ export class TokenHelper {
         const board = document.getElementById('svg-board');
         board.insertBefore(token, cursors);
    }
+
+    static moveToken(token: HTMLElement, xPosition: number, yPosition: number): void {
+        const x = (xPosition - 200);
+        const y = (yPosition - 15);
+        token.setAttribute('cx', x.toString());
+        token.setAttribute('cy', y.toString());
+    }
 }

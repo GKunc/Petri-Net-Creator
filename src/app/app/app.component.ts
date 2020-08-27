@@ -270,10 +270,14 @@ export class AppComponent {
 
   clear(): void {
     const board = BoardHelper.getBoard();
+    let cloneCursors: Node;
     while (board.firstChild) {
-        board.removeChild(board.firstChild);
+      if (board.firstElementChild.getAttribute('id') === 'cursors') {
+        cloneCursors = board.firstChild;
+      }
+      board.removeChild(board.firstChild);
     }
-
+    board.appendChild(cloneCursors);
     BoardHelper.selectedElements = [];
     this.snackBar.open('Board has been cleared!', 'close', {
       duration: 2000,
