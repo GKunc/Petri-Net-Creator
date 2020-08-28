@@ -178,14 +178,26 @@ export class AppComponent {
       const [elementType, ID] = elementID.split('-');
       const labelID = 'label-' + elementID;
       const board = BoardHelper.getBoard();
-      board.removeChild(event.target);
+      board.removeChild(document.getElementById(elementID));
       board.removeChild(document.getElementById(labelID));
+      const token = document.getElementById('token-' + elementID);
 
       if (elementType === 'place') {
+        if (token !== null && token !== undefined) {
+          board.removeChild(token);
+        }
         this.netRepository.placeRepository.deleteElementByID(Number(ID));
-      } else if (elementType === 'transition')  {
+
+      } else if (elementType === 'transition') {
         this.netRepository.transitionRepository.deleteElementByID(Number(ID));
       }
+
+      const arcs = document.getElementsByClassName('arc');
+      Array.from(arcs).forEach(arc => {
+        if (arc.getAttribute('id').includes(elementID)) {
+          board.removeChild(arc);
+        }
+      });
       this.cursorImageMove();
       this.deleteElement();
     });
