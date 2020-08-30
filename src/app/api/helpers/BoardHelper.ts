@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { TokenHelper } from './TokenHelper';
 import { TransitionHelper } from './TransitionHelper';
 import { ArcHelper } from './ArcHelper';
@@ -9,6 +10,19 @@ export class BoardHelper {
 
     static getAll(): HTMLCollection {
         return document.getElementsByClassName('net-element');
+    }
+
+    static getPositionOfElement(netElement: Element): [number, number] {
+        let x; let y;
+        if (netElement.classList.contains('place') || netElement.classList.contains('token')) {
+            x = netElement.getAttribute('cx');
+            y = netElement.getAttribute('cy');
+        }
+        else if (netElement.classList.contains('transition') || netElement.classList.contains('label')) {
+            x = netElement.getAttribute('x');
+            y = netElement.getAttribute('y');
+        }
+        return [Number(x), Number(y)];
     }
 
     static getSelectedElements(): HTMLCollection {

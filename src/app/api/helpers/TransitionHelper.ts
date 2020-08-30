@@ -37,6 +37,7 @@ export class TransitionHelper {
         transition.setAttribute('style', 'cursor: pointer');
 
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'label');
         text.setAttribute('id', 'label-transition-' + id);
         text.setAttribute('x', (xPosition + 35).toString());
         text.setAttribute('y', (yPosition + 10).toString());

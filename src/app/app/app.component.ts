@@ -26,9 +26,11 @@ export class AppComponent {
   arcCursor: boolean;
   tokenCursor: boolean;
   deleteCursor: boolean;
+  justified: boolean;
 
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar, @Inject(NetRepository) netRepository: NetRepository) {
     this.netRepository = netRepository;
+    this.justified = false;
     this.setDefaultCursor();
     this.keyPressEventsHandler();
     this.cursorImageMove();
@@ -213,9 +215,77 @@ export class AppComponent {
   }
 
   justifyElements(): void {
-    this.snackBar.open('Justify Elements!', 'close', {
-      duration: 2000,
-    });
+    if (!this.justified) {
+      this.justified = true;
+      const POSITION_MARGIN = 50;
+      const netElements = BoardHelper.getAll();
+      Array.from(netElements).forEach(currentElement => {
+        const [currentX, currentY] = BoardHelper.getPositionOfElement(currentElement);
+        Array.from(netElements).forEach(netElement => {
+          const [x, y] = BoardHelper.getPositionOfElement(netElement);
+          // move token / place / arc / transition / label
+          if (netElement.classList.contains('place') || netElement.classList.contains('token') ) {
+            if (currentX - x < POSITION_MARGIN && currentX - x > -POSITION_MARGIN) {
+              if (currentElement.getAttribute('id').includes('transition')) {
+                netElement.setAttribute('cx', (currentX + 35).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
+                }
+              } else {
+                netElement.setAttribute('cx', (currentX).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
+                }
+              }
+            }
+
+            if (currentY - y < POSITION_MARGIN && currentY - y > -POSITION_MARGIN) {
+              if (currentElement.getAttribute('id').includes('transition')) {
+                netElement.setAttribute('cy', (currentY + 10).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 7).toString());
+                }
+              } else {
+                netElement.setAttribute('cy', currentY.toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 17).toString());
+                }
+              }
+            }
+          }
+
+          if (netElement.classList.contains('transition')) {
+            if (currentX - x < POSITION_MARGIN && currentX - x > -POSITION_MARGIN) {
+              if (currentElement.getAttribute('id').includes('place')) {
+                netElement.setAttribute('x', (currentX - 35).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
+                }
+              } else {
+                netElement.setAttribute('x', (currentX).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
+                }
+              }
+            }
+
+            if (currentY - y < POSITION_MARGIN && currentY - y > -POSITION_MARGIN) {
+              if (currentElement.getAttribute('id').includes('place')) {
+                netElement.setAttribute('y', (currentY - 10).toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY).toString());
+                }
+              } else {
+                netElement.setAttribute('y', currentY.toString());
+                if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                  document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY + 10).toString());
+                }
+              }
+            }
+          }
+        });
+      });
+    }
   }
 
   private resetArcCreation(): void {
@@ -283,7 +353,7 @@ export class AppComponent {
   clear(): void {
     const board = BoardHelper.getBoard();
     let cloneCursors: Node;
-    while (board.firstChild) {
+    while (board.firstChild) { } {
       if (board.firstElementChild.getAttribute('id') === 'cursors') {
         cloneCursors = board.firstChild;
       }

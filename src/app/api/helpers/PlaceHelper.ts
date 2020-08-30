@@ -36,6 +36,7 @@ export class PlaceHelper {
         place.setAttribute('style', 'cursor: pointer');
 
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'label');
         text.setAttribute('id', 'label-place-' + id);
         text.setAttribute('x', xPosition.toString());
         text.setAttribute('y', (yPosition - 17).toString());
