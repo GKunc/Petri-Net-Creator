@@ -231,11 +231,13 @@ export class AppComponent {
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               } else {
                 netElement.setAttribute('cx', (currentX).toString());
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               }
             }
 
@@ -245,11 +247,13 @@ export class AppComponent {
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 7).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               } else {
                 netElement.setAttribute('cy', currentY.toString());
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 17).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               }
             }
           }
@@ -261,11 +265,13 @@ export class AppComponent {
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               } else {
                 netElement.setAttribute('x', (currentX).toString());
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               }
             }
 
@@ -275,11 +281,13 @@ export class AppComponent {
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               } else {
                 netElement.setAttribute('y', currentY.toString());
                 if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
                   document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY + 10).toString());
                 }
+                ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
               }
             }
           }

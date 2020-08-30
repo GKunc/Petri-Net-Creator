@@ -15,6 +15,12 @@ export class ArcHelper {
         ArcHelper.getConnectedArrowsIDs(id).forEach(arrowID => {
             const startID = arrowID.split(':')[0];
             const endID = arrowID.split(':')[1];
+            console.log(startID);
+            console.log(endID);
+
+            if (startID === null || endID === null) {
+                return;
+            }
 
             let [x1, y1] = this.getCoorinatesOfElement(startID);
             let [x2, y2] = this.getCoorinatesOfElement(endID);
