@@ -3,43 +3,25 @@
     <mat-horizontal-stepper id="stepper" labelPosition="bottom">
       <mat-step>
         <ng-template matStepLabel>Create</ng-template>
-        <app-menu-step-one 
-          (addPlace)="addPlace()"
-          (addTransition)="addTransition()"
-          (addNewArc)="addArc()"
-          (addToken)="addToken()"
-          (deleteElement)="deleteElement()"
-          (defaultCursor)="defaultCursor()"
-          (justifyElements)="justifyElements()"
-          >
-        </app-menu-step-one>
+        <app-menu-step-one></app-menu-step-one>
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Net</ng-template>
+        <ng-template matStepLabel>Sim</ng-template>
         <app-menu-step-two>
         </app-menu-step-two>
 
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Sim</ng-template>
+        <ng-template matStepLabel>Net</ng-template>
+        <app-menu-step-three>
+        </app-menu-step-three>
       </mat-step>
     </mat-horizontal-stepper>
-
   </div>
 
-  <app-board
-    [placeCursor]="placeCursor"
-    [transitionCursor]="transitionCursor"
-    [arcCursor]="arcCursor"
-    [tokenCursor]="tokenCursor"
-    [deleteCursor]="deleteCursor"
-    (openClearBoardDialog)="openClearBoardDialog()"
-    (saveNet)="saveNet()"
-    (createPdf)="createPdf()"
-    >
-  </app-board>
+  <app-board></app-board>
 </div>
 
 

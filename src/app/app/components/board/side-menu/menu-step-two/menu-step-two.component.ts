@@ -1,4 +1,7 @@
+import { TransitionHelper } from './../../../../../core/helpers/TransitionHelper';
+import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-menu-step-two',
@@ -12,4 +15,9 @@ export class MenuStepTwoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  startSimulation(): void {
+    $(BoardHelper.getBoard()).off();
+    $('.net-element').off();
+    TransitionHelper.runTransition();
+  }
 }

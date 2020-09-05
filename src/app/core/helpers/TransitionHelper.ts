@@ -21,10 +21,8 @@ export class TransitionHelper {
         });
     }
 
-    static createTransitionWithLabel(id: number, xPosition: number, yPosition: number): void {
+    static createTransition(id: number, xPosition: number, yPosition: number): Element {
         const transition = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        const cursors = document.getElementById('cursors');
-
         transition.setAttribute('id', 'transition-' + id);
         transition.setAttribute('class', 'net-element transition');
         transition.setAttribute('x', xPosition.toString());
@@ -35,22 +33,32 @@ export class TransitionHelper {
         transition.setAttribute('stroke-width', '2');
         transition.setAttribute('fill', 'white');
         transition.setAttribute('style', 'cursor: pointer');
+        return transition;
+    }
 
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('class', 'label');
-        text.setAttribute('id', 'label-transition-' + id);
-        text.setAttribute('x', (xPosition + 35).toString());
-        text.setAttribute('y', (yPosition + 10).toString());
-        text.setAttribute('fill', 'black');
-        text.setAttribute('dy', '.3em');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('font-size', '14px');
-        text.setAttribute('style', 'cursor: pointer');
-        text.innerHTML = 't' + id;
+    static createLabel(id: number, xPosition: number, yPosition: number): Element {
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('class', 'label');
+        label.setAttribute('id', 'label-transition-' + id);
+        label.setAttribute('x', (xPosition + 35).toString());
+        label.setAttribute('y', (yPosition + 10).toString());
+        label.setAttribute('fill', 'black');
+        label.setAttribute('dy', '.3em');
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-size', '14px');
+        label.setAttribute('style', 'cursor: pointer');
+        label.innerHTML = 't' + id;
+        return label;
+    }
+
+    static createTransitionWithLabel(id: number, xPosition: number, yPosition: number): void {
+        const cursors = document.getElementById('cursors');
+        const transition = this.createTransition(id, xPosition, yPosition);
+        const label = this.createLabel(id, xPosition, yPosition);
 
         const board = document.getElementById('svg-board');
         board.insertBefore(transition, cursors);
-        board.insertBefore(text, cursors);
+        board.insertBefore(label, cursors);
         $(transition).on('mousedown', (e) => {
             if (e.detail > 1){
                 e.preventDefault();
@@ -66,9 +74,11 @@ export class TransitionHelper {
         label.setAttribute('y', (yPosition - 25).toString());
     }
 
-    static getPlaceTransitionByID(id: number): [number, number] {
-        const domID = 'transition-' + id;
-        const domElement = document.getElementById(domID);
-        return [Number(domElement.getAttribute('x')), Number(domElement.getAttribute('y'))];
+    static runTransition(): void {
+        const transition =  $('.transition');
+        transition.off('dblclick');
+        transition.on('dblclick', () => {
+            alert('run');
+        });
     }
 }

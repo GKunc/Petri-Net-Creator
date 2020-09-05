@@ -21,10 +21,8 @@ export class PlaceHelper {
           });
     }
 
-    static createPlaceWtihLabel(id: number, xPosition: number, yPosition: number): void {
+    static createPlace(id: number, xPosition: number, yPosition: number): Element {
         const place = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        const cursors = document.getElementById('cursors');
-
         place.setAttribute('id', 'place-' + id);
         place.setAttribute('class', 'net-element place');
         place.setAttribute('cx', xPosition.toString());
@@ -34,7 +32,10 @@ export class PlaceHelper {
         place.setAttribute('stroke-width', '2');
         place.setAttribute('fill', PLACE_FILL_COLOR);
         place.setAttribute('style', 'cursor: pointer');
+        return place;
+    }
 
+    static createLabel(id: number, xPosition: number, yPosition: number): Element {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('class', 'label');
         text.setAttribute('id', 'label-place-' + id);
@@ -45,18 +46,24 @@ export class PlaceHelper {
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer');
-
         text.innerHTML = 'p' + id;
+        return text;
+    }
 
+    static createPlaceWtihLabel(id: number, xPosition: number, yPosition: number): void {
+        const cursors = document.getElementById('cursors');
+        const place = this.createPlace(id, xPosition, yPosition);
+        const label = this.createLabel(id, xPosition, yPosition);
         const board = document.getElementById('svg-board');
+
         board.insertBefore(place, cursors);
-        board.insertBefore(text, cursors);
+        board.insertBefore(label, cursors);
         $(place).on('mousedown', (e) => {
             if (e.detail > 1){
                 e.preventDefault();
             }
         });
-   }
+    }
 
     static movePlaceWithLabel(place: Element, label: HTMLElement, xPosition: number, yPosition: number): void {
         const x = (xPosition - 200);
@@ -66,13 +73,5 @@ export class PlaceHelper {
 
         label.setAttribute('x', x.toString());
         label.setAttribute('y', (y - 17).toString());
-
-
-    }
-
-    static getPlacePositionByID(id: number): [number, number] {
-        const domID = 'place-' + id;
-        const domElement = document.getElementById(domID);
-        return [Number(domElement.getAttribute('cx')), Number(domElement.getAttribute('cy'))];
     }
 }

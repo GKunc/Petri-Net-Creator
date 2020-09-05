@@ -1,4 +1,14 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ExampleNetsDialogComponent } from './../../../dialogs/example-nets/example-nets-dialog.component';
+import { MatDialogRef } from '@angular/material/dialog';
+import { TransitionHelper } from './../../../../../core/helpers/TransitionHelper';
+import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
+import { ArcHelper } from './../../../../../core/helpers/ArcHelper';
+import { NetRepository } from './../../../../../core/repositories/NetRepository';
+import { CursorManager } from './../../../../shared/cursorManager';
+import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
+import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-menu-step-one',
@@ -6,43 +16,243 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./menu-step-one.component.css']
 })
 export class MenuStepOneComponent implements OnInit {
-  @Output() addPlace: EventEmitter<any> = new EventEmitter();
-  @Output() addTransition: EventEmitter<any> = new EventEmitter();
-  @Output() addNewArc: EventEmitter<any> = new EventEmitter();
-  @Output() addToken: EventEmitter<any> = new EventEmitter();
-  @Output() deleteElement: EventEmitter<any> = new EventEmitter();
-  @Output() justifyElements: EventEmitter<any> = new EventEmitter();
-  @Output() defaultCursor: EventEmitter<any> = new EventEmitter();
+  netRepository: NetRepository;
+  cursorManager: CursorManager;
+  exampleNetsDialogRef: MatDialogRef<ExampleNetsDialogComponent>;
 
-  constructor() { }
+  constructor(
+    @Inject(NetRepository) netRepository: NetRepository,
+    @Inject(CursorManager) cursorManager: CursorManager,
+    private dialog: MatDialog
+   ) {
+    this.netRepository = netRepository;
+    this.cursorManager = cursorManager;
+  }
 
   ngOnInit(): void {
   }
 
-  addPlaceEvent(): void {
-    this.addPlace.emit();
-  }
-  addTransitionEvent(): void {
-    this.addTransition.emit();
+  addPlace(): void {
+    this.cursorManager.resetEventHandlers();
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.placeCursor = true;
+
+    $(BoardHelper.getBoard()).on('click', (event) => {
+      this.netRepository.createPlace(event.pageX, event.pageY);
+    });
   }
 
-  addArcEvent(): void {
-    this.addNewArc.emit();
+  addTransition(): void {
+    this.cursorManager.resetEventHandlers();
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.transitionCursor = true;
+
+    $(BoardHelper.getBoard()).on('click', (event) => {
+      this.netRepository.createTransition(event.pageX, event.pageY);
+    });
   }
 
-  addTokenEvent(): void {
-    this.addToken.emit();
+  addArc(): void {
+    this.cursorManager.resetEventHandlers();
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.arcCursor = true;
+
+    Array.from(document.getElementsByClassName('net-element')).forEach((element) => {
+      $(element).on('click', () => {
+        $('.net-element').off();
+        $(BoardHelper.getBoard()).off();
+
+        this.cursorManager.cursorImageMove();
+        this.netRepository.createArc(element.getAttribute('id'));
+
+        $(BoardHelper.getBoard()).on('mousemove', (event) => {
+          ArcHelper.moveArrowWithCursor(
+            element.getAttribute('id'),
+            event.pageX - 205,
+            event.pageY - 35
+            );
+        });
+
+        let endElementClass: string;
+        if (element.classList.contains('place')) {
+          PlaceHelper.setDisabledCursor();
+          endElementClass = 'transition';
+        }
+        else if (element.classList.contains('transition')) {
+          TransitionHelper.setDisabledCursor();
+          endElementClass = 'place';
+        }
+
+        Array.from(document.getElementsByClassName(endElementClass)).forEach((endElement) => {
+          $(endElement).on('click', () => {
+            $(endElement).off('click');
+            $(element).off('mousemove');
+            const arrow = document.getElementById(element.getAttribute('id') + ':');
+            ArcHelper.attachArcToEndElement(element, endElement, arrow);
+            this.resetArcCreation();
+          });
+        });
+      });
+    });
   }
 
-  deleteElementEvent(): void {
-    this.deleteElement.emit();
+  resetArcCreation(): void {
+    PlaceHelper.setPointerCursor();
+    TransitionHelper.setPointerCursor();
+    this.addArc();
   }
 
-  defaultCursorEvent(): void {
-    this.defaultCursor.emit();
+  addToken(): void {
+    this.cursorManager.resetEventHandlers();
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.tokenCursor = true;
+
+    $('.place').on('click', (event) => {
+      const id = Number(event.target.getAttribute('id').split('-')[1]);
+      const [x, y] = BoardHelper.getPositionOfElement(event.target);
+      if (document.getElementById('token-place-' + id) === null) {
+        this.netRepository.createToken(id, x + 170, y);
+      } else {
+        this.netRepository.removeToken(id);
+      }
+      this.cursorManager.cursorImageMove();
+    });
   }
 
-  justifyElementsEvent(): void {
-    this.justifyElements.emit();
+  deleteElement(): void {
+    this.cursorManager.resetEventHandlers();
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.deleteCursor = true;
+
+    $('.net-element').on('click', (event) => {
+      const elementID = event.target.getAttribute('id');
+      const [elementType, ID] = elementID.split('-');
+      const label = document.getElementById('label-' + elementID);
+      const board = BoardHelper.getBoard();
+      board.removeChild(document.getElementById(elementID));
+      if (label !== null) {
+        board.removeChild(label);
+      }
+      const token = document.getElementById('token-' + elementID);
+      if (elementType === 'place') {
+        if (token !== null && token !== undefined) {
+          board.removeChild(token);
+        }
+        this.netRepository.placeRepository.deleteElementByID(Number(ID));
+
+      } else if (elementType === 'transition') {
+        this.netRepository.transitionRepository.deleteElementByID(Number(ID));
+      }
+
+      const arcs = document.getElementsByClassName('arc');
+      Array.from(arcs).forEach(arc => {
+        if (arc.getAttribute('id').includes(elementID)) {
+          board.removeChild(arc);
+        }
+      });
+      this.cursorManager.cursorImageMove();
+      this.deleteElement();
+    });
+  }
+
+  defaultCursor(): void {
+    const arcs = ArcHelper.getAll();
+    Array.from(arcs).forEach(arc => {
+      if (arc.getAttribute('id').endsWith(':')) {
+        document.getElementById('svg-board').removeChild(arc);
+      }
+    });
+
+    this.cursorManager.setDefaultCursor();
+    this.cursorManager.resetEventHandlers();
+    PlaceHelper.setPointerCursor();
+    TransitionHelper.setPointerCursor();
+    BoardHelper.moveElementEvent();
+  }
+
+  justifyElements(): void {
+    const POSITION_MARGIN = 50;
+    const netElements = BoardHelper.getAll();
+    Array.from(netElements).forEach(currentElement => {
+      const [currentX, currentY] = BoardHelper.getPositionOfElement(currentElement);
+      if (currentX === -1 && currentY === -1) {
+        return;
+      }
+      Array.from(netElements).forEach(netElement => {
+        const [x, y] = BoardHelper.getPositionOfElement(netElement);
+        if (netElement.classList.contains('place') || netElement.classList.contains('token') ) {
+          if (currentX - x < POSITION_MARGIN && currentX - x > -POSITION_MARGIN) {
+            if (currentElement.getAttribute('id').includes('transition')) {
+              netElement.setAttribute('cx', (currentX + 35).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            } else {
+              netElement.setAttribute('cx', (currentX).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            }
+          }
+
+          if (currentY - y < POSITION_MARGIN && currentY - y > -POSITION_MARGIN) {
+            if (currentElement.getAttribute('id').includes('transition')) {
+              netElement.setAttribute('cy', (currentY + 10).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 7).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            } else {
+              netElement.setAttribute('cy', currentY.toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY - 17).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            }
+          }
+        }
+
+        if (netElement.classList.contains('transition')) {
+          if (currentX - x < POSITION_MARGIN && currentX - x > -POSITION_MARGIN) {
+            if (currentElement.getAttribute('id').includes('place')) {
+              netElement.setAttribute('x', (currentX - 35).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            } else {
+              netElement.setAttribute('x', (currentX).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('x', (currentX + 35).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            }
+          }
+
+          if (currentY - y < POSITION_MARGIN && currentY - y > -POSITION_MARGIN) {
+            if (currentElement.getAttribute('id').includes('place')) {
+              netElement.setAttribute('y', (currentY - 10).toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            } else {
+              netElement.setAttribute('y', currentY.toString());
+              if (document.getElementById('label-' + netElement.getAttribute('id')) !== null) {
+                document.getElementById('label-' + netElement.getAttribute('id')).setAttribute('y', (currentY + 10).toString());
+              }
+              ArcHelper.moveArrowWithElement(netElement.getAttribute('id'));
+            }
+          }
+        }
+      });
+    });
+  }
+
+  openExampleNetsDialog(): void {
+    this.exampleNetsDialogRef = this.dialog.open(ExampleNetsDialogComponent);
   }
 }
+

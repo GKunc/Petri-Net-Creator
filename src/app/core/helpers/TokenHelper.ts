@@ -6,6 +6,11 @@ export class TokenHelper {
         return document.getElementsByClassName('token');
     }
 
+    static remove(id: number): void {
+        const token: Element = document.getElementById('token-place-' + id);
+        document.getElementById('svg-board').removeChild(token);
+    }
+
     static createToken(id: number, xPosition: number, yPosition: number): void {
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');

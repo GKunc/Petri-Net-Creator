@@ -1,8 +1,10 @@
+import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets/example-nets-dialog.component';
+import { CursorManager } from './app/shared/cursorManager';
 import { ClearBoardDialogComponent } from './app/components/dialogs/clear-board-dialog/clear-board-dialog.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,6 +20,7 @@ import { BoardComponent } from './app/components/board/board.component';
   declarations: [
     AppComponent,
     ClearBoardDialogComponent,
+    ExampleNetsDialogComponent,
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
@@ -32,9 +35,12 @@ import { BoardComponent } from './app/components/board/board.component';
     MatSnackBarModule,
     MatTooltipModule
   ],
-  providers: [],
+  providers: [CursorManager],
   bootstrap: [AppComponent],
-  entryComponents: [ClearBoardDialogComponent]
+  entryComponents: [
+    ClearBoardDialogComponent,
+    ExampleNetsDialogComponent
+  ]
 })
 
 export class AppModule { }

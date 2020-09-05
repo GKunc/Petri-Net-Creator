@@ -48,6 +48,10 @@ export class NetRepository {
         this.tokenRepository.create(id, x, y);
     }
 
+    removeToken(id: number): void {
+        this.tokenRepository.remove(id);
+    }
+
     removeAllElements(): void {
         this.placeRepository.removeAll();
         this.transitionRepository.removeAll();

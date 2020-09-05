@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { TokenHelper } from './TokenHelper';
 import { TransitionHelper } from './TransitionHelper';
 import { ArcHelper } from './ArcHelper';
@@ -13,36 +12,14 @@ export class BoardHelper {
     }
 
     static getPositionOfElement(netElement: Element): [number, number] {
-        let x; let y;
         if (netElement.classList.contains('place') || netElement.classList.contains('token')) {
-            x = netElement.getAttribute('cx');
-            y = netElement.getAttribute('cy');
+            return [Number(netElement.getAttribute('cx')), Number(netElement.getAttribute('cy'))];
         }
         else if (netElement.classList.contains('transition') || netElement.classList.contains('label')) {
-            x = netElement.getAttribute('x');
-            y = netElement.getAttribute('y');
+            return [Number(netElement.getAttribute('x')), Number(netElement.getAttribute('y'))];
+        } else if (netElement.classList.contains('arc')) {
+            return [-1, -1];
         }
-        return [Number(x), Number(y)];
-    }
-
-    static getSelectedElements(): HTMLCollection {
-        return document.getElementsByClassName('selected');
-    }
-
-    static getSelectedElementsWithoutLabels(): Element[] {
-        return Array.from(this.getSelectedElements()).filter(selectedEelemnt => {
-            return !selectedEelemnt.getAttribute('id').startsWith('label');
-        });
-    }
-
-    static removeSelection(): void {
-        Array.from(this.getSelectedElements()).forEach(element => {
-            element.classList.remove('selected');
-            if (!element.getAttribute('id').includes('label')) {
-                element.setAttribute('stroke', 'black');
-            }
-        });
-        this.selectedElements = [];
     }
 
     static getBoard(): HTMLElement {
@@ -74,31 +51,24 @@ export class BoardHelper {
         this.getBoard().insertBefore(defs, this.getCursorSvgElement());
     }
 
-    static removeSelectedElementFromListByID(id: string): void {
-        const index = this.selectedElements.indexOf(id);
-        if (index !== -1) {
-            this.selectedElements.splice(index, 1);
-        }
-    }
-
     static moveElementEvent(): void {
-        Array.from(this.getAll()).forEach((element) => {
-            $(element).off('mousedown');
-            $(element).on('mousedown', () => {
-                const elementID = element.getAttribute('id');
+        Array.from(this.getAll()).forEach((netElement) => {
+            $(netElement).off('mousedown');
+            $(netElement).on('mousedown', () => {
+                const elementID = netElement.getAttribute('id');
                 const label = document.getElementById('label-' + elementID);
-                element.classList.add('active');
+                netElement.classList.add('active');
                 $(this.getBoard()).off('mousemove');
                 $(this.getBoard()).on('mousemove', (event) => {
-                    if (element.classList.contains('place')) {
-                        PlaceHelper.movePlaceWithLabel(element, label, event.pageX, event.pageY);
+                    if (netElement.classList.contains('place')) {
+                        PlaceHelper.movePlaceWithLabel(netElement, label, event.pageX, event.pageY);
                         const token = document.getElementById('token-' + elementID);
                         if (token !== null && token !== undefined) {
                             TokenHelper.moveToken(token, event.pageX, event.pageY);
                         }
                     }
-                    else if (element.classList.contains('transition')) {
-                        TransitionHelper.moveTransitionWithLabel(element, label, event.pageX, event.pageY);
+                    else if (netElement.classList.contains('transition')) {
+                        TransitionHelper.moveTransitionWithLabel(netElement, label, event.pageX, event.pageY);
                     }
                     ArcHelper.moveArrowWithElement(elementID);
                 });
@@ -106,24 +76,9 @@ export class BoardHelper {
                 $(this.getBoard()).off('mouseup');
                 $(this.getBoard()).on('mouseup', () => {
                     $(this.getBoard()).off('mousemove');
-                    element.classList.remove('active');
+                    netElement.classList.remove('active');
                 });
             });
         });
-
-    }
-
-    static select(element: Element, label: HTMLElement): void {
-        element.classList.add('selected');
-        label.classList.add('selected');
-        element.setAttribute('stroke', 'red');
-        BoardHelper.selectedElements.push(element.getAttribute('id'));
-    }
-
-    static unselect(element: Element, label: HTMLElement): void {
-        element.classList.remove('selected');
-        label.classList.remove('selected');
-        element.setAttribute('stroke', 'black');
-        BoardHelper.removeSelectedElementFromListByID(element.getAttribute('id'));
     }
 }

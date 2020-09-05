@@ -1,6 +1,6 @@
+import { TokenHelper } from './../helpers/TokenHelper';
 import { Token } from './../models/Token';
 import { Injectable } from '@angular/core';
-import { Place } from '../models/Place';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +16,14 @@ export class TokenRepository {
         const token: Token = new Token(id);
         token.create(x, y);
         this.tokens.push(token);
+    }
+
+    remove(id: number): void {
+        TokenHelper.remove(id);
+        const index = this.tokens.indexOf(this.getByID(id));
+        if (index !== -1) {
+            this.tokens.splice(index, 1);
+        }
     }
 
     removeAll(): void {
