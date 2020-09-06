@@ -10,7 +10,7 @@ export class ArcRepository {
     constructor(private snackBar: MatSnackBar) {}
 
     create(ID: string): void {
-        const arc = new Arc(); // id of start and end element
+        const arc = new Arc();
         arc.create(ID);
     }
 }

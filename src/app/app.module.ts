@@ -1,4 +1,5 @@
-import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets/example-nets-dialog.component';
+import { LogicDescriptionDialogComponent } from './app/components/dialogs/logic-description-dialog/logic-description-dialog.component';
+import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets-dialog/example-nets-dialog.component';
 import { CursorManager } from './app/shared/cursorManager';
 import { ClearBoardDialogComponent } from './app/components/dialogs/clear-board-dialog/clear-board-dialog.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,6 +22,7 @@ import { BoardComponent } from './app/components/board/board.component';
     AppComponent,
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
+    LogicDescriptionDialogComponent,
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
@@ -39,7 +41,8 @@ import { BoardComponent } from './app/components/board/board.component';
   bootstrap: [AppComponent],
   entryComponents: [
     ClearBoardDialogComponent,
-    ExampleNetsDialogComponent
+    ExampleNetsDialogComponent,
+    LogicDescriptionDialogComponent
   ]
 })
 

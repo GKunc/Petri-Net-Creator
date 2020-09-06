@@ -1,28 +1,35 @@
 <div>
     <div class="card-container">
+        <div class="card card-small" tabindex="0" (click)="openLogicDescriptionDialog()">
+            <span class="material-icons">description</span>
+            <span class="button-text">Logic Description</span>
+        </div>
+    </div>
+
+    <div class="card-container">
         <div class="card card-small" tabindex="0" (click)="startSimulation()">
-          <span class="material-icons">play_arrow</span>
-          <span class="button-text">Start Simulation</span>
+            <span class="material-icons">play_arrow</span>
+            <span class="button-text">Start Simulation</span>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card card-small" tabindex="0" (click)="autoSimulation()">
+            <span class="material-icons">fast_forward</span>
+            <span class="button-text">Auto Simultaion</span>
         </div>
     </div>
 
     <div class="card-container">
-        <div class="card card-small" tabindex="0">
-          <span class="material-icons">fast_forward</span>
-          <span class="button-text">Auto Simultaion</span>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <a class="square-link" matTooltip="Previous" matTooltipPosition="above">
+        <a class="square-link" matTooltip="Previous" matTooltipPosition="above" (click)="previousStep()">
             <span class="material-icons net-elements-icons" >fast_rewind</span>
         </a>
 
-        <a class="square-link" matTooltip="Run Transition" matTooltipPosition="above">
+        <a class="square-link" matTooltip="Run Transition" matTooltipPosition="above" (click)="runTransition()">
             <span class="material-icons net-elements-icons token-icon">play_arrow</span>
         </a>
 
-        <a class="square-link" matTooltip="Reset Simulation" matTooltipPosition="above">
+        <a class="square-link" matTooltip="Reset Simulation" matTooltipPosition="above" (click)="resetSimulation()">
             <span class="material-icons net-elements-icons token-icon">replay</span>
         </a>
     </div>  

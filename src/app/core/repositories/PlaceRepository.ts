@@ -10,7 +10,7 @@ export class PlaceRepository {
 
     constructor() {
         this.places = [];
-        this.currentID = 1;
+        this.currentID = 0;
     }
 
     create(x: number, y: number): void {
@@ -22,7 +22,7 @@ export class PlaceRepository {
 
     removeAll(): void {
         this.places = [];
-        this.currentID = 1;
+        this.currentID = 0;
     }
 
     getAll(): Place[] {

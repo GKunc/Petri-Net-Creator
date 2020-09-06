@@ -11,7 +11,7 @@ export class TransitionRepository {
 
     constructor() {
         this.transitions = [];
-        this.currentID = 1;
+        this.currentID = 0;
     }
 
     create(x: number, y: number): void {
@@ -23,7 +23,7 @@ export class TransitionRepository {
 
     removeAll(): void {
         this.transitions = [];
-        this.currentID = 1;
+        this.currentID = 0;
     }
 
     getAll(): Transition[] {

@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { ExampleNetsDialogComponent } from './../../../dialogs/example-nets/example-nets-dialog.component';
+import { ExampleNetsDialogComponent } from '../../../dialogs/example-nets-dialog/example-nets-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TransitionHelper } from './../../../../../core/helpers/TransitionHelper';
 import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
@@ -7,7 +7,7 @@ import { ArcHelper } from './../../../../../core/helpers/ArcHelper';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
 import { CursorManager } from './../../../../shared/cursorManager';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
-import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import * as $ from 'jquery';
 
 @Component({
@@ -24,7 +24,7 @@ export class MenuStepOneComponent implements OnInit {
     @Inject(NetRepository) netRepository: NetRepository,
     @Inject(CursorManager) cursorManager: CursorManager,
     private dialog: MatDialog
-   ) {
+  ) {
     this.netRepository = netRepository;
     this.cursorManager = cursorManager;
   }
@@ -252,6 +252,7 @@ export class MenuStepOneComponent implements OnInit {
   }
 
   openExampleNetsDialog(): void {
+    this.defaultCursor();
     this.exampleNetsDialogRef = this.dialog.open(ExampleNetsDialogComponent);
   }
 }

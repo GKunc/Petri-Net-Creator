@@ -1,3 +1,4 @@
+import { ArcHelper } from './../helpers/ArcHelper';
 import { TokenRepository } from './TokenRepository';
 import { Place } from './../models/Place';
 import { INetElement } from './../models/INetElement';
@@ -16,7 +17,7 @@ export class NetRepository {
     arcRepository: ArcRepository;
     tokenRepository: TokenRepository;
 
-    selectedElements: [];
+    netMatrix: number[][];
 
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository,
@@ -28,7 +29,33 @@ export class NetRepository {
             this.arcRepository = arcRepository;
             this.tokenRepository = tokenRepository;
 
-            this.selectedElements = [];
+            this.netMatrix = [];
+    }
+
+    initNet(): void {
+        for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
+            this.netMatrix[i] = [];
+            for (let j = 0; j < this.placeRepository.getAll().length; j++) {
+                this.netMatrix[i][j] = 0;
+            }
+        }
+        console.log('init');
+
+        console.log(this.netMatrix);
+        this.updateNetWithConnections();
+    }
+
+    updateNetWithConnections(): void {
+        Array.from(ArcHelper.getAll()).forEach(arc => {
+            const [startID, endID] = ArcHelper.getArrowStartAndEnd(arc.getAttribute('id'));
+            console.log(startID, endID);
+            if (startID.split('-')[0] === 'transition') {
+                this.netMatrix[Number(startID.split('-')[1])][Number(endID.split('-')[1])] = 1;
+            }
+            else if (endID.split('-')[0] === 'transition') {
+                this.netMatrix[Number(endID.split('-')[1])][Number(startID.split('-')[1])] = -1;
+            }
+        });
     }
 
     createPlace(x: number, y: number): void {

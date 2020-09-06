@@ -19,11 +19,5 @@ export class Token implements INetElement {
 
     create(x: number, y: number): void {
         TokenHelper.createToken(this.id, x - 170, y);
-        // this.attachListeners();
-    }
-
-    private attachListeners(): void {
-        // BoardHelper.selectedElementEvent();
-        // BoardHelper.moveElementEvent();
     }
 }
