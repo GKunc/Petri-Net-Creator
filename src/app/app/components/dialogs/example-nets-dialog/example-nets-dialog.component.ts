@@ -1,8 +1,9 @@
+import { NetRepository } from './../../../../core/repositories/NetRepository';
 import { TokenHelper } from './../../../../core/helpers/TokenHelper';
 import { ArcHelper } from './../../../../core/helpers/ArcHelper';
 import { TransitionHelper } from './../../../../core/helpers/TransitionHelper';
 import { PlaceHelper } from './../../../../core/helpers/PlaceHelper';
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import '@angular/material/prebuilt-themes/indigo-pink.css';
 
@@ -13,20 +14,23 @@ import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 export class ExampleNetsDialogComponent {
 
-  constructor(private dialogRef: MatDialogRef<ExampleNetsDialogComponent>) {}
+  constructor(
+    private dialogRef: MatDialogRef<ExampleNetsDialogComponent>,
+    @Inject(NetRepository) private readonly netRepository: NetRepository
+  ) {}
 
   drawFirstExampleNet(): void {
-    PlaceHelper.createPlaceWtihLabel(0, 400, 30);
-    TransitionHelper.createTransitionWithLabel(0, 365, 115);
-    PlaceHelper.createPlaceWtihLabel(1, 200, 205);
-    PlaceHelper.createPlaceWtihLabel(2, 600, 205);
-    TransitionHelper.createTransitionWithLabel(1, 165, 295);
-    TransitionHelper.createTransitionWithLabel(2, 565, 295);
-    PlaceHelper.createPlaceWtihLabel(3, 200, 385);
-    PlaceHelper.createPlaceWtihLabel(4, 600, 385);
-    TransitionHelper.createTransitionWithLabel(3, 365, 475);
-    PlaceHelper.createPlaceWtihLabel(5, 400, 565);
-    TokenHelper.createToken(0, 400, 30);
+    this.netRepository.createPlace(600, 60);
+    this.netRepository.createTransition(600, 140);
+    this.netRepository.createPlace(400, 220);
+    this.netRepository.createPlace(800, 220);
+    this.netRepository.createTransition(400, 300);
+    this.netRepository.createTransition(800, 300);
+    this.netRepository.createPlace(400, 380);
+    this.netRepository.createPlace(800, 380);
+    this.netRepository.createTransition(600, 460);
+    this.netRepository.createPlace(600, 540);
+    this.netRepository.createToken(0, 565, 35);
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
     ArcHelper.createArc('transition-0', 'place-2');
