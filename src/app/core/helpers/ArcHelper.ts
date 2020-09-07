@@ -1,6 +1,30 @@
 import * as $ from 'jquery';
 
 export class ArcHelper {
+    static createArc(startID: string, endID: string): void {
+        const startElement = document.getElementById(startID);
+        const endElement = document.getElementById(endID);
+        let [x1, y1] = ArcHelper.getCoorinatesOfElement(startID);
+        let [x2, y2] = ArcHelper.getCoorinatesOfElement(endID);
+        [x1, y1, x2, y2] = ArcHelper.connectToNearestEnd(startID, x1, y1, x2, y2);
+
+
+        const arc = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+        arc.setAttribute('id', startID + ':' + endID);
+        arc.setAttribute('class', 'net-element arc');
+        arc.setAttribute('x1', x1.toString());
+        arc.setAttribute('y1', y1.toString());
+        arc.setAttribute('x2', x2.toString());
+        arc.setAttribute('y2', y2.toString());
+        arc.setAttribute('stroke', 'black');
+        arc.setAttribute('stroke-width', '1');
+        arc.setAttribute('marker-end', 'url(#arrow)');
+        document.getElementById('svg-board').insertBefore(arc, startElement);
+
+        this.adjustArrowPosition(startID, x1, y1, x2, y2);
+    }
+
     static getAll(): HTMLCollectionOf<Element> {
         return document.getElementsByClassName('arc');
     }
