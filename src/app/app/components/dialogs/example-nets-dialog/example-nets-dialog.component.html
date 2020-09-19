@@ -1,20 +1,20 @@
 <h2 mat-dialog-title>Example nets</h2>
 <mat-dialog-content>
   <div>
-    <button mat-stroked-button (click)=drawFirstExampleNet()>One</button>
-    <a>First example Net</a>
+    <button mat-stroked-button (click)=drawFirstExampleNet()>Net One</button>
+    <a>Straight net without micronets</a>
   </div>
   <div>
-    <button mat-stroked-button>Not implemented</button>
-    <a>Second example Net</a>
+    <button mat-stroked-button (click)=drawSecondExampleNet()>Net Two</button>
+    <a>Net with a 2 simple micronets</a>
   </div>
   <div>
-    <button mat-stroked-button>Not implemented</button>
-    <a>Third example Net</a>
+    <button mat-stroked-button (click)=drawThirdExampleNet()>Net Three</button>
+    <a>Larger net with micronets and blind routes</a>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <mat-dialog-actions>
-    <button mat-raised-button color="basic" (click)="close()">Close</button>
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
   </mat-dialog-actions>
 </mat-dialog-actions>

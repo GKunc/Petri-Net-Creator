@@ -44,6 +44,7 @@ export class BoardComponent implements OnInit {
       }
       board.removeChild(board.firstChild);
     }
+    this.netRepository.removeAllElements();
     board.appendChild(cloneCursors);
     this.snackBar.open('Board has been cleared!', 'close', {
       duration: 2000,
@@ -57,7 +58,6 @@ export class BoardComponent implements OnInit {
         if (shouldClearBoard) {
           this.clear();
           BoardHelper.addArrowHeadMarker();
-          this.netRepository.removeAllElements();
           this.cursorManager.setDefaultCursor();
         }
       });

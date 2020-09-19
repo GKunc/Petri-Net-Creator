@@ -1,8 +1,22 @@
 <h2 mat-dialog-title>Logic Description</h2>
 <mat-dialog-content>
+  Please check 
   <div>
-    <button mat-stroked-button>Transition 1</button>
-    <a>Place</a>
+    <table>
+      <tr>
+        <th></th>
+        <th *ngFor="let place of places">
+          place {{place.id}}
+        </th>
+      </tr>
+      <tr *ngFor="let transition of transitions">
+        transition {{transition.id}}
+        <td *ngFor="let place of places">
+          <input type="checkbox"/>
+        </td>
+      </tr>
+    </table>
+    
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

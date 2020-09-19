@@ -7,23 +7,19 @@ import { INetElement } from './../models/INetElement';
 })
 export class TransitionRepository {
     transitions: Transition[];
-    currentID: number;
 
     constructor() {
         this.transitions = [];
-        this.currentID = 0;
     }
 
     create(x: number, y: number): void {
-        const transition: Transition = new Transition(this.currentID);
+        const transition: Transition = new Transition(this.getLowestAvailableID());
         transition.create(x, y);
-        this.currentID++;
         this.transitions.push(transition);
     }
 
     removeAll(): void {
         this.transitions = [];
-        this.currentID = 0;
     }
 
     getAll(): Transition[] {
@@ -39,5 +35,18 @@ export class TransitionRepository {
         if (index !== -1) {
             this.transitions.splice(index, 1);
         }
+    }
+
+    getLowestAvailableID(): number {
+        let id = 0;
+        let found = false;
+        while (!found) {
+            if (this.transitions.find(transition => transition.getID() === id)) {
+                id++;
+            } else {
+                found = true;
+            }
+        }
+        return id;
     }
 }

@@ -6,23 +6,19 @@ import { Place } from './../models/Place';
 })
 export class PlaceRepository {
     places: Place[];
-    currentID: number;
 
     constructor() {
         this.places = [];
-        this.currentID = 0;
     }
 
     create(x: number, y: number): void {
-        const place: Place = new Place(this.currentID);
+        const place: Place = new Place(this.getLowestAvailableID());
         place.create(x, y);
-        this.currentID++;
         this.places.push(place);
     }
 
     removeAll(): void {
         this.places = [];
-        this.currentID = 0;
     }
 
     getAll(): Place[] {
@@ -38,5 +34,18 @@ export class PlaceRepository {
         if (index !== -1) {
             this.places.splice(index, 1);
         }
+    }
+
+    getLowestAvailableID(): number {
+        let id = 0;
+        let found = false;
+        while (!found) {
+            if (this.places.find(place => place.getID() === id)) {
+                id++;
+            } else {
+                found = true;
+            }
+        }
+        return id;
     }
 }

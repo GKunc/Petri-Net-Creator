@@ -1,12 +1,9 @@
 import { ArcHelper } from './../helpers/ArcHelper';
 import { TokenRepository } from './TokenRepository';
-import { Place } from './../models/Place';
-import { INetElement } from './../models/INetElement';
 import { ArcRepository } from './ArcRepository';
 import { TransitionRepository } from './TransitionRepository';
 import { PlaceRepository } from './PlaceRepository';
 import { Injectable, Inject } from '@angular/core';
-import { Transition } from '../models/Transition';
 
 @Injectable({
     providedIn: 'root'
@@ -39,16 +36,12 @@ export class NetRepository {
                 this.netMatrix[i][j] = 0;
             }
         }
-        console.log('init');
-
-        console.log(this.netMatrix);
         this.updateNetWithConnections();
     }
 
     updateNetWithConnections(): void {
         Array.from(ArcHelper.getAll()).forEach(arc => {
             const [startID, endID] = ArcHelper.getArrowStartAndEnd(arc.getAttribute('id'));
-            console.log(startID, endID);
             if (startID.split('-')[0] === 'transition') {
                 this.netMatrix[Number(startID.split('-')[1])][Number(endID.split('-')[1])] = 1;
             }
@@ -71,8 +64,8 @@ export class NetRepository {
         this.arcRepository.create(ID);
     }
 
-    createToken(id: number, x: number, y: number): void {
-        this.tokenRepository.create(id, x, y);
+    createToken(id: number): void {
+        this.tokenRepository.create(id);
     }
 
     removeToken(id: number): void {

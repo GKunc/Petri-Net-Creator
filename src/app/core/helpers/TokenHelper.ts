@@ -7,8 +7,10 @@ export class TokenHelper {
     }
 
     static remove(id: number): void {
-        const token: Element = document.getElementById('token-place-' + id);
-        document.getElementById('svg-board').removeChild(token);
+        const token = document.getElementById(`token-place-${id}`);
+        if (token !== null) {
+            document.getElementById('svg-board').removeChild(token);
+        }
     }
 
     static createToken(id: number, xPosition: number, yPosition: number): void {

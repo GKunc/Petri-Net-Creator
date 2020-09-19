@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import { Place } from './../../../../core/models/Place';
+import { Transition } from './../../../../core/models/Transition';
+import { NetRepository } from './../../../../core/repositories/NetRepository';
+import {Component, Inject} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import '@angular/material/prebuilt-themes/indigo-pink.css';
 
@@ -9,7 +12,16 @@ import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 export class LogicDescriptionDialogComponent {
 
-  constructor(private dialogRef: MatDialogRef<LogicDescriptionDialogComponent>) {}
+  transitions: Transition[];
+  places: Place[];
+
+  constructor(
+    private dialogRef: MatDialogRef<LogicDescriptionDialogComponent>,
+    @Inject(NetRepository) private readonly netRepository: NetRepository
+  ) {
+    this.transitions = this.netRepository.transitionRepository.getAll();
+    this.places = this.netRepository.placeRepository.getAll();
+  }
 
   close(): void {
     this.dialogRef.close();

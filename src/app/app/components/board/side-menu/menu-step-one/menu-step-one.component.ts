@@ -111,7 +111,7 @@ export class MenuStepOneComponent implements OnInit {
       const id = Number(event.target.getAttribute('id').split('-')[1]);
       const [x, y] = BoardHelper.getPositionOfElement(event.target);
       if (document.getElementById('token-place-' + id) === null) {
-        this.netRepository.createToken(id, x + 170, y);
+        this.netRepository.createToken(id);
       } else {
         this.netRepository.removeToken(id);
       }

@@ -21,3 +21,16 @@
 button {
     margin-right: 10px;
 }
+
+table {
+    width: 100%;
+}
+
+th {
+    margin: 8px;
+}
+
+td {
+    width: 60px;
+    text-align: center;
+}
