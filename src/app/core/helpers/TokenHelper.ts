@@ -13,6 +13,12 @@ export class TokenHelper {
         }
     }
 
+    static removeAll(): void {
+        Array.from(document.getElementsByClassName('token')).forEach(token => {
+            document.getElementById('svg-board').removeChild(token);
+        });
+    }
+
     static createToken(id: number, xPosition: number, yPosition: number): void {
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');

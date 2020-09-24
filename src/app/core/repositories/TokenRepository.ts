@@ -14,6 +14,7 @@ export class TokenRepository {
 
     create(id: number): void {
         if (this.tokens.includes(this.getByID(id))) {
+            console.log('Already registered: ' + id);
             return;
         }
         const token: Token = new Token(id);
@@ -33,6 +34,7 @@ export class TokenRepository {
 
     removeAll(): void {
         this.tokens = [];
+        TokenHelper.removeAll();
     }
 
     getAll(): Token[] {

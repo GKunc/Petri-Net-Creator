@@ -1,12 +1,13 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TokenHelper } from './../../../../../core/helpers/TokenHelper';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
 import { MatDialog } from '@angular/material/dialog';
 import { LogicDescriptionDialogComponent } from './../../../dialogs/logic-description-dialog/logic-description-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TransitionHelper } from './../../../../../core/helpers/TransitionHelper';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { Component, OnInit, Inject } from '@angular/core';
 import * as $ from 'jquery';
-import { ArcHelper } from 'src/app/core/helpers/ArcHelper';
+
 
 @Component({
   selector: 'app-menu-step-two',
@@ -16,10 +17,12 @@ import { ArcHelper } from 'src/app/core/helpers/ArcHelper';
 export class MenuStepTwoComponent implements OnInit {
 
   logicDescriptionDialogRef: MatDialogRef<LogicDescriptionDialogComponent>;
+  startTokens: Element[];
 
   constructor(
     private dialog: MatDialog,
-    @Inject(NetRepository) private readonly netRepository: NetRepository
+    @Inject(NetRepository) private readonly netRepository: NetRepository,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +37,7 @@ export class MenuStepTwoComponent implements OnInit {
     $('.net-element').off();
     this.netRepository.initNet();
     this.checkIfTransitionCanBeFired();
+    this.startTokens = Array.from(TokenHelper.getAll());
   }
 
   checkIfTransitionCanBeFired(): void {
@@ -50,7 +54,6 @@ export class MenuStepTwoComponent implements OnInit {
   runTransition(id: number): void {
     this.removeInputTokens(id);
     this.addOutputTokens(id);
-    this.disableTransition(id);
     this.checkIfTransitionCanBeFired();
   }
 
@@ -62,6 +65,7 @@ export class MenuStepTwoComponent implements OnInit {
 
   private addOutputTokens(id: number): void {
     this.getOutputPlacesIDs(id).forEach(placeID => {
+      console.log(placeID);
       this.netRepository.createToken(placeID);
     });
   }
@@ -80,12 +84,14 @@ export class MenuStepTwoComponent implements OnInit {
   private disableTransition(id: number): void {
     const transition = document.getElementById(`transition-${id}`);
     transition.setAttribute('stroke', 'black');
+    transition.classList.remove('ready-to-be-fired');
     $(transition).off();
   }
 
   private enableTransition(id: number): void {
       const transition = document.getElementById(`transition-${id}`);
       transition.setAttribute('stroke', 'rgb(17, 175, 17)');
+      transition.classList.add('ready-to-be-fired');
       $(transition).off();
       $(transition).on('click', () => {
         this.runTransition(id);
@@ -118,17 +124,38 @@ export class MenuStepTwoComponent implements OnInit {
 
   autoSimulation(): void {
       // to be implemented
+      // auto run of transition every 1 s
+      this.startSimulation();
+      this.runTransitionInInterval();
+  }
+
+  private runTransitionInInterval(): void {
+    setTimeout(() => {
+      if (document.getElementsByClassName('ready-to-be-fired').length > 0) {
+        this.nextStep();
+        this.runTransitionInInterval();
+      } else {
+        this.snackBar.open('There is no available transition to run!', 'close', {
+          duration: 2000,
+        });
+      }
+    }, 1000);
   }
 
   previousStep(): void {
     // to be implemented
+    // run transition in opposite way
   }
 
-  mextStep(): void {
-    // to be implemented
+  nextStep(): void {
+    this.runTransition(Number(document.getElementsByClassName('ready-to-be-fired')[0].getAttribute('id').split('-')[1]));
   }
 
   resetSimulation(): void {
-    // to be implemented
+    this.netRepository.tokenRepository.removeAll();
+    this.startTokens.forEach(token => {
+      this.netRepository.createToken(Number(token.getAttribute('id').split('-')[2]));
+    });
+    this.checkIfTransitionCanBeFired();
   }
 }
