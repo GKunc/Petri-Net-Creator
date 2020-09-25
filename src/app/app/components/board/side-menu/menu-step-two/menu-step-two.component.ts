@@ -18,12 +18,15 @@ export class MenuStepTwoComponent implements OnInit {
 
   logicDescriptionDialogRef: MatDialogRef<LogicDescriptionDialogComponent>;
   startTokens: Element[];
+  firedTransitionIDs: number[];
 
   constructor(
     private dialog: MatDialog,
     @Inject(NetRepository) private readonly netRepository: NetRepository,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    this.firedTransitionIDs = [];
+  }
 
   ngOnInit(): void {
   }
@@ -55,6 +58,19 @@ export class MenuStepTwoComponent implements OnInit {
     this.removeInputTokens(id);
     this.addOutputTokens(id);
     this.checkIfTransitionCanBeFired();
+    this.firedTransitionIDs.push(id);
+  }
+
+  moveTokensToInputPlaces(id: number): void {
+    this.removeOutputTokens(id);
+    this.addInputTokens(id);
+    this.checkIfTransitionCanBeFired();
+  }
+
+  private removeOutputTokens(id: number): void {
+    this.getOutputPlacesIDs(id).forEach(placeID => {
+      this.netRepository.removeToken(placeID);
+    });
   }
 
   private removeInputTokens(id: number): void {
@@ -63,9 +79,14 @@ export class MenuStepTwoComponent implements OnInit {
     });
   }
 
+  private addInputTokens(id: number): void {
+    this.getInputPlacesIDs(id).forEach(placeID => {
+      this.netRepository.createToken(placeID);
+    });
+  }
+
   private addOutputTokens(id: number): void {
     this.getOutputPlacesIDs(id).forEach(placeID => {
-      console.log(placeID);
       this.netRepository.createToken(placeID);
     });
   }
@@ -123,8 +144,6 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   autoSimulation(): void {
-      // to be implemented
-      // auto run of transition every 1 s
       this.startSimulation();
       this.runTransitionInInterval();
   }
@@ -143,12 +162,16 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   previousStep(): void {
-    // to be implemented
-    // run transition in opposite way
+    if (this.firedTransitionIDs.length > 0) {
+      const lastFiredTransitionID = this.firedTransitionIDs.pop();
+      this.moveTokensToInputPlaces(Number(lastFiredTransitionID));
+    }
+
   }
 
   nextStep(): void {
-    this.runTransition(Number(document.getElementsByClassName('ready-to-be-fired')[0].getAttribute('id').split('-')[1]));
+    const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[0].getAttribute('id').split('-')[1];
+    this.runTransition(Number(firstReadyTransitionID));
   }
 
   resetSimulation(): void {

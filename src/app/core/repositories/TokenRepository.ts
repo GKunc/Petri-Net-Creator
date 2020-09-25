@@ -24,7 +24,7 @@ export class TokenRepository {
         this.tokens.push(token);
     }
 
-    remove(id: number): void {
+        remove(id: number): void {
         TokenHelper.remove(id);
         const index = this.tokens.indexOf(this.getByID(id));
         if (index !== -1) {
