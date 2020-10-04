@@ -75,5 +75,6 @@ export class NetRepository {
     removeAllElements(): void {
         this.placeRepository.removeAll();
         this.transitionRepository.removeAll();
+        this.tokenRepository.removeAll();
     }
 }

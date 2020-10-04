@@ -19,6 +19,7 @@ export class MenuStepTwoComponent implements OnInit {
   logicDescriptionDialogRef: MatDialogRef<LogicDescriptionDialogComponent>;
   startTokens: Element[];
   firedTransitionIDs: number[];
+  autoSimulationTimeout: number;
 
   constructor(
     private dialog: MatDialog,
@@ -149,7 +150,7 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   private runTransitionInInterval(): void {
-    setTimeout(() => {
+    this.autoSimulationTimeout = setTimeout(() => {
       if (document.getElementsByClassName('ready-to-be-fired').length > 0) {
         this.nextStep();
         this.runTransitionInInterval();
@@ -161,16 +162,29 @@ export class MenuStepTwoComponent implements OnInit {
     }, 1000);
   }
 
+  stopSimulation(): void {
+    console.log(this.autoSimulationTimeout);
+    if (this.autoSimulationTimeout !== undefined) {
+      clearTimeout(this.autoSimulationTimeout);
+    } else {
+      this.snackBar.open('Auto simulation has not been started!', 'close', {
+        duration: 2000,
+      });
+    }
+  }
+
   previousStep(): void {
     if (this.firedTransitionIDs.length > 0) {
       const lastFiredTransitionID = this.firedTransitionIDs.pop();
       this.moveTokensToInputPlaces(Number(lastFiredTransitionID));
     }
-
   }
 
   nextStep(): void {
-    const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[0].getAttribute('id').split('-')[1];
+    const size = document.getElementsByClassName('ready-to-be-fired').length;
+    const randomTransition = Math.floor(Math.random() * size);
+    const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[randomTransition]
+    .getAttribute('id').split('-')[1];
     this.runTransition(Number(firstReadyTransitionID));
   }
 
