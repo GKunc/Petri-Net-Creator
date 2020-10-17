@@ -56,10 +56,16 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   runTransition(id: number): void {
-    this.removeInputTokens(id);
-    this.addOutputTokens(id);
-    this.checkIfTransitionCanBeFired();
-    this.firedTransitionIDs.push(id);
+      this.removeInputTokens(id);
+      if (this.addOutputTokens(id)) {
+        this.checkIfTransitionCanBeFired();
+        this.firedTransitionIDs.push(id);
+      } else {
+        this.resetSimulation();
+        this.snackBar.open('Cannot run transition! The net is not safe!', 'close', {
+          duration: 2000,
+        });
+      }
   }
 
   moveTokensToInputPlaces(id: number): void {
@@ -86,10 +92,16 @@ export class MenuStepTwoComponent implements OnInit {
     });
   }
 
-  private addOutputTokens(id: number): void {
+  private addOutputTokens(id: number): boolean {
+    let result = true;
     this.getOutputPlacesIDs(id).forEach(placeID => {
+      const token = document.getElementById(`token-place-${placeID}`);
+      if (token !== null) {
+        result =  false;
+      }
       this.netRepository.createToken(placeID);
     });
+    return result;
   }
 
   private shouldTransitionBeEnabled(inputPlacesIDs: number[]): boolean {

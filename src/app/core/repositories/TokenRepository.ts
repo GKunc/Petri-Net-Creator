@@ -13,10 +13,6 @@ export class TokenRepository {
     }
 
     create(id: number): void {
-        if (this.tokens.includes(this.getByID(id))) {
-            console.log('Already registered: ' + id);
-            return;
-        }
         const token: Token = new Token(id);
         const x = Number(document.getElementById(`place-${id}`).getAttribute('cx')) + 170;
         const y = Number(document.getElementById(`place-${id}`).getAttribute('cy'));
