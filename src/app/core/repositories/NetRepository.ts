@@ -36,6 +36,7 @@ export class NetRepository {
                 this.netMatrix[i][j] = 0;
             }
         }
+        console.log(this.netMatrix);
         this.updateNetWithConnections();
     }
 

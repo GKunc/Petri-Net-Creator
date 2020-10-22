@@ -1,4 +1,4 @@
-import { LogicDescriptionDialogComponent } from './app/components/dialogs/logic-description-dialog/logic-description-dialog.component';
+import { AddOutputSignalsDialogComponent } from './app/components/dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
 import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets-dialog/example-nets-dialog.component';
 import { CursorManager } from './app/shared/cursorManager';
 import { ClearBoardDialogComponent } from './app/components/dialogs/clear-board-dialog/clear-board-dialog.component';
@@ -9,6 +9,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppComponent } from './app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,7 +24,7 @@ import { BoardComponent } from './app/components/board/board.component';
     AppComponent,
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
-    LogicDescriptionDialogComponent,
+    AddOutputSignalsDialogComponent,
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
@@ -35,14 +37,16 @@ import { BoardComponent } from './app/components/board/board.component';
     MatDialogModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatIconModule,
+    MatExpansionModule
   ],
   providers: [CursorManager],
   bootstrap: [AppComponent],
   entryComponents: [
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
-    LogicDescriptionDialogComponent
+    AddOutputSignalsDialogComponent
   ]
 })
 

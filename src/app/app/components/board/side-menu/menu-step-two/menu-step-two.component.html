@@ -1,12 +1,5 @@
 <div>
     <div class="card-container">
-        <div class="card card-small" tabindex="0" (click)="openLogicDescriptionDialog()">
-            <span class="material-icons">description</span>
-            <span class="button-text">Logic Description</span>
-        </div>
-    </div>
-
-    <div class="card-container">
         <div class="card card-small" tabindex="0" (click)="startSimulation()">
             <span class="material-icons">play_arrow</span>
             <span class="button-text">Start Simulation</span>
@@ -37,4 +30,42 @@
             <span class="material-icons net-elements-icons token-icon">replay</span>
         </a>
     </div>  
+
+    <div class="card-container">
+        <div class="card card-small" tabindex="0" (click)="addOutputSignals()">
+            <span class="material-icons">description</span>
+            <span class="button-text">Add output signals</span>
+        </div>
+    </div>
+
+    <div class="signalPanel">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <span class="material-icons">
+                        input
+                    </span>
+                    Input signals
+                </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                <div style="text-align:center">
+                    <table style="margin: 0 auto;">
+                        <tr>
+                        <th *ngFor="let outputSignal of signalRepository.outputSignals">
+                            x{{outputSignal}}
+                        </th>
+                        </tr>
+                        <tr>
+                        <td *ngFor="let outputSignal of signalRepository.outputSignals">
+                            <input type="checkbox"/>
+                        </td>
+                        </tr>
+                    </table>
+                    <button mat-raised-button color="primary" (click)="updateInputSignals()">Update</button>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>  
+    </div>
 </div>

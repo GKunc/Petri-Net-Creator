@@ -1,8 +1,9 @@
+import { SignalRepository } from './../../../../../core/repositories/SignalRepository';
+import { AddOutputSignalsDialogComponent } from './../../../dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenHelper } from './../../../../../core/helpers/TokenHelper';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
 import { MatDialog } from '@angular/material/dialog';
-import { LogicDescriptionDialogComponent } from './../../../dialogs/logic-description-dialog/logic-description-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { Component, OnInit, Inject } from '@angular/core';
@@ -16,24 +17,32 @@ import * as $ from 'jquery';
 })
 export class MenuStepTwoComponent implements OnInit {
 
-  logicDescriptionDialogRef: MatDialogRef<LogicDescriptionDialogComponent>;
+  addOutputSignalsDialogRef: MatDialogRef<AddOutputSignalsDialogComponent>;
   startTokens: Element[];
   firedTransitionIDs: number[];
   autoSimulationTimeout: number;
+  signalRepository: SignalRepository;
 
   constructor(
     private dialog: MatDialog,
     @Inject(NetRepository) private readonly netRepository: NetRepository,
+    @Inject(SignalRepository) signalRepository: SignalRepository,
     private snackBar: MatSnackBar
   ) {
+    this.signalRepository = signalRepository;
     this.firedTransitionIDs = [];
   }
 
   ngOnInit(): void {
   }
 
-  openLogicDescriptionDialog(): void {
-    this.logicDescriptionDialogRef = this.dialog.open(LogicDescriptionDialogComponent);
+  addOutputSignals(): void {
+    this.addOutputSignalsDialogRef = this.dialog.open(AddOutputSignalsDialogComponent);
+  }
+
+  updateInputSignals(): void {
+    console.log('UPDATE SIGNALS Menu');
+    this.signalRepository.updateInputSignals();
   }
 
   startSimulation(): void {
