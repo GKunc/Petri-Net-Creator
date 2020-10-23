@@ -15,7 +15,7 @@
       </tr>
       <tr>
         <td *ngFor="let outputSignal of signalRepository.outputSignals">
-          <input type="checkbox"/>
+          <input type="checkbox" class="signal" id="signal-{{outputSignal}}"/>
         </td>
       </tr>
     </table>
@@ -24,7 +24,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="close()">Add condition</button>
+    <button mat-raised-button color="primary" (click)="addCondition()">Add condition</button>
     <button mat-raised-button color="warn" (click)="close()">Close</button>
   </mat-dialog-actions>
 </mat-dialog-actions>

@@ -1,3 +1,4 @@
+import { SignalHelper } from './../../../../../core/helpers/SignalHelper';
 import { SignalRepository } from './../../../../../core/repositories/SignalRepository';
 import { AddOutputSignalsDialogComponent } from './../../../dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,11 +39,30 @@ export class MenuStepTwoComponent implements OnInit {
 
   addOutputSignals(): void {
     this.addOutputSignalsDialogRef = this.dialog.open(AddOutputSignalsDialogComponent);
+    $('.transition').off();
+
+    this.addOutputSignalsDialogRef.afterClosed().subscribe(selectedSignals => {
+      if (selectedSignals.length > 0) {
+          $('.transition').on('click', (event) => {
+            const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
+            const xPosition = Number(event.target.getAttribute('x'));
+            const yPosition = Number(event.target.getAttribute('y'));
+
+            SignalHelper.createLabel(transitionNumber, selectedSignals, xPosition, yPosition);
+          });
+        }
+    });
   }
 
   updateInputSignals(): void {
-    console.log('UPDATE SIGNALS Menu');
-    this.signalRepository.updateInputSignals();
+    const activeSignals: number[] = [];
+    const signals = document.getElementsByClassName('signal');
+    Array.from(signals).forEach(signal => {
+      if ($(signal).is(':checked')) {
+        activeSignals.push(Number(signal.getAttribute('id').split('-')[1]));
+      }
+    });
+    this.signalRepository.updateInputSignals(activeSignals);
   }
 
   startSimulation(): void {

@@ -59,7 +59,7 @@
                         </tr>
                         <tr>
                         <td *ngFor="let outputSignal of signalRepository.outputSignals">
-                            <input type="checkbox"/>
+                            <input type="checkbox" class="signal" id="signal-{{outputSignal}}"/>
                         </td>
                         </tr>
                     </table>

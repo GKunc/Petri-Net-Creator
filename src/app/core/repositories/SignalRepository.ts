@@ -28,7 +28,9 @@ export class SignalRepository {
     }
   }
 
-  updateInputSignals(): void {
-    console.log('UPDATE SIGNALS REPO');
+  updateInputSignals(activeSignals: number[]): void {
+    activeSignals.forEach(signal => {
+        console.log(`Signal on: ${signal}`);
+    });
   }
 }

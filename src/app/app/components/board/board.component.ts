@@ -60,6 +60,6 @@ export class BoardComponent implements OnInit {
           BoardHelper.addArrowHeadMarker();
           this.cursorManager.setDefaultCursor();
         }
-      });
+    });
   }
 }
