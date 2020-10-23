@@ -9,12 +9,12 @@ export class SignalRepository {
     selectedOutputSignals: number[];
     activeSignals: number[];
 
-    constructor() {
-        this.currentSignalNumber = 1;
-        this.outputSignals = [1];
-        this.selectedOutputSignals = [];
-    }
-
+  constructor() {
+      this.currentSignalNumber = 1;
+      this.outputSignals = [1];
+      this.selectedOutputSignals = [];
+      this.activeSignals = [];
+  }
 
   addSignal(): void {
     this.currentSignalNumber++;
@@ -29,6 +29,7 @@ export class SignalRepository {
   }
 
   updateInputSignals(activeSignals: number[]): void {
+    this.activeSignals = activeSignals;
     activeSignals.forEach(signal => {
         console.log(`Signal on: ${signal}`);
     });

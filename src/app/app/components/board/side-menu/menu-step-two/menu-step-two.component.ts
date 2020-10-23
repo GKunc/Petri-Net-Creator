@@ -49,6 +49,7 @@ export class MenuStepTwoComponent implements OnInit {
             const yPosition = Number(event.target.getAttribute('y'));
 
             SignalHelper.createLabel(transitionNumber, selectedSignals, xPosition, yPosition);
+            this.netRepository.transitionRepository.addSignals(transitionNumber, selectedSignals);
           });
         }
     });
@@ -73,11 +74,23 @@ export class MenuStepTwoComponent implements OnInit {
     this.startTokens = Array.from(TokenHelper.getAll());
   }
 
+  checkIfSignalsAreEnabled(id: number): boolean {
+    console.log(this.signalRepository.activeSignals);
+    return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
+      this.signalRepository.activeSignals.includes(signal));
+  }
+
   checkIfTransitionCanBeFired(): void {
     for (let id = 0; id < this.netRepository.netMatrix.length; id++) {
       const inputPlacesIDs = this.getInputPlacesIDs(id);
       if (this.shouldTransitionBeEnabled(inputPlacesIDs)) {
-        this.enableTransition(id);
+        if (!this.checkIfSignalsAreEnabled(id)) {
+          this.snackBar.open('Signals are not ready!', 'close', {
+            duration: 2000,
+          });
+        } else {
+          this.enableTransition(id);
+        }
       } else {
         this.disableTransition(id);
       }
@@ -85,6 +98,7 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   runTransition(id: number): void {
+      console.log(this.netRepository.transitionRepository.getByID(id).signals);
       this.removeInputTokens(id);
       if (this.addOutputTokens(id)) {
         this.checkIfTransitionCanBeFired();

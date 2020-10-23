@@ -9,9 +9,15 @@ const TRANSITION_PREFIX = 'transition-';
 export class Transition implements INetElement {
     id: number;
     color = 'white';
+    signals: number[];
 
     constructor(id: number) {
         this.id = id;
+        this.signals = [];
+    }
+
+    addSignals(signals: number[]): void {
+        this.signals = signals;
     }
 
     getID(): number {
@@ -26,9 +32,4 @@ export class Transition implements INetElement {
     private attachListeners(): void {
         BoardHelper.moveElementEvent();
     }
-
-    private getDomID(): string {
-        return TRANSITION_PREFIX + this.id;
-    }
-
 }

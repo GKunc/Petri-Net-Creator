@@ -18,6 +18,10 @@ export class TransitionRepository {
         this.transitions.push(transition);
     }
 
+    addSignals(id: number, signals: number[]): void {
+        this.getByID(id).addSignals(signals);
+    }
+
     removeAll(): void {
         this.transitions = [];
     }
