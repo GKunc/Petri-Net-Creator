@@ -35,13 +35,13 @@ export class AddOutputSignalsDialogComponent {
   }
 
   addCondition(): void {
-    const signals = document.getElementsByClassName('signal');
+    const signals = document.getElementsByClassName('output-signal');
     Array.from(signals).forEach(signal => {
       if ($(signal).is(':checked')) {
         this.selectedSignals.push(Number(signal.getAttribute('id').split('-')[1]));
       }
     });
-
+    this.signalRepository.updateSelectedSignals(this.selectedSignals);
     this.dialogRef.close(this.selectedSignals);
   }
 }

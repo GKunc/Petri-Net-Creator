@@ -28,10 +28,11 @@ export class SignalRepository {
     }
   }
 
+  updateSelectedSignals(selectedOutputSignals: number[]): void {
+    this.selectedOutputSignals = selectedOutputSignals;
+  }
+
   updateInputSignals(activeSignals: number[]): void {
     this.activeSignals = activeSignals;
-    activeSignals.forEach(signal => {
-        console.log(`Signal on: ${signal}`);
-    });
   }
 }

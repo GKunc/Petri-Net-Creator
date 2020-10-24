@@ -1,3 +1,4 @@
+import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
 import { SignalHelper } from './../../../../../core/helpers/SignalHelper';
 import { SignalRepository } from './../../../../../core/repositories/SignalRepository';
 import { AddOutputSignalsDialogComponent } from './../../../dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
@@ -42,31 +43,49 @@ export class MenuStepTwoComponent implements OnInit {
     $('.transition').off();
 
     this.addOutputSignalsDialogRef.afterClosed().subscribe(selectedSignals => {
+      PlaceHelper.setDisabledCursor();
       if (selectedSignals.length > 0) {
-          $('.transition').on('click', (event) => {
+        let signalLabel = (document.getElementById('label-signal-cursor') as Element);
+        console.log(signalLabel);
+        if (signalLabel !== null) {
+          document.getElementById('svg-board').removeChild(signalLabel);
+        }
+        console.log(this.signalRepository.selectedOutputSignals);
+        signalLabel = SignalHelper.createLabel(this.signalRepository.selectedOutputSignals, 0, 0);
+
+        SignalHelper.moveLabelWithCursor(signalLabel);
+
+        $('.transition').on('click', (event) => {
             const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
             const xPosition = Number(event.target.getAttribute('x'));
             const yPosition = Number(event.target.getAttribute('y'));
 
-            SignalHelper.createLabel(transitionNumber, selectedSignals, xPosition, yPosition);
-            this.netRepository.transitionRepository.addSignals(transitionNumber, selectedSignals);
+            SignalHelper.createLabelForTransition(transitionNumber, this.signalRepository.selectedOutputSignals, xPosition, yPosition);
+            this.netRepository.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedOutputSignals);
           });
         }
     });
   }
 
   updateInputSignals(): void {
+    $(BoardHelper.getBoard()).off();
+    $('.transition').off();
+    PlaceHelper.setPointerCursor();
+
     const activeSignals: number[] = [];
-    const signals = document.getElementsByClassName('signal');
+    const signals = document.getElementsByClassName('input-signal');
     Array.from(signals).forEach(signal => {
       if ($(signal).is(':checked')) {
         activeSignals.push(Number(signal.getAttribute('id').split('-')[1]));
       }
     });
     this.signalRepository.updateInputSignals(activeSignals);
+    this.checkIfTransitionCanBeFired();
   }
 
   startSimulation(): void {
+    $(BoardHelper.getBoard()).off();
+    PlaceHelper.setPointerCursor();
     $(BoardHelper.getBoard()).off();
     $('.net-element').off();
     this.netRepository.initNet();
@@ -75,7 +94,6 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
-    console.log(this.signalRepository.activeSignals);
     return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
       this.signalRepository.activeSignals.includes(signal));
   }
@@ -88,6 +106,7 @@ export class MenuStepTwoComponent implements OnInit {
           this.snackBar.open('Signals are not ready!', 'close', {
             duration: 2000,
           });
+          this.disableTransition(id);
         } else {
           this.enableTransition(id);
         }
@@ -98,7 +117,6 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   runTransition(id: number): void {
-      console.log(this.netRepository.transitionRepository.getByID(id).signals);
       this.removeInputTokens(id);
       if (this.addOutputTokens(id)) {
         this.checkIfTransitionCanBeFired();
