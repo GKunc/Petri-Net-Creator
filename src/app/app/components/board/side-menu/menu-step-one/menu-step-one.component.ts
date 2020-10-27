@@ -1,3 +1,5 @@
+import { SignalHelper } from './../../../../../core/helpers/SignalHelper';
+import { AddInputSignalsDialogComponent } from './../../../dialogs/add-input-signals-dialog/add-input-signals-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ExampleNetsDialogComponent } from '../../../dialogs/example-nets-dialog/example-nets-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -19,6 +21,7 @@ export class MenuStepOneComponent implements OnInit {
   netRepository: NetRepository;
   cursorManager: CursorManager;
   exampleNetsDialogRef: MatDialogRef<ExampleNetsDialogComponent>;
+  addInputSignalsDialogRef: MatDialogRef<AddInputSignalsDialogComponent>;
 
   constructor(
     @Inject(NetRepository) netRepository: NetRepository,
@@ -254,6 +257,26 @@ export class MenuStepOneComponent implements OnInit {
   openExampleNetsDialog(): void {
     this.defaultCursor();
     this.exampleNetsDialogRef = this.dialog.open(ExampleNetsDialogComponent);
+  }
+
+  addInputSignals(): void {
+    this.addInputSignalsDialogRef = this.dialog.open(AddInputSignalsDialogComponent);
+    $('.transition').off();
+
+    this.addInputSignalsDialogRef.afterClosed().subscribe(selectedSignals => {
+      PlaceHelper.setDisabledCursor();
+      if (selectedSignals.length > 0) {
+        const signalLabel = SignalHelper.createLabel(this.netRepository.signalRepository.selectedInputSignals, 0, 0);
+        SignalHelper.moveLabelWithCursor(signalLabel);
+        $('.transition').on('click', (event) => {
+            const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
+            const xPosition = Number(event.target.getAttribute('x'));
+            const yPosition = Number(event.target.getAttribute('y'));
+
+            this.netRepository.createSignal(transitionNumber, xPosition, yPosition);
+          });
+        }
+    });
   }
 }
 

@@ -4,35 +4,35 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class SignalRepository {
-    outputSignals: number[];
+    inputSignals: number[];
     currentSignalNumber: number;
-    selectedOutputSignals: number[];
-    activeSignals: number[];
+    selectedInputSignals: number[];
+    outputSignals: number[];
 
   constructor() {
       this.currentSignalNumber = 1;
-      this.outputSignals = [1];
-      this.selectedOutputSignals = [];
-      this.activeSignals = [];
+      this.inputSignals = [1];
+      this.selectedInputSignals = [];
+      this.outputSignals = [];
   }
 
   addSignal(): void {
     this.currentSignalNumber++;
-    this.outputSignals.push(this.currentSignalNumber);
+    this.inputSignals.push(this.currentSignalNumber);
   }
 
   removeSignal(): void {
-    if (this.outputSignals.length > 1) {
-      this.outputSignals.pop();
+    if (this.inputSignals.length > 1) {
+      this.inputSignals.pop();
       this.currentSignalNumber--;
     }
   }
 
-  updateSelectedSignals(selectedOutputSignals: number[]): void {
-    this.selectedOutputSignals = selectedOutputSignals;
+  updateSelectedSignals(selectedInputSignals: number[]): void {
+    this.selectedInputSignals = selectedInputSignals;
   }
 
-  updateInputSignals(activeSignals: number[]): void {
-    this.activeSignals = activeSignals;
+  updateOutputSignals(outputSignals: number[]): void {
+    this.outputSignals = outputSignals;
   }
 }

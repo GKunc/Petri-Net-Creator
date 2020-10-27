@@ -5,11 +5,19 @@
     <a>Straight net without micronets</a>
   </div>
   <div>
-    <button mat-stroked-button (click)=drawSecondExampleNet()>Net Two</button>
+    <button mat-stroked-button (click)=drawFirstExampleNetWithSignals()>Net Two</button>
+    <a>Straight net without micronets with signals</a>
+  </div>
+  <div>
+    <button mat-stroked-button (click)=drawSecondExampleNet()>Net Three</button>
     <a>Net with a 2 simple micronets</a>
   </div>
   <div>
-    <button mat-stroked-button (click)=drawThirdExampleNet()>Net Three</button>
+    <button mat-stroked-button (click)=drawSecondExampleNetWithSignals()>Net Four</button>
+    <a>Net with a 2 simple micronets and input signals</a>
+  </div>
+  <div>
+    <button mat-stroked-button (click)=drawThirdExampleNet()>Net Five</button>
     <a>Larger net with micronets and blind routes</a>
   </div>
 </mat-dialog-content>

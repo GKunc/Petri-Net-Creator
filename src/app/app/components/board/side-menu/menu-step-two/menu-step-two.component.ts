@@ -1,12 +1,8 @@
 import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
-import { SignalHelper } from './../../../../../core/helpers/SignalHelper';
-import { SignalRepository } from './../../../../../core/repositories/SignalRepository';
-import { AddOutputSignalsDialogComponent } from './../../../dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenHelper } from './../../../../../core/helpers/TokenHelper';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { Component, OnInit, Inject } from '@angular/core';
 import * as $ from 'jquery';
@@ -19,67 +15,36 @@ import * as $ from 'jquery';
 })
 export class MenuStepTwoComponent implements OnInit {
 
-  addOutputSignalsDialogRef: MatDialogRef<AddOutputSignalsDialogComponent>;
   startTokens: Element[];
   firedTransitionIDs: number[];
   autoSimulationTimeout: number;
-  signalRepository: SignalRepository;
+  netRepository: NetRepository;
 
   constructor(
     private dialog: MatDialog,
-    @Inject(NetRepository) private readonly netRepository: NetRepository,
-    @Inject(SignalRepository) signalRepository: SignalRepository,
+    @Inject(NetRepository) netRepository: NetRepository,
     private snackBar: MatSnackBar
   ) {
-    this.signalRepository = signalRepository;
+    this.netRepository = netRepository;
     this.firedTransitionIDs = [];
   }
 
   ngOnInit(): void {
   }
 
-  addOutputSignals(): void {
-    this.addOutputSignalsDialogRef = this.dialog.open(AddOutputSignalsDialogComponent);
-    $('.transition').off();
-
-    this.addOutputSignalsDialogRef.afterClosed().subscribe(selectedSignals => {
-      PlaceHelper.setDisabledCursor();
-      if (selectedSignals.length > 0) {
-        let signalLabel = (document.getElementById('label-signal-cursor') as Element);
-        console.log(signalLabel);
-        if (signalLabel !== null) {
-          document.getElementById('svg-board').removeChild(signalLabel);
-        }
-        console.log(this.signalRepository.selectedOutputSignals);
-        signalLabel = SignalHelper.createLabel(this.signalRepository.selectedOutputSignals, 0, 0);
-
-        SignalHelper.moveLabelWithCursor(signalLabel);
-
-        $('.transition').on('click', (event) => {
-            const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
-            const xPosition = Number(event.target.getAttribute('x'));
-            const yPosition = Number(event.target.getAttribute('y'));
-
-            SignalHelper.createLabelForTransition(transitionNumber, this.signalRepository.selectedOutputSignals, xPosition, yPosition);
-            this.netRepository.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedOutputSignals);
-          });
-        }
-    });
-  }
-
-  updateInputSignals(): void {
+  updateOutputSignals(): void {
     $(BoardHelper.getBoard()).off();
     $('.transition').off();
     PlaceHelper.setPointerCursor();
 
     const activeSignals: number[] = [];
-    const signals = document.getElementsByClassName('input-signal');
+    const signals = document.getElementsByClassName('output-signal');
     Array.from(signals).forEach(signal => {
       if ($(signal).is(':checked')) {
         activeSignals.push(Number(signal.getAttribute('id').split('-')[1]));
       }
     });
-    this.signalRepository.updateInputSignals(activeSignals);
+    this.netRepository.signalRepository.updateOutputSignals(activeSignals);
     this.checkIfTransitionCanBeFired();
   }
 
@@ -95,7 +60,7 @@ export class MenuStepTwoComponent implements OnInit {
 
   checkIfSignalsAreEnabled(id: number): boolean {
     return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
-      this.signalRepository.activeSignals.includes(signal));
+      this.netRepository.signalRepository.outputSignals.includes(signal));
   }
 
   checkIfTransitionCanBeFired(): void {

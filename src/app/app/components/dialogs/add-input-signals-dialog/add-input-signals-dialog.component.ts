@@ -1,33 +1,33 @@
-import { SignalRepository } from './../../../../core/repositories/SignalRepository';
+import { NetRepository } from './../../../../core/repositories/NetRepository';
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import '@angular/material/prebuilt-themes/indigo-pink.css';
 import * as $ from 'jquery';
 
 @Component({
-    templateUrl: './add-output-signals-dialog.component.html',
-    styleUrls: ['./add-output-signals-dialog.component.css']
+    templateUrl: './add-input-signals-dialog.component.html',
+    styleUrls: ['./add-input-signals-dialog.component.css']
 })
 
-export class AddOutputSignalsDialogComponent {
+export class AddInputSignalsDialogComponent {
 
-  signalRepository: SignalRepository;
+  netRepository: NetRepository;
   selectedSignals: number[];
 
   constructor(
-    private dialogRef: MatDialogRef<AddOutputSignalsDialogComponent>,
-    @Inject(SignalRepository) signalRepository: SignalRepository
+    private dialogRef: MatDialogRef<AddInputSignalsDialogComponent>,
+    @Inject(NetRepository) netRepository: NetRepository
   ) {
     this.selectedSignals = [];
-    this.signalRepository = signalRepository;
+    this.netRepository = netRepository;
   }
 
   addSignal(): void {
-    this.signalRepository.addSignal();
+    this.netRepository.signalRepository.addSignal();
   }
 
   removeSignal(): void {
-    this.signalRepository.removeSignal();
+    this.netRepository.signalRepository.removeSignal();
   }
 
   close(): void {
@@ -41,7 +41,7 @@ export class AddOutputSignalsDialogComponent {
         this.selectedSignals.push(Number(signal.getAttribute('id').split('-')[1]));
       }
     });
-    this.signalRepository.updateSelectedSignals(this.selectedSignals);
+    this.netRepository.signalRepository.updateSelectedSignals(this.selectedSignals);
     this.dialogRef.close(this.selectedSignals);
   }
 }

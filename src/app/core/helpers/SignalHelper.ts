@@ -4,6 +4,10 @@ import * as $ from 'jquery';
 export class SignalHelper {
 
     static createLabel(signalIDs: number[], xPosition: number, yPosition: number): Element {
+        const signalLabel = (document.getElementById('label-signal-cursor') as Element);
+        if (signalLabel !== null) {
+          document.getElementById('svg-board').removeChild(signalLabel);
+        }
         const cursors = document.getElementById('cursors');
         const board = document.getElementById('svg-board');
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');

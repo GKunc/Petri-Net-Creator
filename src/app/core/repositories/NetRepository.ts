@@ -1,3 +1,5 @@
+import { SignalHelper } from './../helpers/SignalHelper';
+import { SignalRepository } from './SignalRepository';
 import { ArcHelper } from './../helpers/ArcHelper';
 import { TokenRepository } from './TokenRepository';
 import { ArcRepository } from './ArcRepository';
@@ -13,6 +15,7 @@ export class NetRepository {
     transitionRepository: TransitionRepository;
     arcRepository: ArcRepository;
     tokenRepository: TokenRepository;
+    signalRepository: SignalRepository;
 
     netMatrix: number[][];
 
@@ -20,11 +23,13 @@ export class NetRepository {
         @Inject(PlaceRepository) placeRepository: PlaceRepository,
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
         @Inject(ArcRepository) arcRepository: ArcRepository,
-        @Inject(TokenRepository) tokenRepository: TokenRepository) {
+        @Inject(TokenRepository) tokenRepository: TokenRepository,
+        @Inject(SignalRepository) signalRepository: SignalRepository) {
             this.placeRepository = placeRepository;
             this.transitionRepository = transitionRepository;
             this.arcRepository = arcRepository;
             this.tokenRepository = tokenRepository;
+            this.signalRepository = signalRepository;
 
             this.netMatrix = [];
     }
@@ -78,4 +83,23 @@ export class NetRepository {
         this.transitionRepository.removeAll();
         this.tokenRepository.removeAll();
     }
+
+    addSignal(): void {
+        this.signalRepository.addSignal();
+    }
+
+    removeSignal(): void {
+        this.signalRepository.removeSignal();
+    }
+
+    updateSelectedSignals(signals: number[]): void {
+        this.signalRepository.updateSelectedSignals(signals);
+    }
+
+    createSignal(transitionNumber: number, xPosition: number, yPosition: number): void {
+        console.log(this.signalRepository.selectedInputSignals);
+        SignalHelper.createLabelForTransition(transitionNumber,
+          this.signalRepository.selectedInputSignals, xPosition, yPosition);
+        this.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedInputSignals);
+      }
 }

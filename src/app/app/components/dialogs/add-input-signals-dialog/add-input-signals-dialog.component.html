@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Input Signals Creator</h2>
+Select desired signals and press "Add condition" button. <br>
+  You will be navigated to net. <br>
+  Click on transition to add input signal. <br>
+
+<mat-dialog-content style="margin-top: 8px;">
+  <button mat-mini-fab color="primary" (click)="addSignal()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button mat-mini-fab color="basic" (click)="removeSignal()">
+    <mat-icon>remove</mat-icon>
+  </button>
+  <div>
+    <table>
+      <tr>
+        <th *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+          x{{inputSignal}}
+        </th>
+      </tr>
+      <tr>
+        <td *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+          <input type="checkbox" class="output-signal" id="signal-{{inputSignal}}"/>
+        </td>
+      </tr>
+    </table>
+    
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="addCondition()">Add condition</button>
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
+  </mat-dialog-actions>
+</mat-dialog-actions>

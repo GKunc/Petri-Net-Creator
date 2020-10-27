@@ -1,4 +1,4 @@
-import { AddOutputSignalsDialogComponent } from './app/components/dialogs/add-output-signals-dialog/add-output-signals-dialog.component';
+import { AddInputSignalsDialogComponent } from './app/components/dialogs/add-input-signals-dialog/add-input-signals-dialog.component';
 import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets-dialog/example-nets-dialog.component';
 import { CursorManager } from './app/shared/cursorManager';
 import { ClearBoardDialogComponent } from './app/components/dialogs/clear-board-dialog/clear-board-dialog.component';
@@ -18,13 +18,14 @@ import { MenuStepOneComponent } from './app/components/board/side-menu/menu-step
 import { MenuStepTwoComponent } from './app/components/board/side-menu/menu-step-two/menu-step-two.component';
 import { MenuStepThreeComponent } from './app/components/board/side-menu/menu-step-three/menu-step-three.component';
 import { BoardComponent } from './app/components/board/board.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
-    AddOutputSignalsDialogComponent,
+    AddInputSignalsDialogComponent,
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
@@ -39,14 +40,15 @@ import { BoardComponent } from './app/components/board/board.component';
     MatSnackBarModule,
     MatTooltipModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    CommonModule
   ],
   providers: [CursorManager],
   bootstrap: [AppComponent],
   entryComponents: [
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
-    AddOutputSignalsDialogComponent
+    AddInputSignalsDialogComponent
   ]
 })
 

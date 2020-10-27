@@ -31,13 +31,6 @@
         </a>
     </div>  
 
-    <div class="card-container">
-        <div class="card card-small" tabindex="0" (click)="addOutputSignals()">
-            <span class="material-icons">description</span>
-            <span class="button-text">Add output signals</span>
-        </div>
-    </div>
-
     <div class="signalPanel">
         <mat-accordion>
             <mat-expansion-panel>
@@ -46,26 +39,27 @@
                     <span class="material-icons">
                         input
                     </span>
-                    Input signals
+                    Output signals
                 </mat-panel-title>
 
                 </mat-expansion-panel-header>
                 <div style="text-align:center">
                     <table style="margin: 0 auto;">
                         <tr>
-                        <th *ngFor="let outputSignal of signalRepository.outputSignals">
-                            x{{outputSignal}}
+                        <th *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+                            x{{inputSignal}}
                         </th>
                         </tr>
                         <tr>
-                        <td *ngFor="let outputSignal of signalRepository.outputSignals">
-                            <input type="checkbox" class="input-signal" id="signal-{{outputSignal}}"/>
+                        <td *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+                            <input type="checkbox" class="output-signal" id="signal-{{inputSignal}}"/>
                         </td>
                         </tr>
                     </table>
-                    <button mat-raised-button color="primary" (click)="updateInputSignals()">Update</button>
+                    <button mat-raised-button color="primary" (click)="updateOutputSignals()">Update</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>  
     </div>
+    
 </div>
