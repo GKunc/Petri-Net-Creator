@@ -97,7 +97,6 @@ export class NetRepository {
     }
 
     createSignal(transitionNumber: number, xPosition: number, yPosition: number): void {
-        console.log(this.signalRepository.selectedInputSignals);
         SignalHelper.createLabelForTransition(transitionNumber,
           this.signalRepository.selectedInputSignals, xPosition, yPosition);
         this.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedInputSignals);

@@ -41,6 +41,11 @@ export class SignalHelper {
     static createLabelForTransition(transitionNumber: number, signalIDs: number[], xPosition: number, yPosition: number): void {
         const cursors = document.getElementById('cursors');
         const board = document.getElementById('svg-board');
+        const signalLabel = document.getElementById('label-signal-' + transitionNumber);
+        console.log(signalLabel);
+        if (signalLabel !== null) {
+            board.removeChild(signalLabel);
+        }
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('class', 'label');
         text.setAttribute('id', 'label-signal-' + transitionNumber);
