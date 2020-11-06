@@ -1,6 +1,6 @@
 <div id="content">
   <div id="sidebar">
-    <mat-horizontal-stepper id="stepper" labelPosition="bottom">
+    <mat-horizontal-stepper id="stepper" labelPosition="bottom" (selectionChange)="onStepChange($event)">
       <mat-step>
         <ng-template matStepLabel>Create</ng-template>
         <app-menu-step-one></app-menu-step-one>

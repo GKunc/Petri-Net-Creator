@@ -42,7 +42,6 @@ export class SignalHelper {
         const cursors = document.getElementById('cursors');
         const board = document.getElementById('svg-board');
         const signalLabel = document.getElementById('label-signal-' + transitionNumber);
-        console.log(signalLabel);
         if (signalLabel !== null) {
             board.removeChild(signalLabel);
         }

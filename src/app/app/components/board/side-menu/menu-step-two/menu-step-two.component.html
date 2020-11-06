@@ -18,7 +18,7 @@
             <span class="material-icons net-elements-icons" >fast_rewind</span>
         </a>
 
-        <a class="square-link" matTooltip="Run all active transitions" matTooltipPosition="above" (click)="nextStep()">
+        <a class="square-link" matTooltip="Run active transitions" matTooltipPosition="above" (click)="nextStep()">
             <span class="material-icons net-elements-icons token-icon">play_arrow</span>
         </a>
 
@@ -39,7 +39,7 @@
                     <span class="material-icons">
                         input
                     </span>
-                    Output signals
+                    Input signals
                 </mat-panel-title>
 
                 </mat-expansion-panel-header>
@@ -52,11 +52,11 @@
                         </tr>
                         <tr>
                         <td *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
-                            <input type="checkbox" class="output-signal" id="signal-{{inputSignal}}"/>
+                            <input type="checkbox" class="active-input-signal" id="active-input-signal-{{inputSignal}}"/>
                         </td>
                         </tr>
                     </table>
-                    <button mat-raised-button color="primary" (click)="updateOutputSignals()">Update</button>
+                    <button mat-raised-button color="primary" (click)="updateActiveInputSignals()">Update</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>  

@@ -1,0 +1,19 @@
+th {
+    width: 50px;
+    font-weight: bold;
+}
+
+td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+td:first-child {
+    border: none;
+}
+
+.mat-dialog-actions {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+}

@@ -52,8 +52,6 @@ export class ExampleNetsDialogComponent {
 
   drawFirstExampleNetWithSignals(): void {
     this.clearBoard();
-    this.netRepository.addSignal();
-    this.netRepository.addSignal();
     this.netRepository.createPlace(600, 100);
     this.netRepository.createTransition(600, 200);
     this.netRepository.createPlace(400, 300);
@@ -68,6 +66,8 @@ export class ExampleNetsDialogComponent {
     ArcHelper.createArc('place-2', 'transition-1');
     ArcHelper.createArc('transition-1', 'place-3');
 
+    this.netRepository.addSignal();
+    this.netRepository.addSignal();
     this.netRepository.updateSelectedSignals([1, 2, 3]);
     this.netRepository.createSignal(0, 380, 160);
     this.netRepository.updateSelectedSignals([1, 3]);
@@ -130,12 +130,10 @@ export class ExampleNetsDialogComponent {
     this.netRepository.addSignal();
     this.netRepository.updateSelectedSignals([1, 3]);
     this.netRepository.createSignal(0, 380, 100);
-
     this.netRepository.updateSelectedSignals([2]);
-    this.netRepository.createSignal(0, 560, 260);
-
+    this.netRepository.createSignal(2, 560, 260);
     this.netRepository.updateSelectedSignals([1, 2, 3, 4]);
-    this.netRepository.createSignal(0, 380, 420);
+    this.netRepository.createSignal(3, 380, 420);
     this.close();
   }
 

@@ -2,7 +2,6 @@ import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenHelper } from './../../../../../core/helpers/TokenHelper';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
-import { MatDialog } from '@angular/material/dialog';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { Component, OnInit, Inject } from '@angular/core';
 import * as $ from 'jquery';
@@ -21,7 +20,6 @@ export class MenuStepTwoComponent implements OnInit {
   netRepository: NetRepository;
 
   constructor(
-    private dialog: MatDialog,
     @Inject(NetRepository) netRepository: NetRepository,
     private snackBar: MatSnackBar
   ) {
@@ -32,19 +30,19 @@ export class MenuStepTwoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateOutputSignals(): void {
+  updateActiveInputSignals(): void {
     $(BoardHelper.getBoard()).off();
     $('.transition').off();
     PlaceHelper.setPointerCursor();
 
     const activeSignals: number[] = [];
-    const signals = document.getElementsByClassName('output-signal');
+    const signals = document.getElementsByClassName('active-input-signal');
     Array.from(signals).forEach(signal => {
       if ($(signal).is(':checked')) {
-        activeSignals.push(Number(signal.getAttribute('id').split('-')[1]));
+        activeSignals.push(Number(signal.getAttribute('id').split('-')[3]));
       }
     });
-    this.netRepository.signalRepository.updateOutputSignals(activeSignals);
+    this.netRepository.signalRepository.updateActiveInputSignals(activeSignals);
     this.checkIfTransitionCanBeFired();
   }
 
@@ -60,7 +58,7 @@ export class MenuStepTwoComponent implements OnInit {
 
   checkIfSignalsAreEnabled(id: number): boolean {
     return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
-      this.netRepository.signalRepository.outputSignals.includes(signal));
+      this.netRepository.signalRepository.activeInputSignals.includes(signal));
   }
 
   checkIfTransitionCanBeFired(): void {
@@ -68,9 +66,6 @@ export class MenuStepTwoComponent implements OnInit {
       const inputPlacesIDs = this.getInputPlacesIDs(id);
       if (this.shouldTransitionBeEnabled(inputPlacesIDs)) {
         if (!this.checkIfSignalsAreEnabled(id)) {
-          this.snackBar.open('Signals are not ready!', 'close', {
-            duration: 2000,
-          });
           this.disableTransition(id);
         } else {
           this.enableTransition(id);
@@ -201,7 +196,6 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   stopSimulation(): void {
-    console.log(this.autoSimulationTimeout);
     if (this.autoSimulationTimeout !== undefined) {
       clearTimeout(this.autoSimulationTimeout);
     } else {

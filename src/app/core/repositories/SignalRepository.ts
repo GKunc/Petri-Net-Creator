@@ -7,18 +7,23 @@ export class SignalRepository {
     inputSignals: number[];
     currentSignalNumber: number;
     selectedInputSignals: number[];
-    outputSignals: number[];
+    activeInputSignals: number[];
 
   constructor() {
       this.currentSignalNumber = 1;
       this.inputSignals = [1];
       this.selectedInputSignals = [];
-      this.outputSignals = [];
+      this.activeInputSignals = [];
   }
 
   addSignal(): void {
     this.currentSignalNumber++;
     this.inputSignals.push(this.currentSignalNumber);
+  }
+  removeAll(): void {
+    while (this.inputSignals.length > 1) {
+      this.removeSignal();
+    }
   }
 
   removeSignal(): void {
@@ -32,7 +37,7 @@ export class SignalRepository {
     this.selectedInputSignals = selectedInputSignals;
   }
 
-  updateOutputSignals(outputSignals: number[]): void {
-    this.outputSignals = outputSignals;
+  updateActiveInputSignals(activeInputSignals: number[]): void {
+    this.activeInputSignals = activeInputSignals;
   }
 }

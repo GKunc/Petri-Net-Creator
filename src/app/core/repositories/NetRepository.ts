@@ -19,6 +19,8 @@ export class NetRepository {
 
     netMatrix: number[][];
 
+    initWasCalled: boolean;
+
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository,
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
@@ -32,16 +34,18 @@ export class NetRepository {
             this.signalRepository = signalRepository;
 
             this.netMatrix = [];
+
+            this.initWasCalled = false;
     }
 
     initNet(): void {
+        this.initWasCalled = true;
         for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
             this.netMatrix[i] = [];
             for (let j = 0; j < this.placeRepository.getAll().length; j++) {
                 this.netMatrix[i][j] = 0;
             }
         }
-        console.log(this.netMatrix);
         this.updateNetWithConnections();
     }
 
@@ -82,6 +86,7 @@ export class NetRepository {
         this.placeRepository.removeAll();
         this.transitionRepository.removeAll();
         this.tokenRepository.removeAll();
+        this.signalRepository.removeAll();
     }
 
     addSignal(): void {

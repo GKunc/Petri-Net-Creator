@@ -1,3 +1,4 @@
+import { NetMatrixDialogComponent } from './app/components/dialogs/net-matrix-dialog/net-matrix-dialog.component';
 import { AddInputSignalsDialogComponent } from './app/components/dialogs/add-input-signals-dialog/add-input-signals-dialog.component';
 import { ExampleNetsDialogComponent } from './app/components/dialogs/example-nets-dialog/example-nets-dialog.component';
 import { CursorManager } from './app/shared/cursorManager';
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
     AddInputSignalsDialogComponent,
+    NetMatrixDialogComponent,
     MenuStepOneComponent,
     MenuStepTwoComponent,
     MenuStepThreeComponent,
@@ -48,7 +50,8 @@ import { CommonModule } from '@angular/common';
   entryComponents: [
     ClearBoardDialogComponent,
     ExampleNetsDialogComponent,
-    AddInputSignalsDialogComponent
+    AddInputSignalsDialogComponent,
+    NetMatrixDialogComponent
   ]
 })
 
