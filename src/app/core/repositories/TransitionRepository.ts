@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Transition } from './../models/Transition';
-import { INetElement } from './../models/INetElement';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TransitionRepository {
-    transitions: Transition[];
+    private transitions: Transition[];
 
     constructor() {
         this.transitions = [];
     }
 
+    setTransitions(transitions: Transition[]): void {
+        this.transitions = transitions;
+    }
+
     create(x: number, y: number): void {
-        const transition: Transition = new Transition(this.getLowestAvailableID());
-        transition.create(x, y);
+        const transition: Transition = new Transition();
+        transition.create(this.getLowestAvailableID(), x, y);
         this.transitions.push(transition);
     }
 
@@ -34,7 +37,7 @@ export class TransitionRepository {
         return this.transitions.find(transition => transition.getID() === id);
     }
 
-    deleteElementByID(id: number): void {
+    remove(id: number): void {
         const index = this.transitions.indexOf(this.getByID(id));
         if (index !== -1) {
             this.transitions.splice(index, 1);

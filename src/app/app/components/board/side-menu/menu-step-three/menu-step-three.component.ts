@@ -27,4 +27,8 @@ export class MenuStepThreeComponent implements OnInit {
   showNetMatrix(): void {
     this.netMatrixDialogRef = this.dialog.open(NetMatrixDialogComponent);
   }
+
+  minimizeNet(): void {
+    this.netRepository.minimizeNet();
+  }
 }

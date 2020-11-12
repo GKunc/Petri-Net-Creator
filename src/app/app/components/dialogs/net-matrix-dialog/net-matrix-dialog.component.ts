@@ -22,8 +22,8 @@ export class NetMatrixDialogComponent {
 
     this.netRepository.initNet();
 
-    this.numberOfPlaces = Array(this.netRepository.placeRepository.places.length);
-    this.numberOfTransitions = Array(this.netRepository.transitionRepository.transitions.length);
+    this.numberOfPlaces = Array(this.netRepository.placeRepository.getAll().length);
+    this.numberOfTransitions = Array(this.netRepository.transitionRepository.getAll().length);
     console.log(this.netRepository.netMatrix);
   }
 

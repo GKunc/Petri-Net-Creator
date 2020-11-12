@@ -5,15 +5,20 @@ import { Place } from './../models/Place';
     providedIn: 'root'
 })
 export class PlaceRepository {
-    places: Place[];
+    private places: Place[];
 
     constructor() {
         this.places = [];
     }
 
+    setPlaces(places: Place[]): void {
+        this.places = places;
+    }
+
     create(x: number, y: number): void {
-        const place: Place = new Place(this.getLowestAvailableID());
-        place.create(x, y);
+        const place: Place = new Place();
+        place.id = this.getLowestAvailableID();
+        place.create(place.id , x, y);
         this.places.push(place);
     }
 
@@ -29,14 +34,14 @@ export class PlaceRepository {
         return this.places.find(place => place.getID() === id);
     }
 
-    deleteElementByID(id: number): void {
+    remove(id: number): void {
         const index = this.places.indexOf(this.getByID(id));
         if (index !== -1) {
             this.places.splice(index, 1);
         }
     }
 
-    getLowestAvailableID(): number {
+    private getLowestAvailableID(): number {
         let id = 0;
         let found = false;
         while (!found) {

@@ -20,6 +20,7 @@ export class SignalRepository {
     this.currentSignalNumber++;
     this.inputSignals.push(this.currentSignalNumber);
   }
+
   removeAll(): void {
     while (this.inputSignals.length > 1) {
       this.removeSignal();

@@ -1,4 +1,3 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Injectable } from '@angular/core';
 import { Arc } from './../models/Arc';
 
@@ -7,7 +6,7 @@ import { Arc } from './../models/Arc';
 })
 export class ArcRepository {
 
-    constructor(private snackBar: MatSnackBar) {}
+    constructor() {}
 
     create(ID: string): void {
         const arc = new Arc();

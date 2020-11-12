@@ -6,21 +6,25 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class TokenRepository {
-    tokens: Token[];
+    private tokens: Token[];
 
     constructor() {
         this.tokens = [];
     }
 
+    setTokens(tokens: Token[]): void {
+        this.tokens = tokens;
+    }
+
     create(id: number): void {
-        const token: Token = new Token(id);
+        const token: Token = new Token();
         const x = Number(document.getElementById(`place-${id}`).getAttribute('cx')) + 170;
         const y = Number(document.getElementById(`place-${id}`).getAttribute('cy'));
-        token.create(x, y);
+        token.create(id, x, y);
         this.tokens.push(token);
     }
 
-        remove(id: number): void {
+    remove(id: number): void {
         TokenHelper.remove(id);
         const index = this.tokens.indexOf(this.getByID(id));
         if (index !== -1) {
@@ -39,12 +43,5 @@ export class TokenRepository {
 
     getByID(id: number): Token {
         return this.tokens.find(place => place.getID() === id);
-    }
-
-    deleteElementByID(id: number): void {
-        const index = this.tokens.indexOf(this.getByID(id));
-        if (index !== -1) {
-            this.tokens.splice(index, 1);
-        }
     }
 }

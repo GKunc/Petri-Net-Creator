@@ -141,10 +141,10 @@ export class MenuStepOneComponent implements OnInit {
         if (token !== null && token !== undefined) {
           board.removeChild(token);
         }
-        this.netRepository.placeRepository.deleteElementByID(Number(ID));
+        this.netRepository.placeRepository.remove(Number(ID));
 
       } else if (elementType === 'transition') {
-        this.netRepository.transitionRepository.deleteElementByID(Number(ID));
+        this.netRepository.transitionRepository.remove(Number(ID));
       }
 
       const arcs = document.getElementsByClassName('arc');

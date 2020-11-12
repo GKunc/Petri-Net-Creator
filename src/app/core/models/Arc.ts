@@ -1,9 +1,4 @@
-import * as $ from 'jquery';
-import { ArcHelper } from './../helpers/ArcHelper';
-import { BoardHelper } from './../helpers/BoardHelper';
 import { INetElement } from './INetElement';
-
-const ARC_PREFIX = 'arc-';
 
 export class Arc implements INetElement {
     id: string;

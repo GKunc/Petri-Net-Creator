@@ -1,3 +1,4 @@
+import { MinimizedNetBuilder } from './../builders/MinimizedNetBuilder';
 import { SignalHelper } from './../helpers/SignalHelper';
 import { SignalRepository } from './SignalRepository';
 import { ArcHelper } from './../helpers/ArcHelper';
@@ -16,8 +17,12 @@ export class NetRepository {
     arcRepository: ArcRepository;
     tokenRepository: TokenRepository;
     signalRepository: SignalRepository;
+    minimizedNetBuilder: MinimizedNetBuilder;
 
     netMatrix: number[][];
+
+    mainMinimizedMatrix: number[][];
+    subnetMinimizedMatrices: number[][][];
 
     initWasCalled: boolean;
 
@@ -26,12 +31,14 @@ export class NetRepository {
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
         @Inject(ArcRepository) arcRepository: ArcRepository,
         @Inject(TokenRepository) tokenRepository: TokenRepository,
-        @Inject(SignalRepository) signalRepository: SignalRepository) {
+        @Inject(SignalRepository) signalRepository: SignalRepository,
+        @Inject(MinimizedNetBuilder) minimizedNetBuilder: MinimizedNetBuilder) {
             this.placeRepository = placeRepository;
             this.transitionRepository = transitionRepository;
             this.arcRepository = arcRepository;
             this.tokenRepository = tokenRepository;
             this.signalRepository = signalRepository;
+            this.minimizedNetBuilder = minimizedNetBuilder;
 
             this.netMatrix = [];
 
@@ -105,5 +112,10 @@ export class NetRepository {
         SignalHelper.createLabelForTransition(transitionNumber,
           this.signalRepository.selectedInputSignals, xPosition, yPosition);
         this.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedInputSignals);
-      }
+    }
+
+    minimizeNet(): void {
+        this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix(this.netMatrix);
+        this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices(this.netMatrix);
+    }
 }
