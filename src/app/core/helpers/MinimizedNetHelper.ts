@@ -9,7 +9,6 @@ export class MinimizedNetHelper {
     public static displayMainNet(mainMatrix: MinimizedNet): void {
         this.drawTransitions(mainMatrix.net);
         this.drawPlaces(mainMatrix.net);
-        // this.drawSignals(mainMatrix);
         this.createArcBetweenElementsInMainNet(mainMatrix.net);
         TokenHelper.createToken(0);
     }
@@ -25,7 +24,6 @@ export class MinimizedNetHelper {
             for (let id = 0; id < subnet[0].length; id++) {
                 PlaceHelper.createPlaceWtihLabel(id, 100 + 100 * id, 50 + 100 * (2 * i + 2), `subnet-${i}-`, SUBNET_COLOR[i]);
             }
-            // this.drawSignals(subnet);
             this.createArcBetweenElementsInSubnetNet(subnet, i);
         }
 

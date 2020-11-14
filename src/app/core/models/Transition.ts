@@ -4,11 +4,17 @@ import { INetElement } from './INetElement';
 
 export class Transition implements INetElement {
     id: number;
-    color = 'white';
+    xPosition: number;
+    yPosition: number;
     signals: number[];
 
     constructor() {
         this.signals = [];
+    }
+
+    updateCoordinates(xPosition: number, yPosition: number): void {
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
     }
 
     addSignals(signals: number[]): void {

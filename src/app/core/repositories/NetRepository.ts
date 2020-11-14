@@ -114,6 +114,8 @@ export class NetRepository {
 
     minimizeNet(): void {
         // rememver position of each element
+        this.savePositionOfElements();
+
         this.isNetMinimized = true;
         this.buildNetMatrix();
         this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
@@ -123,8 +125,19 @@ export class NetRepository {
         this.printMatrixes();
     }
 
-    addSignalsToMinimizedNet(): void {
+    savePositionOfElements(): void {
+        this.transitionRepository.getAll().forEach(transition => {
+            const transitionDOM = document.getElementById(`transition-${transition.getID()}`);
+            transition.updateCoordinates(Number(transitionDOM.getAttribute('x')), Number(transitionDOM.getAttribute('y')));
+        });
 
+        this.placeRepository.getAll().forEach(place => {
+            const placeDOM = document.getElementById(`place-${place.getID()}`);
+            place.updateCoordinates(Number(placeDOM.getAttribute('cx')), Number(placeDOM.getAttribute('cy')));
+        });
+    }
+
+    addSignalsToMinimizedNet(): void {
         for (let i = 0; i < this.mainMinimizedMatrix.net.length; i++) {
             SignalHelper.createLabelForTransition(i,
                 this.transitionRepository.getByID(this.mainMinimizedMatrix.originalTransitions[i]).signals);
@@ -135,6 +148,13 @@ export class NetRepository {
                 SignalHelper.createLabelForTransition(
                     j, this.transitionRepository.getByID(this.subnetMinimizedMatrices[i].originalTransitions[j]).signals, i);
             }
+        }
+    }
+
+    addSignalsToUnminimizedNet(): void {
+        for (let i = 0; i < this.netMatrix.length; i++) {
+            SignalHelper.createLabelForTransition(i,
+                this.transitionRepository.getByID(i).signals);
         }
     }
 

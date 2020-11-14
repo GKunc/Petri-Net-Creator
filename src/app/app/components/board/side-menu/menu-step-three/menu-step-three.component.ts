@@ -1,3 +1,4 @@
+import { NetHelper } from './../../../../../core/helpers/NetHelper';
 import { MinimizedNetHelper } from './../../../../../core/helpers/MinimizedNetHelper';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -42,7 +43,12 @@ export class MenuStepThreeComponent implements OnInit {
   backToUnminimizedNet(): void {
     this.netRepository.isNetMinimized = false;
     this.clearBoard();
-    // print original net
+    NetHelper.displayNet(
+      this.netRepository.netMatrix,
+      this.netRepository.placeRepository.getAll(),
+      this.netRepository.transitionRepository.getAll()
+    );
+    this.netRepository.addSignalsToUnminimizedNet();
   }
 
   clearBoard(): void {
