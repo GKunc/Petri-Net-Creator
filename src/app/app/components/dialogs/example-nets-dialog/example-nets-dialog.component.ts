@@ -183,6 +183,41 @@ export class ExampleNetsDialogComponent {
     this.close();
   }
 
+  drawFourthNet(): void {
+    this.clearBoard();
+    this.netRepository.createPlace(600, 60);
+    this.netRepository.createTransition(600, 140);
+    this.netRepository.createPlace(400, 200);
+    this.netRepository.createPlace(800, 200);
+    this.netRepository.createTransition(400, 280);
+    this.netRepository.createTransition(800, 350);
+    this.netRepository.createPlace(260, 310);
+    this.netRepository.createPlace(540, 310);
+    this.netRepository.createTransition(400, 380);
+    this.netRepository.createPlace(400, 460);
+    this.netRepository.createPlace(800, 460);
+    this.netRepository.createTransition(600, 520);
+    this.netRepository.createPlace(600, 600);
+
+    ArcHelper.createArc('place-0', 'transition-0');
+    ArcHelper.createArc('transition-0', 'place-1');
+    ArcHelper.createArc('transition-0', 'place-2');
+    ArcHelper.createArc('place-1', 'transition-1');
+    ArcHelper.createArc('place-2', 'transition-2');
+    ArcHelper.createArc('transition-1', 'place-3');
+    ArcHelper.createArc('transition-1', 'place-4');
+    ArcHelper.createArc('place-3', 'transition-3');
+    ArcHelper.createArc('place-4', 'transition-3');
+    ArcHelper.createArc('transition-2', 'place-6');
+    ArcHelper.createArc('transition-3', 'place-5');
+    ArcHelper.createArc('place-5', 'transition-4');
+    ArcHelper.createArc('place-6', 'transition-4');
+    ArcHelper.createArc('transition-4', 'place-7');
+
+
+    this.close();
+  }
+
   close(): void {
     this.dialogRef.close();
   }

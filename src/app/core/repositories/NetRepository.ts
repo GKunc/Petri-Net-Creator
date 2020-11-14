@@ -115,7 +115,10 @@ export class NetRepository {
     }
 
     minimizeNet(): void {
+        this.initNet();
         this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix(this.netMatrix);
+        console.log('Main minimized matrix:');
+        console.log(this.mainMinimizedMatrix);
         this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices(this.netMatrix);
     }
 }
