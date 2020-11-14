@@ -31,21 +31,19 @@ export class NetRepository {
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
         @Inject(ArcRepository) arcRepository: ArcRepository,
         @Inject(TokenRepository) tokenRepository: TokenRepository,
-        @Inject(SignalRepository) signalRepository: SignalRepository,
-        @Inject(MinimizedNetBuilder) minimizedNetBuilder: MinimizedNetBuilder) {
+        @Inject(SignalRepository) signalRepository: SignalRepository) {
             this.placeRepository = placeRepository;
             this.transitionRepository = transitionRepository;
             this.arcRepository = arcRepository;
             this.tokenRepository = tokenRepository;
             this.signalRepository = signalRepository;
-            this.minimizedNetBuilder = minimizedNetBuilder;
 
             this.netMatrix = [];
 
             this.initWasCalled = false;
     }
 
-    initNet(): void {
+    buildNetMatrix(): void {
         this.initWasCalled = true;
         for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
             this.netMatrix[i] = [];
@@ -115,10 +113,13 @@ export class NetRepository {
     }
 
     minimizeNet(): void {
-        this.initNet();
-        this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix(this.netMatrix);
+        this.buildNetMatrix();
+        this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
+        this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix();
+        this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices();
         console.log('Main minimized matrix:');
         console.log(this.mainMinimizedMatrix);
-        this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices(this.netMatrix);
+        console.log('Subnets minimized matrix:');
+        console.log(this.subnetMinimizedMatrices);
     }
 }

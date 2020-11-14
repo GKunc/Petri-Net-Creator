@@ -1,30 +1,125 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-    providedIn: 'root'
-})
 export class MinimizedNetBuilder {
-    createMainMatrix(netMatrix: number[][]): number[][] {
-        return this.convertNetMatrixToMainMinimizedMatrix(netMatrix);
+    netMatrix: number[][];
+
+    constructor(netMatrix: number[][]) {
+        this.netMatrix = netMatrix;
     }
 
-    createSubnetMatrices(netMatrix: number[][]): number[][][] {
-        // alert('Create Main Matrix');
-        return [];
-
+    createMainMatrix(): number[][] {
+        return this.convertNetMatrixToMainMinimizedMatrix();
     }
 
-    private findStartAndEndOfSubnets(netMatrix: number[][]): {start: number, end: number} {
+    createSubnetMatrices(): number[][][] {
+        const {start, end} = this.findStartAndEndOfSubnets();
+        const subnetsMatrixes = [];
+        const places = this.findPlacesStart(start);
+        for (let i = 0; i < places.length; i++) {
+            subnetsMatrixes.push(this.createSubnet(this.findTransitionStart(places[i]), places[i], end));
+        }
+        return subnetsMatrixes;
+    }
+
+    private createSubnet(startPlace: number, startTransition: number, end: number): number[][] {
+        const subnetFinal = [];
+        const rowsInSubnet = this.findNextValue(startTransition, [], end); // ok
+        const subnet = this.subnetMatrix(rowsInSubnet);
+        console.log('rowsInSubnet');
+        console.log(rowsInSubnet);
+        const columns = this.columnsToDelete(startPlace, rowsInSubnet);
+        console.log('columns');
+        console.log(columns);
+        for (let i = 0; i < subnet.length; i++) {
+            const rowFinal = [];
+            for (let j = 0; j < subnet[0].length; j++) {
+                if (!columns.includes(j)) {
+                    rowFinal.push(subnet[i][j]);
+                }
+            }
+            subnetFinal.push(rowFinal);
+        }
+
+        return subnetFinal;
+    }
+
+    private columnsToDelete(start: number, rows: number[]): number[] {
+        const columnsToDelete = [];
+
+        for (let i = 0; i < this.netMatrix[0].length; i++) {
+            // init zeros
+            if (this.netMatrix[start][i] === 0) {
+                columnsToDelete.push(i);
+            }
+        }
+
+        rows.forEach(row => {
+            for (let i = 1; i < this.netMatrix[0].length; i++) {
+                if (this.netMatrix[row][i] !== 0 && columnsToDelete.includes(i)) {
+                    // delete when some column has value other than 0
+                    columnsToDelete.splice(columnsToDelete.indexOf(i), 1);
+                }
+            }
+        });
+
+        return columnsToDelete;
+    }
+
+    private subnetMatrix(rows: number[]): number[][] {
+        const result = [];
+        for (let i = 0; i < this.netMatrix.length; i++) {
+            if (rows.includes(i)) {
+                result.push(this.netMatrix[i]);
+            }
+        }
+        return result;
+    }
+
+    private findNextValue(currentColumn: number, rows: number[], end: number): number[] {
+        if (currentColumn === this.netMatrix[0].length) {
+            return rows;
+        }
+
+        for (let i = 0; i < end; i++) {
+            if (this.netMatrix[i][currentColumn] === -1) {
+                for (let j = 1; j < this.netMatrix[0].length - 1; j++) {
+                    if (this.netMatrix[i][j] === 1) {
+                        rows.push(i);
+                        this.findNextValue(j, rows, end);
+                    }
+                }
+            }
+        }
+        return rows;
+    }
+
+    private findTransitionStart(column: number): number {
+        for (let i = 0; i < this.netMatrix.length; i++) {
+            if (this.netMatrix[i][column] === -1) {
+                return i;
+            }
+        }
+    }
+
+    private findPlacesStart(row: number): number[] {
+        const placesStarts = [];
+        for (let i = 0; i < this.netMatrix[0].length; i++) {
+            if (this.netMatrix[row][i] === 1) {
+                placesStarts.push(i);
+            }
+        }
+        return placesStarts;
+    }
+
+    private findStartAndEndOfSubnets(): {start: number, end: number} {
         let start = -1;
         let end = -1;
-        for (let i = 0; i < netMatrix.length; i++) {
+        for (let i = 0; i < this.netMatrix.length; i++) {
             let countOnes = 0;
             let countNegativeOnes = 0;
-            for (let j = 0; j < netMatrix[0].length; j++) {
-                if (netMatrix[i][j] === 1) {
+            for (let j = 0; j < this.netMatrix[0].length; j++) {
+                if (this.netMatrix[i][j] === 1) {
                     countOnes += 1;
                 }
-                if (netMatrix[i][j] === -1) {
+                if (this.netMatrix[i][j] === -1) {
                     countNegativeOnes += 1;
                 }
 
@@ -40,21 +135,16 @@ export class MinimizedNetBuilder {
         return {start, end};
     }
 
-    private convertNetMatrixToMainMinimizedMatrix(netMatrix: number[][]): number[][] {
-        const minimizedNetInitial = this.createInitialMainMatrix(netMatrix);
+
+    private convertNetMatrixToMainMinimizedMatrix(): number[][] {
+        const minimizedNetInitial = this.createInitialMainMatrix();
         const minimizedNetFinal = [];
 
         const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
         const endRow = this.findRowOfDoubles(minimizedNetInitial, -1);
 
-        const indexesOfOnes = this.findIndexesOfDoubles(minimizedNetInitial, 1);
-        const indexesOfZeros = this.findIndexesOfDoubles(minimizedNetInitial, 0);
-
-        for (let i = 0; i < minimizedNetInitial[endRow].length; i++) {
-            if (minimizedNetInitial[endRow][i] === 1 && indexesOfZeros.includes(i)) {
-                indexesOfZeros.splice(indexesOfZeros.indexOf(i), 1);
-            }
-        }
+        const indexesOfOnes = this.findIndexesOfValues(minimizedNetInitial, 1);
+        const indexesOfZeros = this.removeExtraZeroIndexes(minimizedNetInitial, endRow, this.findIndexesOfValues(minimizedNetInitial, 0));
 
         for (let i = 0; i < minimizedNetInitial.length; i++) {
             const row = [];
@@ -80,16 +170,16 @@ export class MinimizedNetBuilder {
         return minimizedNetFinal;
     }
 
-    private createInitialMainMatrix(netMatrix: number[][]): number[][] {
+    private createInitialMainMatrix(): number[][] {
         const minimizedNetInitial = [];
-        const {start, end} = this.findStartAndEndOfSubnets(netMatrix);
+        const {start, end} = this.findStartAndEndOfSubnets();
 
         for (let i = 0; i <= start; i++) {
-            minimizedNetInitial.push(netMatrix[i]);
+            minimizedNetInitial.push(this.netMatrix[i]);
         }
 
-        for (let i = end; i < netMatrix.length; i++) {
-            minimizedNetInitial.push(netMatrix[i]);
+        for (let i = end; i < this.netMatrix.length; i++) {
+            minimizedNetInitial.push(this.netMatrix[i]);
         }
         return minimizedNetInitial;
     }
@@ -97,12 +187,12 @@ export class MinimizedNetBuilder {
     private findRowOfDoubles(minimizedNetFirst: number[][], value: number): number {
         let row = -1;
         for (let i = 0; i < minimizedNetFirst.length; i++) {
-            let countOnes = 0;
+            let countValues = 0;
             for (let j = 0; j < minimizedNetFirst[0].length; j++) {
                 if (minimizedNetFirst[i][j] === value) {
-                    countOnes += 1;
+                    countValues += 1;
                 }
-                if (countOnes >= 2) {
+                if (countValues >= 2) {
                     row = i;
                     break;
                 }
@@ -111,17 +201,29 @@ export class MinimizedNetBuilder {
         return row;
     }
 
-    private findIndexesOfDoubles(minimizedNetFirst: number[][], value: number): number[] {
+    private findIndexesOfValues(minimizedNetInitial: number[][], value: number): number[] {
         const indexes = [];
-        let row = this.findRowOfDoubles(minimizedNetFirst, value);
+        let row = this.findRowOfDoubles(minimizedNetInitial, value);
         if (value === 0) {
-            row = this.findRowOfDoubles(minimizedNetFirst, 1);
+            row = this.findRowOfDoubles(minimizedNetInitial, 1);
         }
-        for (let i = 1; i < minimizedNetFirst[row].length - 1; i++) {
-            if (minimizedNetFirst[row][i] === value) {
+
+        for (let i = 1; i < minimizedNetInitial[row].length - 1; i++) {
+            if (minimizedNetInitial[row][i] === value) {
                 indexes.push(i);
             }
         }
+
         return indexes;
+    }
+
+    private removeExtraZeroIndexes(minimizedNetInitial: number[][], endRow: number, indexesOfZeros: number[]): number[] {
+        for (let i = 0; i < minimizedNetInitial[endRow].length; i++) {
+            if (minimizedNetInitial[endRow][i] === 1 && indexesOfZeros.includes(i)) {
+                indexesOfZeros.splice(indexesOfZeros.indexOf(i), 1);
+                alert('here');
+            }
+        }
+        return indexesOfZeros;
     }
 }
