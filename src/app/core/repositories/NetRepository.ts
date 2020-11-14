@@ -121,8 +121,6 @@ export class NetRepository {
         this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
         this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix();
         this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices();
-
-        this.printMatrixes();
     }
 
     savePositionOfElements(): void {
