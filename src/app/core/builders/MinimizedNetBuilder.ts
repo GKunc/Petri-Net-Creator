@@ -1,3 +1,4 @@
+import { MinimizedNet } from './../models/MinimizedNet';
 export class MinimizedNetBuilder {
     netMatrix: number[][];
 
@@ -5,11 +6,12 @@ export class MinimizedNetBuilder {
         this.netMatrix = netMatrix;
     }
 
-    createMainMatrix(): number[][] {
+    createMainMatrix(): MinimizedNet {
+        console.log('MAIN TRANSITIONS: ' + this.findStartAndEndOfSubnets().start, this.findStartAndEndOfSubnets().end);
         return this.convertNetMatrixToMainMinimizedMatrix();
     }
 
-    createSubnetMatrices(): number[][][] {
+    createSubnetMatrices(): MinimizedNet[] {
         const {start, end} = this.findStartAndEndOfSubnets();
         const subnetsMatrixes = [];
         const places = this.findPlacesStart(start);
@@ -19,15 +21,14 @@ export class MinimizedNetBuilder {
         return subnetsMatrixes;
     }
 
-    private createSubnet(startPlace: number, startTransition: number, end: number): number[][] {
+    private createSubnet(startPlace: number, startTransition: number, end: number): MinimizedNet {
         const subnetFinal = [];
-        const rowsInSubnet = this.findNextValue(startTransition, [], end); // ok
+        const rowsInSubnet = this.findNextValue(startTransition, [], end);
+        console.log('SUB TRANSITIONS: ' + rowsInSubnet);
+
         const subnet = this.subnetMatrix(rowsInSubnet);
-        console.log('rowsInSubnet');
-        console.log(rowsInSubnet);
         const columns = this.columnsToDelete(startPlace, rowsInSubnet);
-        console.log('columns');
-        console.log(columns);
+
         for (let i = 0; i < subnet.length; i++) {
             const rowFinal = [];
             for (let j = 0; j < subnet[0].length; j++) {
@@ -38,14 +39,13 @@ export class MinimizedNetBuilder {
             subnetFinal.push(rowFinal);
         }
 
-        return subnetFinal;
+        return new MinimizedNet(subnetFinal, rowsInSubnet);
     }
 
     private columnsToDelete(start: number, rows: number[]): number[] {
         const columnsToDelete = [];
 
         for (let i = 0; i < this.netMatrix[0].length; i++) {
-            // init zeros
             if (this.netMatrix[start][i] === 0) {
                 columnsToDelete.push(i);
             }
@@ -135,10 +135,9 @@ export class MinimizedNetBuilder {
         return {start, end};
     }
 
-
-    private convertNetMatrixToMainMinimizedMatrix(): number[][] {
+    private convertNetMatrixToMainMinimizedMatrix(): MinimizedNet {
         const minimizedNetInitial = this.createInitialMainMatrix();
-        const minimizedNetFinal = [];
+        const minimizedNetFinal: number[][] = [];
 
         const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
         const endRow = this.findRowOfDoubles(minimizedNetInitial, -1);
@@ -167,13 +166,14 @@ export class MinimizedNetBuilder {
             }
             minimizedNetFinal.push(row);
         }
-        return minimizedNetFinal;
+        const {start, end} = this.findStartAndEndOfSubnets();
+
+        return new MinimizedNet(minimizedNetFinal, [start, end]);
     }
 
     private createInitialMainMatrix(): number[][] {
         const minimizedNetInitial = [];
         const {start, end} = this.findStartAndEndOfSubnets();
-
         for (let i = 0; i <= start; i++) {
             minimizedNetInitial.push(this.netMatrix[i]);
         }
@@ -184,12 +184,12 @@ export class MinimizedNetBuilder {
         return minimizedNetInitial;
     }
 
-    private findRowOfDoubles(minimizedNetFirst: number[][], value: number): number {
+    private findRowOfDoubles(netMatrix: number[][], value: number): number {
         let row = -1;
-        for (let i = 0; i < minimizedNetFirst.length; i++) {
+        for (let i = 0; i < netMatrix.length; i++) {
             let countValues = 0;
-            for (let j = 0; j < minimizedNetFirst[0].length; j++) {
-                if (minimizedNetFirst[i][j] === value) {
+            for (let j = 0; j < netMatrix[0].length; j++) {
+                if (netMatrix[i][j] === value) {
                     countValues += 1;
                 }
                 if (countValues >= 2) {

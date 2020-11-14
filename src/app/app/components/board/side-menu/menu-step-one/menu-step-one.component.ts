@@ -270,10 +270,8 @@ export class MenuStepOneComponent implements OnInit {
         SignalHelper.moveLabelWithCursor(signalLabel);
         $('.transition').on('click', (event) => {
             const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
-            const xPosition = Number(event.target.getAttribute('x'));
-            const yPosition = Number(event.target.getAttribute('y'));
 
-            this.netRepository.createSignal(transitionNumber, xPosition, yPosition);
+            this.netRepository.createSignal(transitionNumber);
           });
         }
     });

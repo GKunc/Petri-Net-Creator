@@ -1,3 +1,4 @@
+import { MinimizedNet } from './../models/MinimizedNet';
 import { MinimizedNetBuilder } from './../builders/MinimizedNetBuilder';
 import { SignalHelper } from './../helpers/SignalHelper';
 import { SignalRepository } from './SignalRepository';
@@ -21,10 +22,10 @@ export class NetRepository {
 
     netMatrix: number[][];
 
-    mainMinimizedMatrix: number[][];
-    subnetMinimizedMatrices: number[][][];
+    mainMinimizedMatrix: MinimizedNet;
+    subnetMinimizedMatrices: MinimizedNet[];
 
-    initWasCalled: boolean;
+    isNetMinimized: boolean;
 
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository,
@@ -40,11 +41,10 @@ export class NetRepository {
 
             this.netMatrix = [];
 
-            this.initWasCalled = false;
+            this.isNetMinimized = false;
     }
 
     buildNetMatrix(): void {
-        this.initWasCalled = true;
         for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
             this.netMatrix[i] = [];
             for (let j = 0; j < this.placeRepository.getAll().length; j++) {
@@ -106,21 +106,41 @@ export class NetRepository {
         this.signalRepository.updateSelectedSignals(signals);
     }
 
-    createSignal(transitionNumber: number, xPosition: number, yPosition: number): void {
+    createSignal(transitionNumber: number): void {
         SignalHelper.createLabelForTransition(transitionNumber,
-          this.signalRepository.selectedInputSignals, xPosition, yPosition);
+          this.signalRepository.selectedInputSignals);
         this.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedInputSignals);
     }
 
     minimizeNet(): void {
         // rememver position of each element
-
+        this.isNetMinimized = true;
         this.buildNetMatrix();
-        console.log(this.netMatrix)
         this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
         this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix();
         this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices();
 
+        this.printMatrixes();
+    }
+
+    addSignalsToMinimizedNet(): void {
+
+        for (let i = 0; i < this.mainMinimizedMatrix.net.length; i++) {
+            SignalHelper.createLabelForTransition(i,
+                this.transitionRepository.getByID(this.mainMinimizedMatrix.originalTransitions[i]).signals);
+        }
+
+        for (let i = 0; i < this.subnetMinimizedMatrices.length; i++) {
+            for (let j = 0; j < this.subnetMinimizedMatrices[0].net.length; j++) {
+                SignalHelper.createLabelForTransition(
+                    j, this.transitionRepository.getByID(this.subnetMinimizedMatrices[i].originalTransitions[j]).signals, i);
+            }
+        }
+    }
+
+    private printMatrixes(): void {
+        console.log('Net matrix:');
+        console.log(this.netMatrix);
         console.log('Main minimized matrix:');
         console.log(this.mainMinimizedMatrix);
         console.log('Subnets minimized matrix:');

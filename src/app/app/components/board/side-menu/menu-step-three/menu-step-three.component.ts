@@ -30,13 +30,17 @@ export class MenuStepThreeComponent implements OnInit {
   }
 
   minimizeNet(): void {
+    this.netRepository.isNetMinimized = true;
+    // save position of elements
     this.netRepository.minimizeNet();
     this.clearBoard();
     MinimizedNetHelper.displayMainNet(this.netRepository.mainMinimizedMatrix);
     MinimizedNetHelper.displaySubnets(this.netRepository.subnetMinimizedMatrices);
+    this.netRepository.addSignalsToMinimizedNet();
   }
 
   backToUnminimizedNet(): void {
+    this.netRepository.isNetMinimized = false;
     this.clearBoard();
     // print original net
   }

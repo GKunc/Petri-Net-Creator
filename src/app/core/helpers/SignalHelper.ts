@@ -38,13 +38,24 @@ export class SignalHelper {
         });
     }
 
-    static createLabelForTransition(transitionNumber: number, signalIDs: number[], xPosition: number, yPosition: number): void {
+    static createLabelForTransition(transitionNumber: number, signalIDs: number[], subnetNumber: number = -1): void {
         const cursors = document.getElementById('cursors');
         const board = document.getElementById('svg-board');
-        const signalLabel = document.getElementById('label-signal-' + transitionNumber);
+        let transition;
+        let signalLabel;
+        if (subnetNumber === -1) {
+            transition = document.getElementById(`transition-${transitionNumber}`);
+            signalLabel = document.getElementById('label-signal-' + transitionNumber);
+        } else {
+            transition = document.getElementById(`subnet-${subnetNumber}-transition-${transitionNumber}`);
+            signalLabel = document.getElementById(`subnet-${subnetNumber}-label-signal-${transitionNumber}`);
+        }
         if (signalLabel !== null) {
             board.removeChild(signalLabel);
         }
+        const xPosition = Number(transition.getAttribute('x'));
+        const yPosition = Number(transition.getAttribute('y'));
+
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('class', 'label');
         text.setAttribute('id', 'label-signal-' + transitionNumber);

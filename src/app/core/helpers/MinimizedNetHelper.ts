@@ -1,3 +1,4 @@
+import { MinimizedNet } from './../models/MinimizedNet';
 import { SUBNET_COLOR } from './../../app/shared/constants';
 import { TokenHelper } from './TokenHelper';
 import { PlaceHelper } from './PlaceHelper';
@@ -5,16 +6,17 @@ import { TransitionHelper } from './TransitionHelper';
 import { ArcHelper } from './ArcHelper';
 export class MinimizedNetHelper {
 
-    public static displayMainNet(mainMatrix: number[][]): void {
-        this.drawTransitions(mainMatrix);
-        this.drawPlaces(mainMatrix);
-        this.createArcBetweenElementsInMainNet(mainMatrix);
+    public static displayMainNet(mainMatrix: MinimizedNet): void {
+        this.drawTransitions(mainMatrix.net);
+        this.drawPlaces(mainMatrix.net);
+        // this.drawSignals(mainMatrix);
+        this.createArcBetweenElementsInMainNet(mainMatrix.net);
         TokenHelper.createToken(0);
     }
 
-    public static displaySubnets(subnetMatrices: number[][][]): void {
+    public static displaySubnets(subnetMatrices: MinimizedNet[]): void {
         for (let i = 0; i < subnetMatrices.length; i++) {
-            const subnet = subnetMatrices[i];
+            const subnet = subnetMatrices[i].net;
 
             for (let id = 0; id < subnet.length; id++) {
                 TransitionHelper.createTransitionWithLabel(id, 150 + 100 * id, 150 + (200 * (i + 1)), `subnet-${i}-`);
@@ -23,8 +25,8 @@ export class MinimizedNetHelper {
             for (let id = 0; id < subnet[0].length; id++) {
                 PlaceHelper.createPlaceWtihLabel(id, 100 + 100 * id, 50 + 100 * (2 * i + 2), `subnet-${i}-`, SUBNET_COLOR[i]);
             }
+            // this.drawSignals(subnet);
             this.createArcBetweenElementsInSubnetNet(subnet, i);
-            // subnetCompleted.push(0);
         }
 
     }

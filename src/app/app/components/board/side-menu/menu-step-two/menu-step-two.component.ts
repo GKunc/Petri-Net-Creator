@@ -51,9 +51,17 @@ export class MenuStepTwoComponent implements OnInit {
     PlaceHelper.setPointerCursor();
     $(BoardHelper.getBoard()).off();
     $('.net-element').off();
-    this.netRepository.buildNetMatrix();
-    this.checkIfTransitionCanBeFired();
     this.startTokens = Array.from(TokenHelper.getAll());
+
+    if (this.netRepository.isNetMinimized) {
+
+
+    } else {
+      this.netRepository.buildNetMatrix();
+      this.checkIfTransitionCanBeFired();
+    }
+
+
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
