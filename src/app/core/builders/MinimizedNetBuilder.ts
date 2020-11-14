@@ -7,7 +7,6 @@ export class MinimizedNetBuilder {
     }
 
     createMainMatrix(): MinimizedNet {
-        console.log('MAIN TRANSITIONS: ' + this.findStartAndEndOfSubnets().start, this.findStartAndEndOfSubnets().end);
         return this.convertNetMatrixToMainMinimizedMatrix();
     }
 
@@ -24,7 +23,6 @@ export class MinimizedNetBuilder {
     private createSubnet(startPlace: number, startTransition: number, end: number): MinimizedNet {
         const subnetFinal = [];
         const rowsInSubnet = this.findNextValue(startTransition, [], end);
-        console.log('SUB TRANSITIONS: ' + rowsInSubnet);
 
         const subnet = this.subnetMatrix(rowsInSubnet);
         const columns = this.columnsToDelete(startPlace, rowsInSubnet);

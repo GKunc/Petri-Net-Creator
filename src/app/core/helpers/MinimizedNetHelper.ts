@@ -15,14 +15,28 @@ export class MinimizedNetHelper {
 
     public static displaySubnets(subnetMatrices: MinimizedNet[]): void {
         for (let i = 0; i < subnetMatrices.length; i++) {
+            let index = i;
+            let transitionX = 100;
+            let placeX = 100;
+            if (150 + (200 * (i + 1)) > 550) {
+                index = 0;
+                transitionX = 500;
+                placeX = 500;
+            }
+
+            const transitionY = 150 + (200 * (index + 1));
+            const placeY = 50 + 100 * (2 * index + 2);
+
             const subnet = subnetMatrices[i].net;
 
             for (let id = 0; id < subnet.length; id++) {
-                TransitionHelper.createTransitionWithLabel(id, 150 + 100 * id, 150 + (200 * (i + 1)), `subnet-${i}-`);
+                TransitionHelper.createTransitionWithLabel(id, transitionX, transitionY, `subnet-${i}-`);
+                transitionX += 100 * id;
             }
 
             for (let id = 0; id < subnet[0].length; id++) {
-                PlaceHelper.createPlaceWtihLabel(id, 100 + 100 * id, 50 + 100 * (2 * i + 2), `subnet-${i}-`, SUBNET_COLOR[i]);
+                PlaceHelper.createPlaceWtihLabel(id, placeX, placeY, `subnet-${i}-`, SUBNET_COLOR[i]);
+                placeX += 100 * (id + 1);
             }
             this.createArcBetweenElementsInSubnetNet(subnet, i);
         }
