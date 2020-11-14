@@ -18,9 +18,7 @@ export class TokenRepository {
 
     create(id: number): void {
         const token: Token = new Token();
-        const x = Number(document.getElementById(`place-${id}`).getAttribute('cx')) + 170;
-        const y = Number(document.getElementById(`place-${id}`).getAttribute('cy'));
-        token.create(id, x, y);
+        token.create(id);
         this.tokens.push(token);
     }
 

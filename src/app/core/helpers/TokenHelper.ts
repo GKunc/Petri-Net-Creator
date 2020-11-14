@@ -19,7 +19,10 @@ export class TokenHelper {
         });
     }
 
-    static createToken(id: number, xPosition: number, yPosition: number): void {
+    static createToken(id: number): void {
+        const xPosition = Number(document.getElementById(`place-${id}`).getAttribute('cx'));
+        const yPosition = Number(document.getElementById(`place-${id}`).getAttribute('cy'));
+
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
 

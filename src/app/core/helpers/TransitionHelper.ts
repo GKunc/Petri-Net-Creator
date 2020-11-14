@@ -21,9 +21,9 @@ export class TransitionHelper {
         });
     }
 
-    static createTransition(id: number, xPosition: number, yPosition: number): Element {
+    static createTransition(id: number, xPosition: number, yPosition: number, prefix: string = ''): Element {
         const transition = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        transition.setAttribute('id', 'transition-' + id);
+        transition.setAttribute('id', `${prefix}transition-${id}`);
         transition.setAttribute('class', 'net-element transition');
         transition.setAttribute('x', xPosition.toString());
         transition.setAttribute('y', yPosition.toString());
@@ -36,10 +36,10 @@ export class TransitionHelper {
         return transition;
     }
 
-    static createLabel(id: number, xPosition: number, yPosition: number): Element {
+    static createLabel(id: number, xPosition: number, yPosition: number, prefix: string = ''): Element {
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         label.setAttribute('class', 'label');
-        label.setAttribute('id', 'label-transition-' + id);
+        label.setAttribute('id', `${prefix}label-transition-${id}`);
         label.setAttribute('x', (xPosition + 35).toString());
         label.setAttribute('y', (yPosition + 10).toString());
         label.setAttribute('fill', 'black');
@@ -51,10 +51,10 @@ export class TransitionHelper {
         return label;
     }
 
-    static createTransitionWithLabel(id: number, xPosition: number, yPosition: number): void {
+    static createTransitionWithLabel(id: number, xPosition: number, yPosition: number, prefix: string = ''): void {
         const cursors = document.getElementById('cursors');
-        const transition = this.createTransition(id, xPosition, yPosition);
-        const label = this.createLabel(id, xPosition, yPosition);
+        const transition = this.createTransition(id, xPosition, yPosition, prefix);
+        const label = this.createLabel(id, xPosition, yPosition, prefix);
 
         const board = document.getElementById('svg-board');
         board.insertBefore(transition, cursors);

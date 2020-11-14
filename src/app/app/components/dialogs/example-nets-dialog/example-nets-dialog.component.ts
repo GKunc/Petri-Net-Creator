@@ -198,6 +198,7 @@ export class ExampleNetsDialogComponent {
     this.netRepository.createPlace(800, 460);
     this.netRepository.createTransition(600, 520);
     this.netRepository.createPlace(600, 600);
+    this.netRepository.createToken(0);
 
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
@@ -213,7 +214,6 @@ export class ExampleNetsDialogComponent {
     ArcHelper.createArc('place-5', 'transition-4');
     ArcHelper.createArc('place-6', 'transition-4');
     ArcHelper.createArc('transition-4', 'place-7');
-
 
     this.close();
   }

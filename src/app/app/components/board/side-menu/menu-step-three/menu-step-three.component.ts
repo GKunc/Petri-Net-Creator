@@ -1,4 +1,5 @@
-import { ExampleNetsDialogComponent } from './../../../dialogs/example-nets-dialog/example-nets-dialog.component';
+import { MinimizedNetHelper } from './../../../../../core/helpers/MinimizedNetHelper';
+import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NetMatrixDialogComponent } from './../../../dialogs/net-matrix-dialog/net-matrix-dialog.component';
 import { NetRepository } from './../../../../../core/repositories/NetRepository';
@@ -30,5 +31,26 @@ export class MenuStepThreeComponent implements OnInit {
 
   minimizeNet(): void {
     this.netRepository.minimizeNet();
+    this.clearBoard();
+    MinimizedNetHelper.displayMainNet(this.netRepository.mainMinimizedMatrix);
+    MinimizedNetHelper.displaySubnets(this.netRepository.subnetMinimizedMatrices);
+  }
+
+  backToUnminimizedNet(): void {
+    this.clearBoard();
+    // print original net
+  }
+
+  clearBoard(): void {
+    const board = BoardHelper.getBoard();
+    let cloneCursors: Node;
+    while (board.firstChild) {
+      if (board.firstElementChild.getAttribute('id') === 'cursors') {
+        cloneCursors = board.firstChild;
+      }
+      board.removeChild(board.firstChild);
+    }
+    board.appendChild(cloneCursors);
+    BoardHelper.addArrowHeadMarker();
   }
 }

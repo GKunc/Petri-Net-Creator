@@ -21,24 +21,24 @@ export class PlaceHelper {
           });
     }
 
-    static createPlace(id: number, xPosition: number, yPosition: number): Element {
+    static createPlace(id: number, xPosition: number, yPosition: number, prefix: string = '', color: string = PLACE_FILL_COLOR): Element {
         const place = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        place.setAttribute('id', 'place-' + id);
+        place.setAttribute('id', `${prefix}place-${id}`);
         place.setAttribute('class', 'net-element place');
         place.setAttribute('cx', xPosition.toString());
         place.setAttribute('cy', yPosition.toString());
         place.setAttribute('r', PLACE_RADIUS.toString());
         place.setAttribute('stroke', 'black');
         place.setAttribute('stroke-width', '2');
-        place.setAttribute('fill', PLACE_FILL_COLOR);
+        place.setAttribute('fill', color);
         place.setAttribute('style', 'cursor: pointer');
         return place;
     }
 
-    static createLabel(id: number, xPosition: number, yPosition: number): Element {
+    static createLabel(id: number, xPosition: number, yPosition: number, prefix: string = ''): Element {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('class', 'label');
-        text.setAttribute('id', 'label-place-' + id);
+        text.setAttribute('id', `${prefix}label-place-${id}`);
         text.setAttribute('x', xPosition.toString());
         text.setAttribute('y', (yPosition - 17).toString());
         text.setAttribute('fill', 'black');
@@ -50,10 +50,12 @@ export class PlaceHelper {
         return text;
     }
 
-    static createPlaceWtihLabel(id: number, xPosition: number, yPosition: number): void {
+    static createPlaceWtihLabel(
+        id: number, xPosition: number, yPosition: number,
+        prefix: string = '', color: string = PLACE_FILL_COLOR): void {
         const cursors = document.getElementById('cursors');
-        const place = this.createPlace(id, xPosition, yPosition);
-        const label = this.createLabel(id, xPosition, yPosition);
+        const place = this.createPlace(id, xPosition, yPosition, prefix, color);
+        const label = this.createLabel(id, xPosition, yPosition, prefix);
         const board = document.getElementById('svg-board');
 
         board.insertBefore(place, cursors);

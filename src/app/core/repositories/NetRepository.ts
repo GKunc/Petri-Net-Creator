@@ -113,10 +113,14 @@ export class NetRepository {
     }
 
     minimizeNet(): void {
+        // rememver position of each element
+
         this.buildNetMatrix();
+        console.log(this.netMatrix)
         this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
         this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix();
         this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices();
+
         console.log('Main minimized matrix:');
         console.log(this.mainMinimizedMatrix);
         console.log('Subnets minimized matrix:');
