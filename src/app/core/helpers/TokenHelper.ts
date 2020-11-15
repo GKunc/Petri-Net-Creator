@@ -6,8 +6,8 @@ export class TokenHelper {
         return document.getElementsByClassName('token');
     }
 
-    static remove(id: number): void {
-        const token = document.getElementById(`token-place-${id}`);
+    static remove(id: number, prefix: string = ''): void {
+        const token = document.getElementById(`${prefix}token-place-${id}`);
         if (token !== null) {
             document.getElementById('svg-board').removeChild(token);
         }
@@ -19,14 +19,14 @@ export class TokenHelper {
         });
     }
 
-    static createToken(id: number): void {
-        const xPosition = Number(document.getElementById(`place-${id}`).getAttribute('cx'));
-        const yPosition = Number(document.getElementById(`place-${id}`).getAttribute('cy'));
+    static createToken(id: number, prefix: string = ''): void {
+        const xPosition = Number(document.getElementById(`${prefix}place-${id}`).getAttribute('cx'));
+        const yPosition = Number(document.getElementById(`${prefix}place-${id}`).getAttribute('cy'));
 
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
 
-        token.setAttribute('id', 'token-place-' + id);
+        token.setAttribute('id', `${prefix}token-place-` + id);
         token.setAttribute('class', 'net-element token');
         token.setAttribute('cx', xPosition.toString());
         token.setAttribute('cy', yPosition.toString());

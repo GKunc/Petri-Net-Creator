@@ -79,12 +79,12 @@ export class NetRepository {
         this.arcRepository.create(ID);
     }
 
-    createToken(id: number): void {
-        this.tokenRepository.create(id);
+    createToken(id: number, prefix: string = ''): void {
+        this.tokenRepository.create(id, prefix);
     }
 
-    removeToken(id: number): void {
-        this.tokenRepository.remove(id);
+    removeToken(id: number, prefix: string = ''): void {
+        this.tokenRepository.remove(id, prefix);
     }
 
     removeAllElements(): void {
@@ -121,6 +121,7 @@ export class NetRepository {
         this.minimizedNetBuilder = new MinimizedNetBuilder(this.netMatrix);
         this.mainMinimizedMatrix = this.minimizedNetBuilder.createMainMatrix();
         this.subnetMinimizedMatrices = this.minimizedNetBuilder.createSubnetMatrices();
+        this.printMatrixes();
     }
 
     savePositionOfElements(): void {

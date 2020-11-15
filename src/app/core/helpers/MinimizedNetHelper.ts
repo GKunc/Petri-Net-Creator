@@ -104,7 +104,7 @@ export class MinimizedNetHelper {
         }
     }
 
-    private static findIndexesOfValues(minimizedNetInitial: number[][], value: number): number[] {
+    static findIndexesOfValues(minimizedNetInitial: number[][], value: number): number[] {
         const indexes = [];
         let row = this.findRowOfDoubles(minimizedNetInitial, value);
         if (value === 0) {
@@ -120,7 +120,7 @@ export class MinimizedNetHelper {
         return indexes;
     }
 
-    private static findRowOfDoubles(minimizedNetFirst: number[][], value: number): number {
+    static findRowOfDoubles(minimizedNetFirst: number[][], value: number): number {
         let row = -1;
         for (let i = 0; i < minimizedNetFirst.length; i++) {
             let countValues = 0;
