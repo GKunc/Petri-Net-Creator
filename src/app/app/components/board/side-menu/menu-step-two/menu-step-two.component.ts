@@ -60,7 +60,13 @@ export class MenuStepTwoComponent implements OnInit {
       }
     });
     this.netRepository.signalRepository.updateActiveInputSignals(activeSignals);
-    this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
+    if (this.netRepository.isNetMinimized) {
+      this.checkIfAnySubnetFinished();
+      this.checkIfTransitionCanBeFiredMinimizedMain();
+      this.checkIfTransitionCanBeFiredMinimizedSubnets();
+    } else {
+      this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
+    }
   }
 
   startSimulation(): void {
@@ -93,13 +99,16 @@ export class MenuStepTwoComponent implements OnInit {
       const inputSubnetsIDs = this.checkIfPlacesAreInSubnet(inputPlacesIDs);
       // jezeli input place jest podsiecia, sparwdz czy podsiec jest skonczona
       if (inputSubnetsIDs.length > 0) {
-        if (this.shouldTransitionBeEnabled(inputPlacesIDs, '', true) && this.areAllSubnetsFinished(inputPlacesIDs)) {
+        if (this.shouldTransitionBeEnabled(inputPlacesIDs, '', true)
+        && this.areAllSubnetsFinished(inputPlacesIDs)
+        && this.checkIfSignalsAreEnabled(this.netRepository.mainMinimizedMatrix.originalTransitions[id])) {
           this.enableTransition(this.netRepository.mainMinimizedMatrix.net, id, '', true);
         } else {
           this.disableTransition(id);
         }
       } else {
-        if (this.shouldTransitionBeEnabled(inputPlacesIDs)) {
+        if (this.shouldTransitionBeEnabled(inputPlacesIDs)
+        && this.checkIfSignalsAreEnabled(this.netRepository.mainMinimizedMatrix.originalTransitions[id])) {
           this.enableTransition(this.netRepository.mainMinimizedMatrix.net, id);
         } else {
           this.disableTransition(id);
@@ -137,15 +146,32 @@ export class MenuStepTwoComponent implements OnInit {
 
   checkIfTransitionCanBeFiredMinimizedSubnets(): void {
     for (let i = 0; i < this.netRepository.subnetMinimizedMatrices.length; i++) {
-      this.checkIfTransitionCanBeFired(this.netRepository.subnetMinimizedMatrices[i].net, `subnet-${i}-`);
+      this.checkIfTransitionCanBeFired(
+        this.netRepository.subnetMinimizedMatrices[i].net,
+        `subnet-${i}-`,
+        this.netRepository.subnetMinimizedMatrices[i].originalTransitions);
     }
   }
 
-  checkIfTransitionCanBeFired(netMatrix: number[][], prefix: string = ''): void {
+  checkIfTransitionCanBeFired(netMatrix: number[][], prefix: string = '', originalTransitions: number[] = []): void {
     for (let id = 0; id < netMatrix.length; id++) {
       const inputPlacesIDs = this.getInputPlacesIDs(netMatrix, id);
-      if (this.shouldTransitionBeEnabled(inputPlacesIDs, prefix) && this.checkIfSignalsAreEnabled(id)) {
-          this.enableTransition(netMatrix, id, prefix);
+      if (this.shouldTransitionBeEnabled(inputPlacesIDs, prefix)) {
+        if ( prefix === '') {
+          if (this.checkIfSignalsAreEnabled(id)) {
+            this.enableTransition(netMatrix, id, prefix);
+          } else {
+            this.disableTransition(id, prefix);
+          }
+        } else {
+          // dodac obsluge sygnalow dla podsieci
+          // number prawdziwej tranzycji
+          if (this.checkIfSignalsAreEnabled(originalTransitions[id])) {
+            this.enableTransition(netMatrix, id, prefix);
+          } else {
+            this.disableTransition(id, prefix);
+          }
+        }
       } else {
         this.disableTransition(id, prefix);
       }
@@ -215,24 +241,27 @@ export class MenuStepTwoComponent implements OnInit {
   private addOutputTokens(netMatrix: number[][], id: number,  prefix: string = ''): boolean {
     let result = true;
     const outputPlacesIDs = this.getOutputPlacesIDs(netMatrix, id);
+    console.log('outputPlacesIDs: ' + outputPlacesIDs);
     outputPlacesIDs.forEach(placeID => {
       const subnetID = this.subnetPlacesIDs.indexOf(placeID);
       const startToken = document.getElementById(`subnet-${subnetID}-start-token-place-${placeID}`);
 
-      if (subnetID !== -1) {
-        if (startToken === null) {
-          prefix = `subnet-${subnetID}-start-`;
-          this.netRepository.createToken(0, `subnet-${subnetID}-`);
-        } else {
-          this.netRepository.createToken(placeID, `subnet-${subnetID}-`);
+      // normal net tokens
+      if (!this.netRepository.isNetMinimized) {
+        const token = document.getElementById(`token-place-${placeID}`);
+        if (token !== null) {
+          result =  false;
         }
+        this.netRepository.createToken(placeID, prefix);
+      } else {
+        if (subnetID !== -1) {
+          if (startToken === null) {
+            prefix = `subnet-${subnetID}-start-`;
+            this.netRepository.createToken(0, `subnet-${subnetID}-`);
+          }
+        }
+        this.netRepository.createToken(placeID, prefix);
       }
-
-      const token = document.getElementById(`token-place-${placeID}`);
-      if (token !== null) {
-        result =  false;
-      }
-      this.netRepository.createToken(placeID, prefix);
     });
     return result;
   }

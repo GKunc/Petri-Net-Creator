@@ -32,11 +32,10 @@ export class AppComponent {
   }
 
   private disableAllTransitions(): void {
-    this.netRepository.transitionRepository.getAll().forEach(transition => {
-      const transitionElement = document.getElementById(`transition-${transition.getID()}`);
-      transitionElement.setAttribute('stroke', 'black');
-      transitionElement.classList.remove('ready-to-be-fired');
-      $(transitionElement).off();
+    Array.from(document.getElementsByClassName('transition')).forEach(transition => {
+      transition.setAttribute('stroke', 'black');
+      transition.classList.remove('ready-to-be-fired');
+      $(transition).off();
     });
   }
 }
