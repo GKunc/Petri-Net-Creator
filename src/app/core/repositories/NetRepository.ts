@@ -26,7 +26,7 @@ export class NetRepository {
     subnetMinimizedMatrices: MinimizedNet[];
 
     isNetMinimized: boolean;
-
+    isMatrixBuild: boolean;
     constructor(
         @Inject(PlaceRepository) placeRepository: PlaceRepository,
         @Inject(TransitionRepository) transitionRepository: TransitionRepository,
@@ -42,16 +42,20 @@ export class NetRepository {
             this.netMatrix = [];
 
             this.isNetMinimized = false;
+            this.isMatrixBuild = false;
     }
 
     buildNetMatrix(): void {
-        for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
-            this.netMatrix[i] = [];
-            for (let j = 0; j < this.placeRepository.getAll().length; j++) {
-                this.netMatrix[i][j] = 0;
+        if (!this.isMatrixBuild) {
+            for (let i = 0; i < this.transitionRepository.getAll().length; i++) {
+                this.netMatrix[i] = [];
+                for (let j = 0; j < this.placeRepository.getAll().length; j++) {
+                    this.netMatrix[i][j] = 0;
+                }
             }
+            this.updateNetWithConnections();
         }
-        this.updateNetWithConnections();
+        this.isMatrixBuild = true;
     }
 
     updateNetWithConnections(): void {

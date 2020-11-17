@@ -1,4 +1,3 @@
-import { MinimizedNetHelper } from './../../../../../core/helpers/MinimizedNetHelper';
 import { PlaceHelper } from './../../../../../core/helpers/PlaceHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenHelper } from './../../../../../core/helpers/TokenHelper';
@@ -21,7 +20,6 @@ export class MenuStepTwoComponent implements OnInit {
   netRepository: NetRepository;
 
   subnetPlacesIDs: number[];
-  subnetWithPlaceID: {subnetNumber: number, placeNumber: number}[];
   finishedSubnets: number[];
 
   constructor(
@@ -30,21 +28,12 @@ export class MenuStepTwoComponent implements OnInit {
   ) {
     this.netRepository = netRepository;
     this.firedTransitionIDs = [];
+
     this.subnetPlacesIDs = [];
     this.finishedSubnets = [];
-    this.subnetWithPlaceID = [];
   }
 
   ngOnInit(): void {
-  }
-
-  subnetsWithIDs(): void {
-    let subnetNumber = 0;
-    this.subnetPlacesIDs = MinimizedNetHelper.findIndexesOfValues(this.netRepository.mainMinimizedMatrix.net, 1);
-    this.subnetPlacesIDs.forEach(placeNumber => {
-      this.subnetWithPlaceID.push({ subnetNumber, placeNumber });
-      subnetNumber++;
-    });
   }
 
   updateActiveInputSignals(): void {
@@ -60,13 +49,7 @@ export class MenuStepTwoComponent implements OnInit {
       }
     });
     this.netRepository.signalRepository.updateActiveInputSignals(activeSignals);
-    if (this.netRepository.isNetMinimized) {
-      this.checkIfAnySubnetFinished();
-      this.checkIfTransitionCanBeFiredMinimizedMain();
-      this.checkIfTransitionCanBeFiredMinimizedSubnets();
-    } else {
-      this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
-    }
+    this.checkIfTransitionCanBeFired();
   }
 
   startSimulation(): void {
@@ -76,128 +59,30 @@ export class MenuStepTwoComponent implements OnInit {
     $('.net-element').off();
     this.startTokens = Array.from(TokenHelper.getAll());
 
-    if (this.netRepository.isNetMinimized) {
-      this.subnetsWithIDs();
-      this.checkIfAnySubnetFinished();
-      this.checkIfTransitionCanBeFiredMinimizedMain();
-      this.checkIfTransitionCanBeFiredMinimizedSubnets();
-    } else {
-      this.netRepository.buildNetMatrix();
-      this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
-    }
+    this.netRepository.buildNetMatrix();
+    this.checkIfTransitionCanBeFired();
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
-    return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
+      return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
       this.netRepository.signalRepository.activeInputSignals.includes(signal));
   }
 
-  checkIfTransitionCanBeFiredMinimizedMain(): void {
-    for (let id = 0; id < this.netRepository.mainMinimizedMatrix.net.length; id++) {
-      this.subnetPlacesIDs = MinimizedNetHelper.findIndexesOfValues(this.netRepository.mainMinimizedMatrix.net, 1);
-      const inputPlacesIDs = this.getInputPlacesIDs(this.netRepository.mainMinimizedMatrix.net, id);
-      const inputSubnetsIDs = this.checkIfPlacesAreInSubnet(inputPlacesIDs);
-      // jezeli input place jest podsiecia, sparwdz czy podsiec jest skonczona
-      if (inputSubnetsIDs.length > 0) {
-        if (this.shouldTransitionBeEnabled(inputPlacesIDs, '', true)
-        && this.areAllSubnetsFinished(inputPlacesIDs)
-        && this.checkIfSignalsAreEnabled(this.netRepository.mainMinimizedMatrix.originalTransitions[id])) {
-          this.enableTransition(this.netRepository.mainMinimizedMatrix.net, id, '', true);
-        } else {
-          this.disableTransition(id);
-        }
+  checkIfTransitionCanBeFired(): void {
+    for (let id = 0; id < this.netRepository.netMatrix.length; id++) {
+      const inputPlacesIDs = this.getInputPlacesIDs(id);
+      if (this.shouldTransitionBeEnabled(inputPlacesIDs) && this.checkIfSignalsAreEnabled(id)) {
+          this.enableTransition(id);
       } else {
-        if (this.shouldTransitionBeEnabled(inputPlacesIDs)
-        && this.checkIfSignalsAreEnabled(this.netRepository.mainMinimizedMatrix.originalTransitions[id])) {
-          this.enableTransition(this.netRepository.mainMinimizedMatrix.net, id);
-        } else {
-          this.disableTransition(id);
-        }
+        this.disableTransition(id);
       }
     }
   }
 
-  checkIfAnySubnetFinished(): void {
-    let subnetNumber = 0;
-    this.netRepository.subnetMinimizedMatrices.forEach(subnetElement => {
-      const subnet = subnetElement.net;
-      const token = document.getElementById(`subnet-${subnetNumber}-token-place-${subnet[0].length - 1}`);
-      if (token !== null && !this.finishedSubnets.includes(subnetNumber)) {
-        this.finishedSubnets.push(subnetNumber);
-      }
-      subnetNumber++;
-    });
-  }
-
-  areAllSubnetsFinished(inputSubnets: number[]): boolean {
-    console.log('areAllSubnetsFinished');
-    console.log(this.finishedSubnets);
-    console.log(this.subnetWithPlaceID);
-    let allFinished = true;
-    inputSubnets.forEach(inputSubnet => {
-      this.subnetWithPlaceID.forEach(subnetWithPlaceID => {
-        if (inputSubnet === subnetWithPlaceID.placeNumber && !this.finishedSubnets.includes(subnetWithPlaceID.subnetNumber)) {
-          allFinished = false;
-        }
-      });
-    });
-    return allFinished;
-  }
-
-  checkIfTransitionCanBeFiredMinimizedSubnets(): void {
-    for (let i = 0; i < this.netRepository.subnetMinimizedMatrices.length; i++) {
-      this.checkIfTransitionCanBeFired(
-        this.netRepository.subnetMinimizedMatrices[i].net,
-        `subnet-${i}-`,
-        this.netRepository.subnetMinimizedMatrices[i].originalTransitions);
-    }
-  }
-
-  checkIfTransitionCanBeFired(netMatrix: number[][], prefix: string = '', originalTransitions: number[] = []): void {
-    for (let id = 0; id < netMatrix.length; id++) {
-      const inputPlacesIDs = this.getInputPlacesIDs(netMatrix, id);
-      if (this.shouldTransitionBeEnabled(inputPlacesIDs, prefix)) {
-        if ( prefix === '') {
-          if (this.checkIfSignalsAreEnabled(id)) {
-            this.enableTransition(netMatrix, id, prefix);
-          } else {
-            this.disableTransition(id, prefix);
-          }
-        } else {
-          // dodac obsluge sygnalow dla podsieci
-          // number prawdziwej tranzycji
-          if (this.checkIfSignalsAreEnabled(originalTransitions[id])) {
-            this.enableTransition(netMatrix, id, prefix);
-          } else {
-            this.disableTransition(id, prefix);
-          }
-        }
-      } else {
-        this.disableTransition(id, prefix);
-      }
-    }
-  }
-
-  checkIfPlacesAreInSubnet(inputPlacesIDs: number[]): number[] {
-    const inputSubnets = [];
-    this.subnetPlacesIDs.forEach(subnetID => {
-      if (inputPlacesIDs.includes(subnetID)) {
-        inputSubnets.push(subnetID);
-      }
-    });
-    return inputSubnets;
-  }
-
-  runTransition(netMatrix: number[][], id: number, prefix: string = '', isSubnet: boolean = false): void {
-    this.removeInputTokens(netMatrix, id, prefix, isSubnet);
-    if (this.addOutputTokens(netMatrix, id, prefix)) {
-        if (this.netRepository.isNetMinimized) {
-          this.checkIfAnySubnetFinished();
-          this.checkIfTransitionCanBeFiredMinimizedMain();
-          this.checkIfTransitionCanBeFiredMinimizedSubnets();
-        } else {
-          this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
-        }
+  runTransition(id: number): void {
+      this.removeInputTokens(id);
+      if (this.addOutputTokens(id)) {
+        this.checkIfTransitionCanBeFired();
         this.firedTransitionIDs.push(id);
       } else {
         this.resetSimulation();
@@ -207,101 +92,98 @@ export class MenuStepTwoComponent implements OnInit {
       }
   }
 
-  moveTokensToInputPlaces(netMatrix: number[][], id: number): void {
-    this.removeOutputTokens(netMatrix, id);
+  moveTokensToInputPlaces(id: number): void {
+    this.removeOutputTokens(id);
     this.addInputTokens(id);
-    this.checkIfTransitionCanBeFired(netMatrix);
+    this.checkIfTransitionCanBeFired();
   }
 
-  private removeOutputTokens(netMatrix: number[][], id: number): void {
-    this.getOutputPlacesIDs(netMatrix, id).forEach(placeID => {
+  private removeOutputTokens(id: number): void {
+    this.getOutputPlacesIDs(id).forEach(placeID => {
       this.netRepository.removeToken(placeID);
     });
   }
 
-  private removeInputTokens(netMatrix: number[][], id: number, prefix: string = '', isSubnet: boolean = false): void {
-    const inputPlacesIDs = this.getInputPlacesIDs(netMatrix, id);
-
-    inputPlacesIDs.forEach(placeID => {
-      if (isSubnet) {
-        const subnetID = this.subnetPlacesIDs.indexOf(placeID);
-        this.netRepository.removeToken(placeID, `subnet-${subnetID}-start-`);
-      } else {
-        this.netRepository.removeToken(placeID, prefix);
-      }
+  private removeInputTokens(id: number): void {
+    this.getInputPlacesIDs(id).forEach(placeID => {
+      this.netRepository.removeToken(placeID);
     });
   }
 
   private addInputTokens(id: number): void {
-    this.getInputPlacesIDs(this.netRepository.netMatrix, id).forEach(placeID => {
+    this.getInputPlacesIDs(id).forEach(placeID => {
       this.netRepository.createToken(placeID);
     });
   }
 
-  private addOutputTokens(netMatrix: number[][], id: number,  prefix: string = ''): boolean {
+  private addOutputTokens(id: number): boolean {
     let result = true;
-    const outputPlacesIDs = this.getOutputPlacesIDs(netMatrix, id);
-    console.log('outputPlacesIDs: ' + outputPlacesIDs);
+    const outputPlacesIDs = this.getOutputPlacesIDs(id);
+    const subnetPlacesIDs = this.checkIfPlacesAreInSubnet(outputPlacesIDs);
+    console.log('outputPlacesIDs');
+    console.log(outputPlacesIDs);
     outputPlacesIDs.forEach(placeID => {
-      const subnetID = this.subnetPlacesIDs.indexOf(placeID);
-      const startToken = document.getElementById(`subnet-${subnetID}-start-token-place-${placeID}`);
-
-      // normal net tokens
-      if (!this.netRepository.isNetMinimized) {
-        const token = document.getElementById(`token-place-${placeID}`);
-        if (token !== null) {
-          result =  false;
-        }
-        this.netRepository.createToken(placeID, prefix);
-      } else {
-        if (subnetID !== -1) {
-          if (startToken === null) {
-            prefix = `subnet-${subnetID}-start-`;
-            this.netRepository.createToken(0, `subnet-${subnetID}-`);
-          }
-        }
-        this.netRepository.createToken(placeID, prefix);
+      const token = document.getElementById(`token-place-${placeID}`);
+      if (token !== null) {
+        result =  false;
       }
+
+      this.netRepository.createToken(placeID);
+
+      // const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
+      // console.log('subnetNumber');
+      // console.log(subnetNumber);
+      // if (document.getElementById(`token-place-${placeID}`) === null && !this.finishedSubnets.includes(placeID)) {
+      //   this.netRepository.createToken(placeID, `subnet-${subnetNumber}-`);
+      // }
     });
     return result;
   }
 
-  private shouldTransitionBeEnabled(inputPlacesIDs: number[], prefix: string = '', isSubnet: boolean = false): boolean {
+  private returnSubnetNumberContainingPlace(placeID: number): number {
+    let currentSubnetNumber = 0;
+    let foundSubnetNumber = -1;
+    this.netRepository.subnetMinimizedMatrices.forEach(subnet => {
+      if (subnet.originalPlaces.includes(placeID)) {
+        foundSubnetNumber = currentSubnetNumber;
+      }
+      currentSubnetNumber++;
+    });
+    return foundSubnetNumber;
+  }
+
+  private shouldTransitionBeEnabled(inputPlacesIDs: number[]): boolean {
     let shouldBeEnabled = true;
     inputPlacesIDs.forEach(id => {
-      let token = document.getElementById(`${prefix}token-place-${id}`);
-      if (isSubnet === true) {
-        token = document.getElementById(`subnet-${this.subnetPlacesIDs.indexOf(id)}-start-token-place-${id}`);
-      }
-      if (token === null) {
+        const token = document.getElementById(`token-place-${id}`);
+        if (token === null) {
           shouldBeEnabled = false;
         }
       });
     return shouldBeEnabled;
   }
 
-  private disableTransition(id: number, prefix: string = ''): void {
-    const transition = document.getElementById(`${prefix}transition-${id}`);
+  private disableTransition(id: number): void {
+    const transition = document.getElementById(`transition-${id}`);
     transition.setAttribute('stroke', 'black');
     transition.classList.remove('ready-to-be-fired');
     $(transition).off();
-
   }
 
-  private enableTransition(netMatrix: number[][], id: number, prefix: string = '', isSubnet: boolean = false): void {
-    const transition = document.getElementById(`${prefix}transition-${id}`);
-    transition.setAttribute('stroke', 'rgb(17, 175, 17)');
-    transition.classList.add('ready-to-be-fired');
-    $(transition).off();
-    $(transition).on('click', () => {
-        this.runTransition(netMatrix, id, prefix, isSubnet);
-    });
+  private enableTransition(id: number): void {
+      const transition = document.getElementById(`transition-${id}`);
+      transition.setAttribute('stroke', 'rgb(17, 175, 17)');
+      transition.classList.add('ready-to-be-fired');
+      $(transition).off();
+      $(transition).on('click', () => {
+        this.runTransition(id);
+      });
   }
 
-  private getInputPlacesIDs(netMatrix: number[][], transitionID: number): number[] {
+  private getInputPlacesIDs(transitionID: number): number[] {
     const inputPlacesIDs = [];
     let counter = 0;
-    netMatrix[transitionID].forEach(place => {
+    this.netRepository.netMatrix[transitionID].forEach(place => {
       if (place === -1) {
         inputPlacesIDs.push(counter);
       }
@@ -310,10 +192,12 @@ export class MenuStepTwoComponent implements OnInit {
     return inputPlacesIDs;
   }
 
-  private getOutputPlacesIDs(netMatrix: number[][], transitionID: number): number[] {
+  private getOutputPlacesIDs(transitionID: number): number[] {
+    console.log(this.netRepository.netMatrix);
+    console.log('transitionID: ' + transitionID);
     const outputPlacesIDs = [];
     let counter = 0;
-    netMatrix[transitionID].forEach(place => {
+    this.netRepository.netMatrix[transitionID].forEach(place => {
       if (place === 1) {
         outputPlacesIDs.push(counter);
       }
@@ -353,11 +237,7 @@ export class MenuStepTwoComponent implements OnInit {
   previousStep(): void {
     if (this.firedTransitionIDs.length > 0) {
       const lastFiredTransitionID = this.firedTransitionIDs.pop();
-      if (this.netRepository.isNetMinimized) {
-        // this.moveTokensToInputPlaces(Number(lastFiredTransitionID));
-      } else {
-        this.moveTokensToInputPlaces(this.netRepository.netMatrix, Number(lastFiredTransitionID));
-      }
+      this.moveTokensToInputPlaces(Number(lastFiredTransitionID));
     }
   }
 
@@ -366,12 +246,7 @@ export class MenuStepTwoComponent implements OnInit {
     const randomTransition = Math.floor(Math.random() * size);
     const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[randomTransition]
     .getAttribute('id').split('-')[1];
-    if (this.netRepository.isNetMinimized) {
-      // const prefix = `subnet-${i}-`;
-      // this.runTransition(this.netRepository.netMatrix, Number(firstReadyTransitionID));
-    } else {
-      this.runTransition(this.netRepository.netMatrix, Number(firstReadyTransitionID));
-    }
+    this.runTransition(Number(firstReadyTransitionID));
   }
 
   resetSimulation(): void {
@@ -379,11 +254,16 @@ export class MenuStepTwoComponent implements OnInit {
     this.startTokens.forEach(token => {
       this.netRepository.createToken(Number(token.getAttribute('id').split('-')[2]));
     });
-    if (this.netRepository.isNetMinimized) {
-      this.checkIfTransitionCanBeFiredMinimizedMain();
-      this.checkIfTransitionCanBeFiredMinimizedSubnets();
-    } else {
-      this.checkIfTransitionCanBeFired(this.netRepository.netMatrix);
-    }
+    this.checkIfTransitionCanBeFired();
+  }
+
+  checkIfPlacesAreInSubnet(inputPlacesIDs: number[]): number[] {
+    const inputSubnets = [];
+    this.subnetPlacesIDs.forEach(subnetID => {
+      if (inputPlacesIDs.includes(subnetID)) {
+        inputSubnets.push(subnetID);
+      }
+    });
+    return inputSubnets;
   }
 }
