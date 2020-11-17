@@ -81,8 +81,6 @@ export class MinimizedNetHelper {
 
     static createArcBetweenElementsInMainNet(netMatrix: number[][], originalTransitions: number[], originalPlaces: number[]): void {
         const subnetPlaces = this.findIndexesOfValues(netMatrix, 1);
-        console.log('subnetPlaces');
-        console.log(subnetPlaces);
         for (let i = 0; i < netMatrix.length; i++) {
             let subnetIDStart = 0;
             let subnetIDEnd = 0;

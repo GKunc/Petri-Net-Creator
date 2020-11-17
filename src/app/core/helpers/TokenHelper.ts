@@ -6,8 +6,13 @@ export class TokenHelper {
         return document.getElementsByClassName('token');
     }
 
-    static remove(id: number, prefix: string = ''): void {
-        const token = document.getElementById(`${prefix}token-place-${id}`);
+    static remove(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
+        let token = document.getElementById(`${prefix}token-place-${id}`);
+
+        if (usePrefixAsID) {
+            token = document.getElementById(`${prefix}-token`);
+        }
+
         if (token !== null) {
             document.getElementById('svg-board').removeChild(token);
         }
@@ -19,15 +24,22 @@ export class TokenHelper {
         });
     }
 
-    static createToken(id: number, prefix: string = ''): void {
-        console.log(`${prefix}place-${id}`)
-        const xPosition = Number(document.getElementById(`${prefix}place-${id}`).getAttribute('cx'));
-        const yPosition = Number(document.getElementById(`${prefix}place-${id}`).getAttribute('cy'));
+    static createToken(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
+        let placeID = `${prefix}place-${id}`;
+        if (usePrefixAsID) {
+            placeID = prefix;
+        }
+
+        const xPosition = Number(document.getElementById(placeID).getAttribute('cx'));
+        const yPosition = Number(document.getElementById(placeID).getAttribute('cy'));
 
         const token = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         const cursors = document.getElementById('cursors');
-
-        token.setAttribute('id', 'token-place-' + id);
+        if (usePrefixAsID) {
+            token.setAttribute('id', prefix + '-token');
+        } else {
+            token.setAttribute('id', 'token-place-' + id);
+        }
         token.setAttribute('class', 'net-element token');
         token.setAttribute('cx', xPosition.toString());
         token.setAttribute('cy', yPosition.toString());

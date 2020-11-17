@@ -184,7 +184,6 @@ export class MinimizedNetBuilder {
     private findOriginalPlaces(start: number, end: number): number[] {
         const originalPlaces: number[] = [];
         for (let i = 0; i < start; i++) {
-            console.log('LESS THAN START');
             for (let j = 0; j < this.netMatrix[0].length; j++) {
                 if (this.netMatrix[i][j] !== 0 && !originalPlaces.includes(j)) {
                     originalPlaces.push(j);
@@ -193,7 +192,6 @@ export class MinimizedNetBuilder {
         }
 
         for (let j = 0; j < this.netMatrix[0].length; j++) {
-            console.log('START');
             if (this.netMatrix[start][j] === -1 && !originalPlaces.includes(j)) {
                 originalPlaces.push(j);
             }
@@ -201,7 +199,6 @@ export class MinimizedNetBuilder {
 
         for (let i = end + 1; i < this.netMatrix.length; i++) {
             for (let j = 0; j < this.netMatrix[0].length; j++) {
-                console.log('MORE THAN END');
                 if (this.netMatrix[i][j] !== 0 && !originalPlaces.includes(j)) {
                     originalPlaces.push(j);
                 }
@@ -209,7 +206,6 @@ export class MinimizedNetBuilder {
         }
 
         for (let j = 0; j < this.netMatrix[0].length; j++) {
-            console.log('END');
             if (this.netMatrix[end][j] === 1 && !originalPlaces.includes(j)) {
                 originalPlaces.push(j);
             }

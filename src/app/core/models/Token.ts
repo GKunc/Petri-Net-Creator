@@ -11,8 +11,8 @@ export class Token implements INetElement {
         return this.id;
     }
 
-    create(id: number, prefix: string = ''): void {
+    create(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
         this.id = id;
-        TokenHelper.createToken(this.id, prefix);
+        TokenHelper.createToken(this.id, prefix, usePrefixAsID);
     }
 }

@@ -20,7 +20,6 @@ export class MenuStepTwoComponent implements OnInit {
   netRepository: NetRepository;
 
   subnetPlacesIDs: number[];
-  finishedSubnets: number[];
 
   constructor(
     @Inject(NetRepository) netRepository: NetRepository,
@@ -30,7 +29,6 @@ export class MenuStepTwoComponent implements OnInit {
     this.firedTransitionIDs = [];
 
     this.subnetPlacesIDs = [];
-    this.finishedSubnets = [];
   }
 
   ngOnInit(): void {
@@ -61,6 +59,7 @@ export class MenuStepTwoComponent implements OnInit {
 
     this.netRepository.buildNetMatrix();
     this.checkIfTransitionCanBeFired();
+    console.log(this.netRepository.netMatrix);
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
@@ -105,8 +104,17 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   private removeInputTokens(id: number): void {
-    this.getInputPlacesIDs(id).forEach(placeID => {
+    const inputPlacesIDs = this.getInputPlacesIDs(id);
+
+    inputPlacesIDs.forEach(placeID => {
       this.netRepository.removeToken(placeID);
+
+      const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
+
+      if (subnetNumber !== -1 &&
+        document.getElementById(`subnet-${subnetNumber}-start-place-token`) !== null) {
+          this.netRepository.removeToken(-1, `subnet-${subnetNumber}-start-place`, true);
+      }
     });
   }
 
@@ -119,9 +127,7 @@ export class MenuStepTwoComponent implements OnInit {
   private addOutputTokens(id: number): boolean {
     let result = true;
     const outputPlacesIDs = this.getOutputPlacesIDs(id);
-    const subnetPlacesIDs = this.checkIfPlacesAreInSubnet(outputPlacesIDs);
-    console.log('outputPlacesIDs');
-    console.log(outputPlacesIDs);
+
     outputPlacesIDs.forEach(placeID => {
       const token = document.getElementById(`token-place-${placeID}`);
       if (token !== null) {
@@ -130,12 +136,12 @@ export class MenuStepTwoComponent implements OnInit {
 
       this.netRepository.createToken(placeID);
 
-      // const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
-      // console.log('subnetNumber');
-      // console.log(subnetNumber);
-      // if (document.getElementById(`token-place-${placeID}`) === null && !this.finishedSubnets.includes(placeID)) {
-      //   this.netRepository.createToken(placeID, `subnet-${subnetNumber}-`);
-      // }
+      const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
+
+      if (subnetNumber !== -1 &&
+         document.getElementById(`subnet-${subnetNumber}-start-place-token`) === null) {
+        this.netRepository.createToken(-1, `subnet-${subnetNumber}-start-place`, true);
+      }
     });
     return result;
   }
@@ -143,12 +149,14 @@ export class MenuStepTwoComponent implements OnInit {
   private returnSubnetNumberContainingPlace(placeID: number): number {
     let currentSubnetNumber = 0;
     let foundSubnetNumber = -1;
-    this.netRepository.subnetMinimizedMatrices.forEach(subnet => {
-      if (subnet.originalPlaces.includes(placeID)) {
-        foundSubnetNumber = currentSubnetNumber;
-      }
-      currentSubnetNumber++;
-    });
+    if (this.netRepository.isNetMinimized) {
+      this.netRepository.subnetMinimizedMatrices.forEach(subnet => {
+        if (subnet.originalPlaces.includes(placeID)) {
+          foundSubnetNumber = currentSubnetNumber;
+        }
+        currentSubnetNumber++;
+      });
+    }
     return foundSubnetNumber;
   }
 
@@ -193,8 +201,6 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   private getOutputPlacesIDs(transitionID: number): number[] {
-    console.log(this.netRepository.netMatrix);
-    console.log('transitionID: ' + transitionID);
     const outputPlacesIDs = [];
     let counter = 0;
     this.netRepository.netMatrix[transitionID].forEach(place => {

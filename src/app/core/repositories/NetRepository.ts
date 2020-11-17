@@ -83,15 +83,17 @@ export class NetRepository {
         this.arcRepository.create(ID);
     }
 
-    createToken(id: number, prefix: string = ''): void {
-        this.tokenRepository.create(id, prefix);
+    createToken(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
+        this.tokenRepository.create(id, prefix, usePrefixAsID);
     }
 
-    removeToken(id: number, prefix: string = ''): void {
-        this.tokenRepository.remove(id, prefix);
+    removeToken(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
+        this.tokenRepository.remove(id, prefix, usePrefixAsID);
     }
 
     removeAllElements(): void {
+        this.isMatrixBuild = false;
+        this.isNetMinimized = false;
         this.placeRepository.removeAll();
         this.transitionRepository.removeAll();
         this.tokenRepository.removeAll();
@@ -151,7 +153,7 @@ export class NetRepository {
             for (let j = 0; j < this.subnetMinimizedMatrices[0].net.length; j++) {
                 const transitionID = this.subnetMinimizedMatrices[i].originalTransitions[j];
                 SignalHelper.createLabelForTransition(
-                    transitionID, this.transitionRepository.getByID(transitionID).signals, i);
+                    transitionID, this.transitionRepository.getByID(transitionID).signals);
             }
         }
     }

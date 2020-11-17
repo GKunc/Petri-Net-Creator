@@ -16,14 +16,14 @@ export class TokenRepository {
         this.tokens = tokens;
     }
 
-    create(id: number, prefix: string = ''): void {
+    create(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
         const token: Token = new Token();
-        token.create(id, prefix);
+        token.create(id, prefix, usePrefixAsID);
         this.tokens.push(token);
     }
 
-    remove(id: number, prefix: string = ''): void {
-        TokenHelper.remove(id, prefix);
+    remove(id: number, prefix: string = '', usePrefixAsID: boolean = false): void {
+        TokenHelper.remove(id, prefix, usePrefixAsID);
         const index = this.tokens.indexOf(this.getByID(id));
         if (index !== -1) {
             this.tokens.splice(index, 1);
