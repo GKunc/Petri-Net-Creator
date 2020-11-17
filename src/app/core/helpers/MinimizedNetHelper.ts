@@ -8,8 +8,8 @@ export class MinimizedNetHelper {
 
     public static displayMainNet(mainMatrix: MinimizedNet): void {
         this.drawTransitions(mainMatrix.net, mainMatrix.originalTransitions);
-        this.drawPlaces(mainMatrix.net);
-        this.createArcBetweenElementsInMainNet(mainMatrix.net, mainMatrix.originalTransitions);
+        this.drawPlaces(mainMatrix.net, mainMatrix.originalPlaces);
+        this.createArcBetweenElementsInMainNet(mainMatrix.net, mainMatrix.originalTransitions, mainMatrix.originalPlaces);
         TokenHelper.createToken(0);
     }
 
@@ -29,6 +29,7 @@ export class MinimizedNetHelper {
 
             const subnet = subnetMatrices[i].net;
             const originalTransitions = subnetMatrices[i].originalTransitions;
+            const originalPlaces = subnetMatrices[i].originalPlaces;
 
             for (let id = 0; id < subnet.length; id++) {
                 TransitionHelper.createTransitionWithLabel(originalTransitions[id], transitionX, transitionY, `subnet-${i}-`);
@@ -36,10 +37,10 @@ export class MinimizedNetHelper {
             }
 
             for (let id = 0; id < subnet[0].length; id++) {
-                PlaceHelper.createPlaceWtihLabel(id, placeX, placeY, `subnet-${i}-`, SUBNET_COLOR[i]);
+                PlaceHelper.createPlaceWtihLabel(originalPlaces[id], placeX, placeY, `subnet-${i}-`, SUBNET_COLOR[i]);
                 placeX += 100 * (id + 1);
             }
-            this.createArcBetweenElementsInSubnetNet(subnet, i, originalTransitions);
+            this.createArcBetweenElementsInSubnetNet(subnet, i, originalTransitions, originalPlaces);
         }
 
     }
@@ -54,57 +55,77 @@ export class MinimizedNetHelper {
         }
     }
 
-    static drawPlaces(netMatrix: number[][]): void {
+    static drawPlaces(netMatrix: number[][], originalIDs: number[] = []): void {
         const subnetPlaces = this.findIndexesOfValues(netMatrix, 1);
         let subnetID = 0;
+        let positionCounter = 0;
 
-        for (let i = 0; i < netMatrix[0].length; i++) {
-            if (subnetPlaces.includes(i)) {
-                PlaceHelper.createPlaceWtihLabel(i, 100 + 100 * i, 50, `subnet-${subnetID}-start-`, SUBNET_COLOR[subnetID]);
-                subnetID++;
-            } else {
-                PlaceHelper.createPlaceWtihLabel(i, 100 + 100 * i, 50);
-            }
+        for (let i = 0; i < subnetPlaces[0]; i++) {
+            PlaceHelper.createPlaceWtihLabel(originalIDs[i], 100 + 100 * positionCounter, 50);
+            positionCounter++;
         }
+
+        for (let i = 0; i < subnetPlaces.length; i++) {
+            PlaceHelper.createPlaceWtihLabel(
+                subnetID, 100 + 100 * positionCounter, 50, `subnet-${subnetID}-start-`, SUBNET_COLOR[subnetID], `s${subnetID}`, false);
+            subnetID++;
+            positionCounter++;
+        }
+
+        for (let i = subnetPlaces[0]; i < originalIDs.length; i++) {
+            PlaceHelper.createPlaceWtihLabel(originalIDs[i], 100 + 100 * positionCounter, 50);
+            positionCounter++;
+        }
+
     }
 
-    static createArcBetweenElementsInMainNet(netMatrix: number[][], originalTransitions: number[]): void {
+    static createArcBetweenElementsInMainNet(netMatrix: number[][], originalTransitions: number[], originalPlaces: number[]): void {
         const subnetPlaces = this.findIndexesOfValues(netMatrix, 1);
-
+        console.log('subnetPlaces');
+        console.log(subnetPlaces);
         for (let i = 0; i < netMatrix.length; i++) {
-            let subnetID = 0;
+            let subnetIDStart = 0;
+            let subnetIDEnd = 0;
             for (let j = 0; j < netMatrix[0].length; j++) {
                 if (netMatrix[i][j] === 1) {
                 // strzalka od tranzycji do miejsca
                     if (subnetPlaces.includes(j)) {
-                        console.log(`transition-${originalTransitions[i]}`);
-                        ArcHelper.createArc(`transition-${originalTransitions[i]}`, `subnet-${subnetID}-start-place-${j}`);
-                        subnetID++;
+                        ArcHelper.createArc(`transition-${originalTransitions[i]}`, `subnet-${subnetIDEnd}-start-place`);
+                        subnetIDEnd++;
                     } else {
-                        ArcHelper.createArc(`transition-${originalTransitions[i]}`, `place-${j}`);
+                        let index = j;
+                        if (j > originalPlaces.length) {
+                            index = j - subnetPlaces.length;
+                        }
+                        ArcHelper.createArc(`transition-${originalTransitions[i]}`, `place-${originalPlaces[index]}`);
                     }
                 } else if (netMatrix[i][j] === -1) {
                 // strzalka od miejsca do tranzycji
                     if (subnetPlaces.includes(j)) {
-                        ArcHelper.createArc(`subnet-${subnetID}-start-place-${j}`, `transition-${originalTransitions[i]}`);
-                        subnetID++;
+                        ArcHelper.createArc(`subnet-${subnetIDStart}-start-place`, `transition-${originalTransitions[i]}`);
+                        subnetIDStart++;
                     } else {
-                        ArcHelper.createArc(`place-${j}`, `transition-${originalTransitions[i]}`);
+                        let index = j;
+                        if (j > originalPlaces.length) {
+                            index = j - subnetPlaces.length;
+                        }
+                        ArcHelper.createArc(`place-${originalPlaces[index]}`, `transition-${originalTransitions[i]}`);
                     }
                 }
             }
         }
     }
 
-    static createArcBetweenElementsInSubnetNet(netMatrix: number[][], numberOfSubnet: number, originalTransitions: number[]): void {
+    static createArcBetweenElementsInSubnetNet(netMatrix: number[][], numberOfSubnet: number,
+                                               originalTransitions: number[], originalPlaces: number[]): void {
         for (let i = 0; i < netMatrix.length; i++) {
             for (let j = 0; j < netMatrix[0].length; j++) {
                 if (netMatrix[i][j] === 1) {
                 // strzalka od tranzycji do miejsca
-                    ArcHelper.createArc(`subnet-${numberOfSubnet}-transition-${originalTransitions[i]}`, `subnet-${numberOfSubnet}-place-${j}`);
+                ArcHelper.createArc(`subnet-${numberOfSubnet}-transition-${originalTransitions[i]}`, `subnet-${numberOfSubnet}-place-${originalPlaces[j]}`);
                 } else if (netMatrix[i][j] === -1) {
                 // strzalka od miejsca do tranzycji
-                    ArcHelper.createArc(`subnet-${numberOfSubnet}-place-${j}`, `subnet-${numberOfSubnet}-transition-${originalTransitions[i]}`);
+                ArcHelper.createArc(`subnet-${numberOfSubnet}-place-${originalPlaces[j]}`, `subnet-${numberOfSubnet}-transition-${originalTransitions[i]}`);
                 }
             }
         }

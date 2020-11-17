@@ -22,10 +22,10 @@ export class MinimizedNetBuilder {
 
     private createSubnet(startPlace: number, startTransition: number, end: number): MinimizedNet {
         const subnetFinal = [];
-        const rowsInSubnet = this.findNextValue(startTransition, [], end);
+        const {transitions, places} = this.findNextValue(startTransition, [], [], end);
 
-        const subnet = this.subnetMatrix(rowsInSubnet);
-        const columns = this.columnsToDelete(startPlace, rowsInSubnet);
+        const subnet = this.subnetMatrix(transitions);
+        const columns = this.columnsToDelete(startPlace, transitions);
 
         for (let i = 0; i < subnet.length; i++) {
             const rowFinal = [];
@@ -36,8 +36,7 @@ export class MinimizedNetBuilder {
             }
             subnetFinal.push(rowFinal);
         }
-
-        return new MinimizedNet(subnetFinal, rowsInSubnet);
+        return new MinimizedNet(subnetFinal, transitions, places);
     }
 
     private columnsToDelete(start: number, rows: number[]): number[] {
@@ -71,22 +70,24 @@ export class MinimizedNetBuilder {
         return result;
     }
 
-    private findNextValue(currentColumn: number, rows: number[], end: number): number[] {
+    private findNextValue(
+        currentColumn: number, transitions: number[], places: number[], end: number): {transitions: number[], places: number[]} {
         if (currentColumn === this.netMatrix[0].length) {
-            return rows;
+            return {transitions, places};
         }
+        places.push(currentColumn);
 
         for (let i = 0; i < end; i++) {
             if (this.netMatrix[i][currentColumn] === -1) {
                 for (let j = 1; j < this.netMatrix[0].length - 1; j++) {
                     if (this.netMatrix[i][j] === 1) {
-                        rows.push(i);
-                        this.findNextValue(j, rows, end);
+                        transitions.push(i);
+                        this.findNextValue(j, transitions, places, end);
                     }
                 }
             }
         }
-        return rows;
+        return {transitions, places};
     }
 
     private findTransitionStart(column: number): number {
@@ -166,7 +167,55 @@ export class MinimizedNetBuilder {
         }
         const {start, end} = this.findStartAndEndOfSubnets();
 
-        return new MinimizedNet(minimizedNetFinal, [start, end]);
+        return new MinimizedNet(minimizedNetFinal, this.findOriginalTransitions(start, end), this.findOriginalPlaces(start, end));
+    }
+    private findOriginalTransitions(start: number, end: number): number[] {
+        const originalTransitions: number[] = [];
+
+        for (let i = 0; i <= start; i++) {
+            originalTransitions.push(i);
+        }
+        for (let i = end; i < this.netMatrix.length; i++) {
+            originalTransitions.push(i);
+        }
+        return originalTransitions;
+    }
+
+    private findOriginalPlaces(start: number, end: number): number[] {
+        const originalPlaces: number[] = [];
+        for (let i = 0; i < start; i++) {
+            console.log('LESS THAN START');
+            for (let j = 0; j < this.netMatrix[0].length; j++) {
+                if (this.netMatrix[i][j] !== 0 && !originalPlaces.includes(j)) {
+                    originalPlaces.push(j);
+                }
+            }
+        }
+
+        for (let j = 0; j < this.netMatrix[0].length; j++) {
+            console.log('START');
+            if (this.netMatrix[start][j] === -1 && !originalPlaces.includes(j)) {
+                originalPlaces.push(j);
+            }
+        }
+
+        for (let i = end + 1; i < this.netMatrix.length; i++) {
+            for (let j = 0; j < this.netMatrix[0].length; j++) {
+                console.log('MORE THAN END');
+                if (this.netMatrix[i][j] !== 0 && !originalPlaces.includes(j)) {
+                    originalPlaces.push(j);
+                }
+            }
+        }
+
+        for (let j = 0; j < this.netMatrix[0].length; j++) {
+            console.log('END');
+            if (this.netMatrix[end][j] === 1 && !originalPlaces.includes(j)) {
+                originalPlaces.push(j);
+            }
+        }
+
+        return originalPlaces;
     }
 
     private createInitialMainMatrix(): number[][] {
@@ -219,7 +268,6 @@ export class MinimizedNetBuilder {
         for (let i = 0; i < minimizedNetInitial[endRow].length; i++) {
             if (minimizedNetInitial[endRow][i] === 1 && indexesOfZeros.includes(i)) {
                 indexesOfZeros.splice(indexesOfZeros.indexOf(i), 1);
-                alert('here');
             }
         }
         return indexesOfZeros;

@@ -21,9 +21,14 @@ export class PlaceHelper {
           });
     }
 
-    static createPlace(id: number, xPosition: number, yPosition: number, prefix: string = '', color: string = PLACE_FILL_COLOR): Element {
+    static createPlace(id: number, xPosition: number, yPosition: number, prefix: string = '',
+                       color: string = PLACE_FILL_COLOR, includeIDNumber: boolean = false): Element {
         const place = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        place.setAttribute('id', `${prefix}place-${id}`);
+        if (includeIDNumber) {
+            place.setAttribute('id', `${prefix}place-${id}`);
+        } else {
+            place.setAttribute('id', `${prefix}place`);
+        }
         place.setAttribute('class', 'net-element place');
         place.setAttribute('cx', xPosition.toString());
         place.setAttribute('cy', yPosition.toString());
@@ -35,7 +40,7 @@ export class PlaceHelper {
         return place;
     }
 
-    static createLabel(id: number, xPosition: number, yPosition: number, prefix: string = ''): Element {
+    static createLabel(id: number, xPosition: number, yPosition: number, prefix: string = '', changeLabel: string = ''): Element {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('class', 'label');
         text.setAttribute('id', `${prefix}label-place-${id}`);
@@ -46,16 +51,21 @@ export class PlaceHelper {
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer');
-        text.innerHTML = 'p' + id;
+        if (changeLabel !== '') {
+            text.innerHTML = changeLabel;
+        } else {
+            text.innerHTML = 'p' + id;
+        }
         return text;
     }
 
     static createPlaceWtihLabel(
         id: number, xPosition: number, yPosition: number,
-        prefix: string = '', color: string = PLACE_FILL_COLOR): void {
+        prefix: string = '', color: string = PLACE_FILL_COLOR,
+        changeLabel: string = '', includeIDNumber: boolean = true): void {
         const cursors = document.getElementById('cursors');
-        const place = this.createPlace(id, xPosition, yPosition, prefix, color);
-        const label = this.createLabel(id, xPosition, yPosition, prefix);
+        const place = this.createPlace(id, xPosition, yPosition, prefix, color, includeIDNumber);
+        const label = this.createLabel(id, xPosition, yPosition, prefix, changeLabel);
         const board = document.getElementById('svg-board');
 
         board.insertBefore(place, cursors);
