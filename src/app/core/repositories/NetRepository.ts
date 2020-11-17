@@ -138,14 +138,16 @@ export class NetRepository {
 
     addSignalsToMinimizedNet(): void {
         for (let i = 0; i < this.mainMinimizedMatrix.net.length; i++) {
-            SignalHelper.createLabelForTransition(i,
-                this.transitionRepository.getByID(this.mainMinimizedMatrix.originalTransitions[i]).signals);
+            const transitionID  = this.mainMinimizedMatrix.originalTransitions[i];
+            SignalHelper.createLabelForTransition(transitionID,
+                this.transitionRepository.getByID(transitionID).signals);
         }
 
         for (let i = 0; i < this.subnetMinimizedMatrices.length; i++) {
             for (let j = 0; j < this.subnetMinimizedMatrices[0].net.length; j++) {
+                const transitionID = this.subnetMinimizedMatrices[i].originalTransitions[j];
                 SignalHelper.createLabelForTransition(
-                    j, this.transitionRepository.getByID(this.subnetMinimizedMatrices[i].originalTransitions[j]).signals, i);
+                    transitionID, this.transitionRepository.getByID(transitionID).signals, i);
             }
         }
     }

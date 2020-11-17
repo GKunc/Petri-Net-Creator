@@ -367,6 +367,7 @@ export class MenuStepTwoComponent implements OnInit {
     const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[randomTransition]
     .getAttribute('id').split('-')[1];
     if (this.netRepository.isNetMinimized) {
+      // const prefix = `subnet-${i}-`;
       // this.runTransition(this.netRepository.netMatrix, Number(firstReadyTransitionID));
     } else {
       this.runTransition(this.netRepository.netMatrix, Number(firstReadyTransitionID));
