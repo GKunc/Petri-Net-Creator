@@ -137,21 +137,12 @@ export class MinimizedNetBuilder {
     private convertNetMatrixToMainMinimizedMatrix(): MinimizedNet {
         const minimizedNetInitial = this.createInitialMainMatrix();
         const minimizedNetFinal: number[][] = [];
-        console.log('minimizedNetInitial');
-        console.log(minimizedNetInitial);
+
         const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
         const endRow = this.findRowOfDoubles(minimizedNetInitial, -1);
 
         const indexesOfOnes = this.findIndexesOfValues(minimizedNetInitial, 1);
         const indexesOfNegativeOnes = this.findIndexesOfValues(minimizedNetInitial, -1);
-        // console.log('indexesOfOnes');
-        // console.log(indexesOfOnes);
-        // console.log('indexesOfNegativeOnes');
-        // console.log(indexesOfNegativeOnes);
-
-        // const indexesOfZeros = this.removeExtraZeroIndexes(minimizedNetInitial, endRow, this.findIndexesOfValues(minimizedNetInitial, 0));
-        // console.log('indexesOfZeros');
-        // console.log(indexesOfZeros);
 
         for (let i = 0; i < minimizedNetInitial.length; i++) {
             const row = [];
@@ -275,20 +266,5 @@ export class MinimizedNetBuilder {
         }
 
         return indexes;
-    }
-
-    // to powinno sprawdzac tylko w podsieci
-    private removeExtraZeroIndexes(minimizedNetInitial: number[][], endRow: number, indexesOfZeros: number[]): number[] {
-        console.log('removeExtraZeroIndexes');
-        console.log('endRow');
-        console.log(endRow);
-        console.log('indexesOfZeros');
-        console.log(indexesOfZeros);
-        for (let i = 0; i < minimizedNetInitial[endRow].length; i++) {
-            if (minimizedNetInitial[endRow][i] === 1 && indexesOfZeros.includes(i)) {
-                indexesOfZeros.splice(indexesOfZeros.indexOf(i), 1);
-            }
-        }
-        return indexesOfZeros;
     }
 }
