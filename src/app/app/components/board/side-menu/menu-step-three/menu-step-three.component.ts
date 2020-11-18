@@ -31,7 +31,8 @@ export class MenuStepThreeComponent implements OnInit {
   }
 
   minimizeNet(): void {
-    if (!this.netRepository.isNetMinimized) {
+    this.netRepository.buildNetMatrix();
+    if (!this.netRepository.isNetMinimized && this.netRepository.netMatrix.length > 0) {
       this.netRepository.isNetMinimized = true;
       // save position of elements
       this.netRepository.minimizeNet();

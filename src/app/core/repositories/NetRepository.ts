@@ -94,6 +94,9 @@ export class NetRepository {
     removeAllElements(): void {
         this.isMatrixBuild = false;
         this.isNetMinimized = false;
+        this.netMatrix = [];
+        this.mainMinimizedMatrix = new MinimizedNet([], [], []);
+        this.subnetMinimizedMatrices = [];
         this.placeRepository.removeAll();
         this.transitionRepository.removeAll();
         this.tokenRepository.removeAll();
@@ -119,7 +122,6 @@ export class NetRepository {
     }
 
     minimizeNet(): void {
-        // rememver position of each element
         this.savePositionOfElements();
 
         this.isNetMinimized = true;
