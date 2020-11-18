@@ -23,7 +23,7 @@
     float: left;
     max-width: 200px;
     min-width: 200px;
-    height: 1030px;
+    height: 100vh;
     overflow: auto;
     background-color: #023E7D;
   }

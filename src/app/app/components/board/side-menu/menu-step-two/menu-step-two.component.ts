@@ -59,7 +59,6 @@ export class MenuStepTwoComponent implements OnInit {
 
     this.netRepository.buildNetMatrix();
     this.checkIfTransitionCanBeFired();
-    console.log(this.netRepository.netMatrix);
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
