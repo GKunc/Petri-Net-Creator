@@ -23,6 +23,9 @@ export class MinimizedNetBuilder {
     private createSubnet(startPlace: number, startTransition: number, end: number): MinimizedNet {
         const subnetFinal = [];
         const {transitions, places} = this.findNextValue(startTransition, [], [], end);
+        console.log('transitions');
+        console.log(transitions);
+        console.log(places);
 
         const subnet = this.subnetMatrix(transitions);
         const columns = this.columnsToDelete(startPlace, transitions);
@@ -75,18 +78,25 @@ export class MinimizedNetBuilder {
         if (currentColumn === this.netMatrix[0].length) {
             return {transitions, places};
         }
-        places.push(currentColumn);
+
+        if (!places.includes(currentColumn)) {
+            places.push(currentColumn);
+        }
 
         for (let i = 0; i < end; i++) {
             if (this.netMatrix[i][currentColumn] === -1) {
                 for (let j = 1; j < this.netMatrix[0].length - 1; j++) {
                     if (this.netMatrix[i][j] === 1) {
+                        if (!transitions.includes(i)) {
                         transitions.push(i);
+                        }
                         this.findNextValue(j, transitions, places, end);
                     }
                 }
             }
         }
+        transitions.sort();
+        places.sort();
         return {transitions, places};
     }
 
@@ -135,7 +145,7 @@ export class MinimizedNetBuilder {
     }
 
     private convertNetMatrixToMainMinimizedMatrix(): MinimizedNet {
-        const minimizedNetInitial = this.createInitialMainMatrix();
+        let minimizedNetInitial = this.createInitialMainMatrix();
         const minimizedNetFinal: number[][] = [];
 
         const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
@@ -143,6 +153,8 @@ export class MinimizedNetBuilder {
 
         const indexesOfOnes = this.findIndexesOfValues(minimizedNetInitial, 1);
         const indexesOfNegativeOnes = this.findIndexesOfValues(minimizedNetInitial, -1);
+
+        minimizedNetInitial = this.removeEmptyColumns(minimizedNetInitial);
 
         for (let i = 0; i < minimizedNetInitial.length; i++) {
             const row = [];
@@ -266,5 +278,37 @@ export class MinimizedNetBuilder {
         }
 
         return indexes;
+    }
+
+    private removeEmptyColumns(minimizedNetInitial: number[][]): number[][] {
+        const minimizedNet = [];
+        const emptyColumns = [];
+        for (let i = 0; i < minimizedNetInitial[0].length; i++) {
+            if (minimizedNetInitial[0][i] === 0) {
+                emptyColumns.push(i);
+            }
+        }
+
+        for (let i = 1; i < minimizedNetInitial.length; i++) {
+            for (let j = 0; j < minimizedNetInitial[0].length; j++) {
+                if (minimizedNetInitial[i][j] !== 0) {
+                    emptyColumns.splice(emptyColumns.indexOf(j), 1);
+                }
+            }
+        }
+
+        for (let i = 0; i < minimizedNetInitial.length; i++) {
+            const row = [];
+            for (let j = 0; j < minimizedNetInitial[0].length; j++) {
+                if (emptyColumns.includes(j)) {
+                    continue;
+                } else {
+                    row.push(minimizedNetInitial[i][j]);
+                }
+            }
+            minimizedNet.push(row);
+        }
+
+        return minimizedNet;
     }
 }
