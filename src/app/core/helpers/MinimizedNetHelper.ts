@@ -92,9 +92,11 @@ export class MinimizedNetHelper {
                         subnetIDEnd++;
                     } else {
                         let index = j;
-                        if (j > originalPlaces.length) {
+                        if (j >= originalPlaces.length - 1) {
                             index = j - subnetPlaces.length;
                         }
+                        console.log('INDEX: ' + index);
+                        console.log(`transition-${originalTransitions[i]}`, `place-${originalPlaces[index]}`);
                         ArcHelper.createArc(`transition-${originalTransitions[i]}`, `place-${originalPlaces[index]}`);
                     }
                 } else if (netMatrix[i][j] === -1) {
@@ -104,9 +106,11 @@ export class MinimizedNetHelper {
                         subnetIDStart++;
                     } else {
                         let index = j;
-                        if (j > originalPlaces.length) {
+                        if (j >= originalPlaces.length - 1) {
                             index = j - subnetPlaces.length;
                         }
+                        console.log('INDEX: ' + index);
+                        console.log(`place-${originalPlaces[index]}`, `transition-${originalTransitions[i]}`);
                         ArcHelper.createArc(`place-${originalPlaces[index]}`, `transition-${originalTransitions[i]}`);
                     }
                 }

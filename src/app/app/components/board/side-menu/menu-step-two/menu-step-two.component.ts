@@ -100,6 +100,13 @@ export class MenuStepTwoComponent implements OnInit {
   private removeOutputTokens(id: number): void {
     this.getOutputPlacesIDs(id).forEach(placeID => {
       this.netRepository.removeToken(placeID);
+
+      const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
+
+      if (subnetNumber !== -1 &&
+        document.getElementById(`subnet-${subnetNumber}-start-place-token`) !== null) {
+          this.netRepository.removeToken(-1, `subnet-${subnetNumber}-start-place`, true);
+      }
     });
   }
 
@@ -119,8 +126,17 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   private addInputTokens(id: number): void {
-    this.getInputPlacesIDs(id).forEach(placeID => {
+    const inputPlacesIDs = this.getInputPlacesIDs(id);
+
+    inputPlacesIDs.forEach(placeID => {
       this.netRepository.createToken(placeID);
+
+      const subnetNumber = this.returnSubnetNumberContainingPlace(placeID);
+
+      if (subnetNumber !== -1 &&
+        document.getElementById(`subnet-${subnetNumber}-start-place-token`) === null) {
+          this.netRepository.createToken(-1, `subnet-${subnetNumber}-start-place`, true);
+      }
     });
   }
 
@@ -250,9 +266,10 @@ export class MenuStepTwoComponent implements OnInit {
   nextStep(): void {
     const size = document.getElementsByClassName('ready-to-be-fired').length;
     const randomTransition = Math.floor(Math.random() * size);
-    const firstReadyTransitionID = document.getElementsByClassName('ready-to-be-fired')[randomTransition]
-    .getAttribute('id').split('-')[1];
-    this.runTransition(Number(firstReadyTransitionID));
+    const firstReadyTransition = document.getElementsByClassName('ready-to-be-fired')[randomTransition];
+    if (firstReadyTransition !== undefined) {
+      this.runTransition(Number(firstReadyTransition.getAttribute('id').split('-')[1]));
+    }
   }
 
   resetSimulation(): void {

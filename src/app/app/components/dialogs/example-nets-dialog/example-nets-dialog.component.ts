@@ -34,12 +34,12 @@ export class ExampleNetsDialogComponent {
 
   drawFirstExampleNet(): void {
     this.clearBoard();
-    this.netRepository.createPlace(600, 100);
-    this.netRepository.createTransition(600, 200);
-    this.netRepository.createPlace(400, 300);
-    this.netRepository.createPlace(800, 300);
-    this.netRepository.createTransition(600, 400);
-    this.netRepository.createPlace(600, 500);
+    this.netRepository.createPlace(400, 100);
+    this.netRepository.createTransition(400, 200);
+    this.netRepository.createPlace(300, 300);
+    this.netRepository.createPlace(500, 300);
+    this.netRepository.createTransition(400, 400);
+    this.netRepository.createPlace(400, 500);
     this.netRepository.createToken(0);
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
@@ -52,12 +52,12 @@ export class ExampleNetsDialogComponent {
 
   drawFirstExampleNetWithSignals(): void {
     this.clearBoard();
-    this.netRepository.createPlace(600, 100);
-    this.netRepository.createTransition(600, 200);
-    this.netRepository.createPlace(400, 300);
-    this.netRepository.createPlace(800, 300);
-    this.netRepository.createTransition(600, 400);
-    this.netRepository.createPlace(600, 500);
+    this.netRepository.createPlace(400, 100);
+    this.netRepository.createTransition(400, 200);
+    this.netRepository.createPlace(300, 300);
+    this.netRepository.createPlace(500, 300);
+    this.netRepository.createTransition(400, 400);
+    this.netRepository.createPlace(400, 500);
     this.netRepository.createToken(0);
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
@@ -77,16 +77,16 @@ export class ExampleNetsDialogComponent {
 
   drawSecondExampleNet(): void {
     this.clearBoard();
-    this.netRepository.createPlace(600, 60);
-    this.netRepository.createTransition(600, 140);
-    this.netRepository.createPlace(400, 220);
-    this.netRepository.createPlace(800, 220);
-    this.netRepository.createTransition(400, 300);
-    this.netRepository.createTransition(800, 300);
-    this.netRepository.createPlace(400, 380);
-    this.netRepository.createPlace(800, 380);
-    this.netRepository.createTransition(600, 460);
-    this.netRepository.createPlace(600, 540);
+    this.netRepository.createPlace(400, 60);
+    this.netRepository.createTransition(400, 140);
+    this.netRepository.createPlace(300, 220);
+    this.netRepository.createPlace(500, 220);
+    this.netRepository.createTransition(300, 300);
+    this.netRepository.createTransition(500, 300);
+    this.netRepository.createPlace(300, 380);
+    this.netRepository.createPlace(500, 380);
+    this.netRepository.createTransition(400, 460);
+    this.netRepository.createPlace(400, 540);
     this.netRepository.createToken(0);
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
@@ -103,16 +103,16 @@ export class ExampleNetsDialogComponent {
 
   drawSecondExampleNetWithSignals(): void {
     this.clearBoard();
-    this.netRepository.createPlace(600, 60);
-    this.netRepository.createTransition(600, 140);
-    this.netRepository.createPlace(400, 220);
-    this.netRepository.createPlace(800, 220);
-    this.netRepository.createTransition(400, 300);
-    this.netRepository.createTransition(800, 300);
-    this.netRepository.createPlace(400, 380);
-    this.netRepository.createPlace(800, 380);
-    this.netRepository.createTransition(600, 460);
-    this.netRepository.createPlace(600, 540);
+    this.netRepository.createPlace(400, 60);
+    this.netRepository.createTransition(400, 140);
+    this.netRepository.createPlace(300, 220);
+    this.netRepository.createPlace(500, 220);
+    this.netRepository.createTransition(300, 300);
+    this.netRepository.createTransition(500, 300);
+    this.netRepository.createPlace(300, 380);
+    this.netRepository.createPlace(500, 380);
+    this.netRepository.createTransition(400, 460);
+    this.netRepository.createPlace(400, 540);
     this.netRepository.createToken(0);
     ArcHelper.createArc('place-0', 'transition-0');
     ArcHelper.createArc('transition-0', 'place-1');
@@ -139,26 +139,26 @@ export class ExampleNetsDialogComponent {
 
   drawThirdExampleNet(): void {
     this.clearBoard();
-    this.netRepository.createPlace(350, 60);
-    this.netRepository.createTransition(500, 65);
-    this.netRepository.createPlace(650, 60);
-    this.netRepository.createTransition(800, 65);
-    this.netRepository.createPlace(950, 60);
+    this.netRepository.createPlace(235, 60);
+    this.netRepository.createTransition(430, 65);
+    this.netRepository.createPlace(550, 60);
+    this.netRepository.createTransition(680, 65);
+    this.netRepository.createPlace(810, 60);
 
-    this.netRepository.createTransition(650, 140);
-    this.netRepository.createPlace(500, 220);
-    this.netRepository.createPlace(800, 220);
-    this.netRepository.createTransition(500, 300);
-    this.netRepository.createTransition(800, 300);
-    this.netRepository.createPlace(500, 380);
-    this.netRepository.createPlace(800, 380);
-    this.netRepository.createTransition(650, 460);
+    this.netRepository.createTransition(550, 140);
+    this.netRepository.createPlace(450, 220);
+    this.netRepository.createPlace(650, 220);
+    this.netRepository.createTransition(450, 300);
+    this.netRepository.createTransition(650, 300);
+    this.netRepository.createPlace(450, 380);
+    this.netRepository.createPlace(650, 380);
+    this.netRepository.createTransition(550, 460);
 
-    this.netRepository.createPlace(650, 540);
-    this.netRepository.createTransition(500, 545);
-    this.netRepository.createPlace(350, 540);
-    this.netRepository.createTransition(800, 545);
-    this.netRepository.createPlace(950, 540);
+    this.netRepository.createPlace(550, 540);
+    this.netRepository.createTransition(430, 545);
+    this.netRepository.createPlace(235, 540);
+    this.netRepository.createTransition(680, 545);
+    this.netRepository.createPlace(810, 540);
 
     this.netRepository.createToken(0);
 
@@ -185,19 +185,19 @@ export class ExampleNetsDialogComponent {
 
   drawFourthNet(): void {
     this.clearBoard();
-    this.netRepository.createPlace(600, 60);
-    this.netRepository.createTransition(600, 140);
+    this.netRepository.createPlace(400, 60);
+    this.netRepository.createTransition(400, 140);
+    this.netRepository.createPlace(300, 220);
     this.netRepository.createPlace(400, 220);
-    this.netRepository.createPlace(600, 220);
-    this.netRepository.createPlace(800, 220);
+    this.netRepository.createPlace(500, 220);
+    this.netRepository.createTransition(300, 300);
     this.netRepository.createTransition(400, 300);
-    this.netRepository.createTransition(600, 300);
-    this.netRepository.createTransition(800, 300);
+    this.netRepository.createTransition(500, 300);
+    this.netRepository.createPlace(300, 380);
     this.netRepository.createPlace(400, 380);
-    this.netRepository.createPlace(600, 380);
-    this.netRepository.createPlace(800, 380);
-    this.netRepository.createTransition(600, 460);
-    this.netRepository.createPlace(600, 540);
+    this.netRepository.createPlace(500, 380);
+    this.netRepository.createTransition(400, 460);
+    this.netRepository.createPlace(400, 540);
 
     this.netRepository.createToken(0);
 

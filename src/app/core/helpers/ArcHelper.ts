@@ -117,8 +117,7 @@ export class ArcHelper {
         startID: string, startX: number, startY: number,
         endX: number, endY: number
     ): [number, number, number, number] {
-
-        if (startX - endX > -80 && startX - endX < 100) {
+        if (startX - endX > -80 && startX - endX < 150) {
             if (startY - endY < 0) {
                 if (startID === 'place') {
                     [startX, startY, endX, endY] =
@@ -138,7 +137,7 @@ export class ArcHelper {
                 }
             }
         }
-        else if (startY - endY > -80 && startY - endY < 100) {
+        else if (startY - endY > -80 && startY - endY < 150) {
             if (startX - endX < 0) {
                 if (startID === 'place') {
                     [startX, startY, endX, endY] =
@@ -160,7 +159,7 @@ export class ArcHelper {
         }
 
         else if (startX - endX <= -80) {
-            if (startY - endY < 50) {
+            if (startY - endY < 80) {
                 if (startID === 'place') {
                     [startX, startY, endX, endY] =
                         this.adjustPlaceTopLeft(startX, startY, endX, endY);
@@ -180,8 +179,8 @@ export class ArcHelper {
             }
         }
 
-        else if (startX - endX >= 100) {
-            if (startY - endY < 50) {
+        else if (startX - endX >= 150) {
+            if (startY - endY < 80) {
                 if (startID === 'place') {
                     [startX, startY, endX, endY] =
                         this.adjustPlaceTopRight(startX, startY, endX, endY);
@@ -248,7 +247,7 @@ export class ArcHelper {
     }
 
     static adjustTransitionTopLeft(startX, startY, endX, endY): [number, number, number, number] {
-        return [startX + 35, startY + 20, endX - 20, endY - 20];
+        return [startX + 35, startY + 20, endX - 10, endY - 28];
     }
 
     static adjustTransitionTopRight(startX, startY, endX, endY): [number, number, number, number] {

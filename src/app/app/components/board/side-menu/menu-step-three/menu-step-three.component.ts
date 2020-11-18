@@ -31,24 +31,28 @@ export class MenuStepThreeComponent implements OnInit {
   }
 
   minimizeNet(): void {
-    this.netRepository.isNetMinimized = true;
-    // save position of elements
-    this.netRepository.minimizeNet();
-    this.clearBoard();
-    MinimizedNetHelper.displayMainNet(this.netRepository.mainMinimizedMatrix);
-    MinimizedNetHelper.displaySubnets(this.netRepository.subnetMinimizedMatrices);
-    this.netRepository.addSignalsToMinimizedNet();
+    if (!this.netRepository.isNetMinimized) {
+      this.netRepository.isNetMinimized = true;
+      // save position of elements
+      this.netRepository.minimizeNet();
+      this.clearBoard();
+      MinimizedNetHelper.displayMainNet(this.netRepository.mainMinimizedMatrix);
+      MinimizedNetHelper.displaySubnets(this.netRepository.subnetMinimizedMatrices);
+      this.netRepository.addSignalsToMinimizedNet();
+    }
   }
 
   backToUnminimizedNet(): void {
-    this.netRepository.isNetMinimized = false;
-    this.clearBoard();
-    NetHelper.displayNet(
-      this.netRepository.netMatrix,
-      this.netRepository.placeRepository.getAll(),
-      this.netRepository.transitionRepository.getAll()
-    );
-    this.netRepository.addSignalsToUnminimizedNet();
+    if (this.netRepository.isNetMinimized) {
+      this.netRepository.isNetMinimized = false;
+      this.clearBoard();
+      NetHelper.displayNet(
+        this.netRepository.netMatrix,
+        this.netRepository.placeRepository.getAll(),
+        this.netRepository.transitionRepository.getAll()
+      );
+      this.netRepository.addSignalsToUnminimizedNet();
+    }
   }
 
   clearBoard(): void {

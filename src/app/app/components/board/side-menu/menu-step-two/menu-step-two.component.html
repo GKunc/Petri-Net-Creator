@@ -14,7 +14,7 @@
     </div>
 
     <div class="card-container">
-        <a class="square-link" matTooltip="Previous" matTooltipPosition="above" (click)="previousStep()">
+        <a class="square-link" matTooltip="Undo last operation" matTooltipPosition="above" (click)="previousStep()">
             <span class="material-icons net-elements-icons" >fast_rewind</span>
         </a>
 
@@ -22,11 +22,11 @@
             <span class="material-icons net-elements-icons token-icon">play_arrow</span>
         </a>
 
-        <a class="square-link" matTooltip="Previous" matTooltipPosition="above" (click)="stopSimulation()">
+        <a class="square-link" matTooltip="Stop auto simulation" matTooltipPosition="above" (click)="stopSimulation()">
             <span class="material-icons net-elements-icons" disabled>stop</span>
         </a>
 
-        <a class="square-link" matTooltip="Reset Simulation" matTooltipPosition="above" (click)="resetSimulation()">
+        <a class="square-link" matTooltip="Restore starting state" matTooltipPosition="above" (click)="resetSimulation()">
             <span class="material-icons net-elements-icons token-icon">replay</span>
         </a>
     </div>  
