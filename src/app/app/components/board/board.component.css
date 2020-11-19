@@ -32,4 +32,14 @@
     cursor: move;
   }
 
+  @media print {
+    #board-header {
+      display:none;
+    }
+  
+    #svg-board {
+      display:block;
+    }
+  }
+
 

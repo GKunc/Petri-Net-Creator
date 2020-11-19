@@ -65,3 +65,9 @@
 ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before, ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after{
   top: 68px !important;
 }
+
+@media print {
+  #sidebar {
+    display:none;
+  }
+}

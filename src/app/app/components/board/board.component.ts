@@ -30,6 +30,7 @@ export class BoardComponent implements OnInit {
   }
 
   createPdf(): void {
+    window.print();
     this.snackBar.open('PDF Created!', 'close', {
       duration: 2000,
     });
