@@ -264,13 +264,17 @@ export class MenuStepOneComponent implements OnInit {
     $('.transition').off();
 
     this.addInputSignalsDialogRef.afterClosed().subscribe(selectedSignals => {
+      console.log('selectedSignals');
+      console.log(selectedSignals);
       PlaceHelper.setDisabledCursor();
       if (selectedSignals.length > 0) {
         const signalLabel = SignalHelper.createLabel(this.netRepository.signalRepository.selectedInputSignals, 0, 0);
         SignalHelper.moveLabelWithCursor(signalLabel);
         $('.transition').on('click', (event) => {
+            console.log('click > 0');
             const transitionNumber = Number(event.target.getAttribute('id').split('-')[1]);
-
+            console.log(transitionNumber);
+            console.log(selectedSignals);
             this.netRepository.createSignal(transitionNumber);
           });
         }

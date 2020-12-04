@@ -34,7 +34,7 @@ export class SignalHelper {
     static moveLabelWithCursor(label: Element): void {
         $(BoardHelper.getBoard()).on('mousemove', (event) => {
             $(label).attr('x', event.pageX - 235);
-            $(label).attr('y', event.pageY - 35);
+            $(label).attr('y', event.pageY - 40);
         });
     }
 
