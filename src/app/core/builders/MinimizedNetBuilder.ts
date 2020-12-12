@@ -186,6 +186,7 @@ export class MinimizedNetBuilder {
 
         return new MinimizedNet(minimizedNetFinal, this.findOriginalTransitions(start, end), this.findOriginalPlaces(start, end));
     }
+
     private findOriginalTransitions(start: number, end: number): number[] {
         const originalTransitions: number[] = [];
 

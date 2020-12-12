@@ -1,32 +1,32 @@
 <div>
     <div class="card-container">
-        <div class="card card-small" tabindex="0" (click)="startSimulation()">
+        <div class="card card-small" id="startSimulationButton" tabindex="0" (click)="startSimulation()">
             <span class="material-icons">play_arrow</span>
             <span class="button-text">Start Simulation</span>
         </div>
     </div>
     
     <div class="card-container">
-        <div class="card card-small" tabindex="0" (click)="autoSimulation()">
+        <div class="card card-small" id="autoSimulationButton" tabindex="0" (click)="autoSimulation()">
             <span class="material-icons">fast_forward</span>
             <span class="button-text">Auto Simultaion</span>
         </div>
     </div>
 
     <div class="card-container">
-        <a class="square-link" matTooltip="Undo last operation" matTooltipPosition="above" (click)="previousStep()">
+        <a class="square-link" matTooltip="Undo last operation" id="previousStepButton" matTooltipPosition="above" (click)="previousStep()">
             <span class="material-icons net-elements-icons" >fast_rewind</span>
         </a>
 
-        <a class="square-link" matTooltip="Run random active transition" matTooltipPosition="above" (click)="nextStep()">
+        <a class="square-link" matTooltip="Run random active transition" id="runRandomTransitionButton" matTooltipPosition="above" (click)="nextStep()">
             <span class="material-icons net-elements-icons token-icon">play_arrow</span>
         </a>
 
-        <a class="square-link" matTooltip="Stop auto simulation" matTooltipPosition="above" (click)="stopSimulation()">
+        <a class="square-link" matTooltip="Stop auto simulation" id="stopAutoSimulationButton" matTooltipPosition="above" (click)="stopSimulation()">
             <span class="material-icons net-elements-icons" disabled>stop</span>
         </a>
 
-        <a class="square-link" matTooltip="Restore starting state" matTooltipPosition="above" (click)="resetSimulation()">
+        <a class="square-link" matTooltip="Restore starting state" id="resetSimulationButton" matTooltipPosition="above" (click)="resetSimulation()">
             <span class="material-icons net-elements-icons token-icon">replay</span>
         </a>
     </div>  

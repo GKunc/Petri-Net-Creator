@@ -1,7 +1,6 @@
 import { PlaceRepository } from './../repositories/PlaceRepository';
 import { TransitionRepository } from './../repositories/TransitionRepository';
 import { MinimizedNet } from './../models/MinimizedNet';
-import { SUBNET_COLOR } from './../../app/shared/constants';
 import { TokenHelper } from './TokenHelper';
 import { PlaceHelper } from './PlaceHelper';
 import { TransitionHelper } from './TransitionHelper';
@@ -46,7 +45,7 @@ export class MinimizedNetHelper {
 
             originalTransitionsIDs.forEach(transitionID => {
                 const transition = this.transitionRepository.getByID(transitionID);
-                position = transition.yPosition;
+                position = transition.getYPosition();
                 if (position < minYPosition) {
                     minYPosition = position;
                 }
@@ -55,13 +54,13 @@ export class MinimizedNetHelper {
                 }
                 TransitionHelper.createTransitionWithLabel(
                     transition.getID(),
-                    startXPosition + transition.xPosition,
-                    transition.yPosition);
+                    startXPosition + transition.getXPosition(),
+                    transition.getYPosition());
             });
 
             originalPlacesIDs.forEach(placeID => {
                 const place = this.placeRepository.getByID(placeID);
-                position = place.yPosition;
+                position = place.getYPosition();
                 if (position < minYPosition) {
                     minYPosition = position;
                 }
@@ -70,8 +69,8 @@ export class MinimizedNetHelper {
                 }
                 PlaceHelper.createPlaceWtihLabel(
                     place.getID(),
-                    startXPosition + place.xPosition,
-                    place.yPosition);
+                    startXPosition + place.getXPosition(),
+                    place.getYPosition());
             });
 
             this.createArcBetweenElementsInSubnetNet(subnet, i, originalTransitionsIDs, originalPlacesIDs);
@@ -170,11 +169,11 @@ export class MinimizedNetHelper {
         for (let i = 0; i < netMatrix.length; i++) {
             if (originalIDs.length !== 0) {
                 const transition = this.transitionRepository.getByID(originalIDs[i]);
-                let yPosition = transition.yPosition;
+                let yPosition = transition.getYPosition();
                 if (yPosition > startPosition) {
                     yPosition -= changeYPosition;
                 }
-                TransitionHelper.createTransitionWithLabel(transition.getID(), transition.xPosition, yPosition);
+                TransitionHelper.createTransitionWithLabel(transition.getID(), transition.getXPosition(), yPosition);
             } else {
                 TransitionHelper.createTransitionWithLabel(i, 150 + 100 * i, 150);
             }
@@ -189,25 +188,25 @@ export class MinimizedNetHelper {
 
         for (let i = 0; i < subnetPlaces[0]; i++) {
             const place = this.placeRepository.getByID(originalIDs[i]);
-            PlaceHelper.createPlaceWtihLabel(place.getID(), place.xPosition, place.yPosition);
+            PlaceHelper.createPlaceWtihLabel(place.getID(), place.getXPosition(), place.getYPosition());
             positionCounter++;
         }
 
         for (let i = 0; i < subnetPlaces.length; i++) {
             const place = this.placeRepository.getByID(subnetPlaces[i]);
             PlaceHelper.createPlaceWtihLabel(
-                subnetID, place.xPosition, place.yPosition, `subnet-${subnetID}-start-`, 'white', `s${subnetID}`, false);
+                subnetID, place.getXPosition(), place.getYPosition(), `subnet-${subnetID}-start-`, 'white', `s${subnetID}`, false);
             subnetID++;
             positionCounter++;
         }
 
         for (let i = subnetPlaces[0]; i < originalIDs.length; i++) {
             const place = this.placeRepository.getByID(originalIDs[i]);
-            let yPosition = place.yPosition;
+            let yPosition = place.getYPosition();
             if (yPosition > startPosition) {
                 yPosition -= changeYPosition;
             }
-            PlaceHelper.createPlaceWtihLabel(place.getID(), place.xPosition, yPosition);
+            PlaceHelper.createPlaceWtihLabel(place.getID(), place.getXPosition(), yPosition);
             positionCounter++;
         }
 
@@ -317,7 +316,7 @@ export class MinimizedNetHelper {
         let xMax = 0;
         for (let i = 0; i < netMatrix.length; i++) {
             const transition = this.transitionRepository.getByID(originalTransitionsIDs[i]);
-            xPosition = transition.xPosition;
+            xPosition = transition.getXPosition();
             if (xPosition > xMax) {
                 xMax = xPosition;
             }
@@ -328,7 +327,7 @@ export class MinimizedNetHelper {
         let positionCounter = 0;
         for (let i = 0; i < subnetPlaces[0]; i++) {
             const place = this.placeRepository.getByID(originalPlacesIDs[i]);
-            xPosition = place.xPosition;
+            xPosition = place.getXPosition();
             if (xPosition > xMax) {
                 xMax = xPosition;
             }
@@ -336,7 +335,7 @@ export class MinimizedNetHelper {
         }
         for (let i = 0; i < subnetPlaces.length; i++) {
             const place = this.placeRepository.getByID(subnetPlaces[i]);
-            xPosition = place.xPosition;
+            xPosition = place.getXPosition();
             if (xPosition > xMax) {
                 xMax = xPosition;
             }
@@ -345,7 +344,7 @@ export class MinimizedNetHelper {
         }
         for (let i = subnetPlaces[0]; i < originalPlacesIDs.length; i++) {
             const place = this.placeRepository.getByID(originalPlacesIDs[i]);
-            xPosition = place.xPosition;
+            xPosition = place.getXPosition();
             if (xPosition > xMax) {
                 xMax = xPosition;
             }
@@ -359,7 +358,7 @@ export class MinimizedNetHelper {
         let yMax = 0;
         for (let i = 0; i < netMatrix.length; i++) {
             const transition = this.transitionRepository.getByID(originalTransitionsIDs[i]);
-            yPosition = transition.yPosition;
+            yPosition = transition.getYPosition();
             if (yPosition > yMax) {
                 yMax = yPosition;
             }
@@ -370,7 +369,7 @@ export class MinimizedNetHelper {
         let positionCounter = 0;
         for (let i = 0; i < subnetPlaces[0]; i++) {
             const place = this.placeRepository.getByID(originalPlacesIDs[i]);
-            yPosition = place.yPosition;
+            yPosition = place.getYPosition();
             if (yPosition > yMax) {
                 yMax = yPosition;
             }
@@ -378,7 +377,7 @@ export class MinimizedNetHelper {
         }
         for (let i = 0; i < subnetPlaces.length; i++) {
             const place = this.placeRepository.getByID(subnetPlaces[i]);
-            yPosition = place.yPosition;
+            yPosition = place.getYPosition();
             if (yPosition > yMax) {
                 yMax = yPosition;
             }
@@ -387,7 +386,7 @@ export class MinimizedNetHelper {
         }
         for (let i = subnetPlaces[0]; i < originalPlacesIDs.length; i++) {
             const place = this.placeRepository.getByID(originalPlacesIDs[i]);
-            yPosition = place.yPosition;
+            yPosition = place.getYPosition();
             if (yPosition > yMax) {
                 yMax = yPosition;
             }

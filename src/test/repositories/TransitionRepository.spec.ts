@@ -1,12 +1,12 @@
-import { TransitionRepository } from './../../app/core/repositories/TransitionRepository';
-import { Transition } from './../../app/core/models/Transition';
+import { TransitionRepository } from '../../app/core/repositories/TransitionRepository';
+import { Transition } from '../../app/core/models/Transition';
 
 
 export function createFakeTransitions(numberOfTransitions: number): Transition[] {
   const transitions = [];
   for (let i = 1; i <= numberOfTransitions; i++) {
     const transition = new Transition();
-    transition.id = i;
+    transition.setID(i);
     transitions.push(transition);
   }
 
@@ -21,7 +21,7 @@ describe('TransitionRepository', () => {
 
   it('should return all tokens', () => {
     // Arrange
-    uut.setTransitions(createFakeTransitions(3));
+    uut.setElements(createFakeTransitions(3));
 
     // Act
     const transitions = uut.getAll();
@@ -32,7 +32,7 @@ describe('TransitionRepository', () => {
 
   it('should return found', () => {
     // Arrange
-    uut.setTransitions(createFakeTransitions(3));
+    uut.setElements(createFakeTransitions(3));
 
     // Act
     const transition = uut.getByID(2);
@@ -44,7 +44,7 @@ describe('TransitionRepository', () => {
 
   it('should return undefined when token does not exist', () => {
     // Arrange
-    uut.setTransitions(createFakeTransitions(3));
+    uut.setElements(createFakeTransitions(3));
 
     // Act
     const transition = uut.getByID(5);
@@ -56,7 +56,7 @@ describe('TransitionRepository', () => {
 
   it('should remove token', () => {
     // Arrange
-    uut.setTransitions(createFakeTransitions(3));
+    uut.setElements(createFakeTransitions(3));
 
     // Act
     uut.remove(1);
@@ -67,7 +67,7 @@ describe('TransitionRepository', () => {
 
   it('should remove all tokens', () => {
     // Arrange
-    uut.setTransitions(createFakeTransitions(3));
+    uut.setElements(createFakeTransitions(3));
 
     // Act
     uut.removeAll();

@@ -2,9 +2,13 @@ import { TokenHelper } from './../helpers/TokenHelper';
 import { INetElement } from './INetElement';
 
 export class Token implements INetElement {
-    id: number;
+    private id: number;
 
     constructor() {
+    }
+
+    setID(id: number): void {
+        this.id = id;
     }
 
     getID(): number {

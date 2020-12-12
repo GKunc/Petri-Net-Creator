@@ -1,13 +1,13 @@
-<h2 mat-dialog-title>Input Signals Creator</h2>
+<h2 mat-dialog-title id="addSignalsTitle">Input Signals Creator</h2>
 Select desired signals and press "Add condition" button. <br>
   You will be navigated to net. <br>
   Click on transition to add input signal. <br>
 
 <mat-dialog-content style="margin-top: 8px;">
-  <button mat-mini-fab color="primary" (click)="addSignal()">
+  <button mat-mini-fab color="primary" id="addSignalButton" (click)="addSignal()">
     <mat-icon>add</mat-icon>
   </button>
-  <button mat-mini-fab color="basic" (click)="removeSignal()">
+  <button mat-mini-fab color="basic" id="removeSignalButton" (click)="removeSignal()">
     <mat-icon>remove</mat-icon>
   </button>
   <div>

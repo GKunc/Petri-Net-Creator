@@ -1,20 +1,20 @@
 <div id="content">
   <div id="sidebar">
     <mat-horizontal-stepper id="stepper" labelPosition="bottom" (selectionChange)="onStepChange($event)">
-      <mat-step>
-        <ng-template matStepLabel>Create</ng-template>
+      <mat-step >
+        <ng-template id="buildNetMenu" matStepLabel>Create</ng-template>
         <app-menu-step-one></app-menu-step-one>
       </mat-step>
 
-      <mat-step>
-        <ng-template matStepLabel>Sim</ng-template>
+      <mat-step >
+        <ng-template id="simulateNetMenu" matStepLabel>Sim</ng-template>
         <app-menu-step-two>
         </app-menu-step-two>
 
       </mat-step>
 
-      <mat-step>
-        <ng-template matStepLabel>Net</ng-template>
+      <mat-step >
+        <ng-template id="minimizeNetMenu" matStepLabel>Net</ng-template>
         <app-menu-step-three>
         </app-menu-step-three>
       </mat-step>

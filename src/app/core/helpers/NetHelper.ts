@@ -16,13 +16,13 @@ export class NetHelper {
 
     private static drawTransitions(transitions: Transition[]): void {
         transitions.forEach(transition => {
-            TransitionHelper.createTransitionWithLabel(transition.getID(), transition.xPosition, transition.yPosition);
+            TransitionHelper.createTransitionWithLabel(transition.getID(), transition.getXPosition(), transition.getYPosition());
         });
     }
 
     private static drawPlaces(places: Place[]): void {
         places.forEach(place => {
-            PlaceHelper.createPlaceWtihLabel(place.getID(), place.xPosition, place.yPosition);
+            PlaceHelper.createPlaceWtihLabel(place.getID(), place.getXPosition(), place.getYPosition());
         });
     }
 

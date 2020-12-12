@@ -1,24 +1,24 @@
+import { IRepository } from './IRepository';
 import { Injectable } from '@angular/core';
 import { Place } from './../models/Place';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PlaceRepository {
+export class PlaceRepository implements IRepository<Place> {
     private places: Place[];
 
     constructor() {
         this.places = [];
     }
 
-    setPlaces(places: Place[]): void {
-        this.places = places;
+    setElements(elements: Place[]): void {
+        this.places = elements;
     }
 
     create(x: number, y: number): void {
         const place: Place = new Place();
-        place.id = this.getLowestAvailableID();
-        place.create(place.id , x, y);
+        place.create(this.getLowestAvailableID() , x, y);
         this.places.push(place);
     }
 

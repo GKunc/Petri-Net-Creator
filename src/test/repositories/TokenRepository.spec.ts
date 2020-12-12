@@ -1,12 +1,12 @@
-import { TokenRepository } from './../../app/core/repositories/TokenRepository';
-import { Token } from './../../app/core/models/Token';
+import { TokenRepository } from '../../app/core/repositories/TokenRepository';
+import { Token } from '../../app/core/models/Token';
 
 
 export function createFakeTokens(numberOfTokens: number): Token[] {
   const tokens = [];
   for (let i = 1; i <= numberOfTokens; i++) {
     const token = new Token();
-    token.id = i;
+    token.setID(i);
     tokens.push(token);
   }
 
@@ -21,7 +21,7 @@ describe('TokenRepository', () => {
 
   it('should return all tokens', () => {
     // Arrange
-    uut.setTokens(createFakeTokens(3));
+    uut.setElements(createFakeTokens(3));
 
     // Act
     const tokens = uut.getAll();
@@ -32,7 +32,7 @@ describe('TokenRepository', () => {
 
   it('should return found', () => {
     // Arrange
-    uut.setTokens(createFakeTokens(3));
+    uut.setElements(createFakeTokens(3));
 
     // Act
     const token = uut.getByID(2);
@@ -44,7 +44,7 @@ describe('TokenRepository', () => {
 
   it('should return undefined when token does not exist', () => {
     // Arrange
-    uut.setTokens(createFakeTokens(3));
+    uut.setElements(createFakeTokens(3));
 
     // Act
     const token = uut.getByID(5);
@@ -56,7 +56,7 @@ describe('TokenRepository', () => {
 
   it('should remove token', () => {
     // Arrange
-    uut.setTokens(createFakeTokens(3));
+    uut.setElements(createFakeTokens(3));
 
     // Act
     uut.remove(1);
@@ -67,7 +67,7 @@ describe('TokenRepository', () => {
 
   it('should remove all tokens', () => {
     // Arrange
-    uut.setTokens(createFakeTokens(3));
+    uut.setElements(createFakeTokens(3));
 
     // Act
     uut.removeAll();

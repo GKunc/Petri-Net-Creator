@@ -1,7 +1,7 @@
 import { INetElement } from './INetElement';
 
 export class Arc implements INetElement {
-    id: string;
+    private id: string;
     color = 'black';
 
     constructor() {

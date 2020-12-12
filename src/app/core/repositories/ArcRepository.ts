@@ -5,6 +5,7 @@ import { Arc } from './../models/Arc';
     providedIn: 'root'
 })
 export class ArcRepository {
+    arc: Arc[];
 
     constructor() {}
 

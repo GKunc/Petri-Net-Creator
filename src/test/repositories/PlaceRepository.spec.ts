@@ -1,12 +1,12 @@
-import { PlaceRepository } from './../../app/core/repositories/PlaceRepository';
-import { Place } from './../../app/core/models/Place';
+import { PlaceRepository } from '../../app/core/repositories/PlaceRepository';
+import { Place } from '../../app/core/models/Place';
 
 
 export function createFakePlaces(numberOfPlaces: number): Place[] {
   const places = [];
   for (let i = 1; i <= numberOfPlaces; i++) {
     const place = new Place();
-    place.id = i;
+    place.setID(i);
     places.push(place);
   }
 
@@ -22,7 +22,7 @@ describe('PlaceRepository', () => {
 
   it('should return all places', () => {
     // Arrange
-    uut.setPlaces(createFakePlaces(3));
+    uut.setElements(createFakePlaces(3));
 
     // Act
     const places = uut.getAll();
@@ -33,7 +33,7 @@ describe('PlaceRepository', () => {
 
   it('should remove all places', () => {
     // Arrange
-    uut.setPlaces(createFakePlaces(3));
+    uut.setElements(createFakePlaces(3));
 
     // Act
     const places = uut.removeAll();
@@ -44,19 +44,19 @@ describe('PlaceRepository', () => {
 
   it('should get place by id', () => {
     // Arrange
-    uut.setPlaces(createFakePlaces(3));
+    uut.setElements(createFakePlaces(3));
 
     // Act
     const foundPlace = uut.getByID(2);
 
     // Assert
     expect(uut.getAll().length).toBe(3);
-    expect(foundPlace.id).toBe(2);
+    expect(foundPlace.getID()).toBe(2);
   });
 
   it('should delete place by id', () => {
     // Arrange
-    uut.setPlaces(createFakePlaces(3));
+    uut.setElements(createFakePlaces(3));
 
     // Act
     uut.remove(2);

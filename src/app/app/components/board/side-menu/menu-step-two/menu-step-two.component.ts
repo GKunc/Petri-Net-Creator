@@ -62,7 +62,7 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   checkIfSignalsAreEnabled(id: number): boolean {
-      return this.netRepository.transitionRepository.getByID(id).signals.every(signal =>
+      return this.netRepository.transitionRepository.getByID(id).getSignals().every(signal =>
       this.netRepository.signalRepository.activeInputSignals.includes(signal));
   }
 

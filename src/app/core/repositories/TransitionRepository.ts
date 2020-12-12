@@ -1,18 +1,19 @@
+import { IRepository } from './IRepository';
 import { Injectable } from '@angular/core';
 import { Transition } from './../models/Transition';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TransitionRepository {
+export class TransitionRepository implements IRepository<Transition> {
     private transitions: Transition[];
 
     constructor() {
         this.transitions = [];
     }
 
-    setTransitions(transitions: Transition[]): void {
-        this.transitions = transitions;
+    setElements(elements: Transition[]): void {
+        this.transitions = elements;
     }
 
     create(x: number, y: number): void {
@@ -44,7 +45,7 @@ export class TransitionRepository {
         }
     }
 
-    getLowestAvailableID(): number {
+    private getLowestAvailableID(): number {
         let id = 0;
         let found = false;
         while (!found) {

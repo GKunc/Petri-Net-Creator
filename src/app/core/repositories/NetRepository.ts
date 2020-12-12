@@ -72,7 +72,6 @@ export class NetRepository {
 
     createPlace(x: number, y: number): void {
         this.placeRepository.create(x, y);
-
     }
 
     createTransition(x: number, y: number): void {
@@ -148,14 +147,14 @@ export class NetRepository {
         for (let i = 0; i < this.mainMinimizedMatrix.net.length; i++) {
             const transitionID  = this.mainMinimizedMatrix.originalTransitions[i];
             SignalHelper.createLabelForTransition(transitionID,
-                this.transitionRepository.getByID(transitionID).signals);
+                this.transitionRepository.getByID(transitionID).getSignals());
         }
 
         for (let i = 0; i < this.subnetMinimizedMatrices.length; i++) {
             for (let j = 0; j < this.subnetMinimizedMatrices[0].net.length; j++) {
                 const transitionID = this.subnetMinimizedMatrices[i].originalTransitions[j];
                 SignalHelper.createLabelForTransition(
-                    transitionID, this.transitionRepository.getByID(transitionID).signals);
+                    transitionID, this.transitionRepository.getByID(transitionID).getSignals());
             }
         }
     }
@@ -163,7 +162,7 @@ export class NetRepository {
     addSignalsToUnminimizedNet(): void {
         for (let i = 0; i < this.netMatrix.length; i++) {
             SignalHelper.createLabelForTransition(i,
-                this.transitionRepository.getByID(i).signals);
+                this.transitionRepository.getByID(i).getSignals());
         }
     }
 

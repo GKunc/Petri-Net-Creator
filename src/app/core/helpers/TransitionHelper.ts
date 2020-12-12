@@ -53,8 +53,8 @@ export class TransitionHelper {
 
     static createTransitionWithLabel(id: number, xPosition: number, yPosition: number, prefix: string = ''): void {
         const cursors = document.getElementById('cursors');
-        const transition = this.createTransition(id, xPosition, yPosition, prefix);
         const label = this.createLabel(id, xPosition, yPosition, prefix);
+        const transition = this.createTransition(id, xPosition, yPosition, prefix);
 
         const board = document.getElementById('svg-board');
         board.insertBefore(transition, cursors);

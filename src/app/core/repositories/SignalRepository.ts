@@ -16,6 +16,10 @@ export class SignalRepository {
       this.activeInputSignals = [];
   }
 
+  getCurrentSingalNumber(): number {
+    return this.currentSignalNumber;
+  }
+
   addSignal(): void {
     this.currentSignalNumber++;
     this.inputSignals.push(this.currentSignalNumber);
@@ -41,4 +45,5 @@ export class SignalRepository {
   updateActiveInputSignals(activeInputSignals: number[]): void {
     this.activeInputSignals = activeInputSignals;
   }
+
 }

@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Example nets</h2>
+<h2 mat-dialog-title id="exampleNetDialogTitle">Example nets</h2>
 <mat-dialog-content>
   <div>
-    <button mat-stroked-button (click)=drawFirstExampleNet()>Net One</button>
+    <button mat-stroked-button id="exampleNet-1" (click)=drawFirstExampleNet()>Net One</button>
     <a>Straight net without subnets</a>
   </div>
   <div>
-    <button mat-stroked-button (click)=drawFirstExampleNetWithSignals()>Net Two</button>
+    <button mat-stroked-button id="exampleNet-2" (click)=drawFirstExampleNetWithSignals()>Net Two</button>
     <a>Straight net without subnets with signals</a>
   </div>
   <div>
-    <button mat-stroked-button (click)=drawSecondExampleNet()>Net Three</button>
+    <button mat-stroked-button id="exampleNet-3" (click)=drawSecondExampleNet()>Net Three</button>
     <a>Net with a 2 simple subnets</a>
   </div>
   <div>

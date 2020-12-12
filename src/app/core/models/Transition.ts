@@ -3,13 +3,17 @@ import { TransitionHelper } from '../helpers/TransitionHelper';
 import { INetElement } from './INetElement';
 
 export class Transition implements INetElement {
-    id: number;
-    xPosition: number;
-    yPosition: number;
-    signals: number[];
+    private id: number;
+    private xPosition: number;
+    private yPosition: number;
+    private signals: number[];
 
     constructor() {
         this.signals = [];
+    }
+
+    setID(id: number): void {
+        this.id = id;
     }
 
     updateCoordinates(xPosition: number, yPosition: number): void {
@@ -23,6 +27,18 @@ export class Transition implements INetElement {
 
     getID(): number {
         return this.id;
+    }
+
+    getXPosition(): number {
+        return this.xPosition;
+    }
+
+    getYPosition(): number {
+        return this.yPosition;
+    }
+
+    getSignals(): number[] {
+        return this.signals;
     }
 
     create(id: number, xPosition: number, yPosition: number): void {

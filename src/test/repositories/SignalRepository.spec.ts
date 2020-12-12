@@ -1,4 +1,4 @@
-import { SignalRepository } from './../../app/core/repositories/SignalRepository';
+import { SignalRepository } from '../../app/core/repositories/SignalRepository';
 
 describe('SignalRepository', () => {
   let uut: SignalRepository;

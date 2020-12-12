@@ -1,3 +1,4 @@
+import { IRepository } from './IRepository';
 import { TokenHelper } from './../helpers/TokenHelper';
 import { Token } from './../models/Token';
 import { Injectable } from '@angular/core';
@@ -5,14 +6,14 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root'
 })
-export class TokenRepository {
+export class TokenRepository implements IRepository<Token>{
     private tokens: Token[];
 
     constructor() {
         this.tokens = [];
     }
 
-    setTokens(tokens: Token[]): void {
+    setElements(tokens: Token[]): void {
         this.tokens = tokens;
     }
 
