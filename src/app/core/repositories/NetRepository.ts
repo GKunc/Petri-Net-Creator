@@ -113,14 +113,22 @@ export class NetRepository {
         this.signalRepository.removeSignal();
     }
 
-    updateSelectedSignals(signals: number[]): void {
-        this.signalRepository.updateSelectedSignals(signals);
+    updateSelectedSignals(signals: number[], nagativeSignals: number[] = []): void {
+        this.signalRepository.updateSelectedSignals(signals, nagativeSignals);
     }
 
     createSignal(transitionNumber: number): void {
-        SignalHelper.createLabelForTransition(transitionNumber,
-          this.signalRepository.selectedInputSignals);
-        this.transitionRepository.addSignals(transitionNumber, this.signalRepository.selectedInputSignals);
+        SignalHelper.createLabelForTransition(
+            transitionNumber,
+            this.signalRepository.selectedInputSignals,
+            this.signalRepository.negativeSelectedInputSignals
+        );
+
+        this.transitionRepository.addSignals(
+            transitionNumber,
+            this.signalRepository.selectedInputSignals,
+            this.signalRepository.negativeSelectedInputSignals
+        );
     }
 
     minimizeNet(): void {

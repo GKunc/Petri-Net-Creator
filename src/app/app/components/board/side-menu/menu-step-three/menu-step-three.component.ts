@@ -71,4 +71,8 @@ export class MenuStepThreeComponent implements OnInit {
     board.appendChild(cloneCursors);
     BoardHelper.addArrowHeadMarker();
   }
+
+  saveNet(): void {
+
+  }
 }

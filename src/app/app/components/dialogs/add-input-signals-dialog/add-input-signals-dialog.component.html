@@ -22,6 +22,16 @@ Select desired signals and press "Add condition" button. <br>
           <input type="checkbox" class="output-signal" id="signal-{{inputSignal}}"/>
         </td>
       </tr>
+      <tr>
+        <th *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+          &not; x{{inputSignal}}
+        </th>
+      </tr>
+      <tr>
+        <td *ngFor="let inputSignal of netRepository.signalRepository.inputSignals">
+          <input type="checkbox" class="negation-output-signal" id="negation-signal-{{inputSignal}}"/>
+        </td>
+      </tr>
     </table>
     
   </div>

@@ -68,11 +68,12 @@ describe('SignalRepository', () => {
   it('should update selected signals', () => {
     // Arrange
     // Act
-    uut.updateSelectedSignals([1, 2, 3]);
+    uut.updateSelectedSignals([1, 2, 3], [2]);
 
     // Assert
     expect(uut.selectedInputSignals.length).toBe(3);
     expect(uut.selectedInputSignals).toEqual([1, 2, 3]);
+    expect(uut.negativeSelectedInputSignals).toEqual([2]);
   });
 
 });

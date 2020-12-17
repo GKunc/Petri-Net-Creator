@@ -13,12 +13,14 @@ export class AddInputSignalsDialogComponent {
 
   netRepository: NetRepository;
   selectedSignals: number[];
+  negativSelectedInputSignals: number[];
 
   constructor(
     private dialogRef: MatDialogRef<AddInputSignalsDialogComponent>,
     @Inject(NetRepository) netRepository: NetRepository
   ) {
     this.selectedSignals = [];
+    this.negativSelectedInputSignals = [];
     this.netRepository = netRepository;
   }
 
@@ -41,7 +43,15 @@ export class AddInputSignalsDialogComponent {
         this.selectedSignals.push(Number(signal.getAttribute('id').split('-')[1]));
       }
     });
-    this.netRepository.signalRepository.updateSelectedSignals(this.selectedSignals);
-    this.dialogRef.close(this.selectedSignals);
+
+    const negationSignal = document.getElementsByClassName('negation-output-signal');
+    Array.from(negationSignal).forEach(signal => {
+      if ($(signal).is(':checked')) {
+        this.negativSelectedInputSignals.push(Number(signal.getAttribute('id').split('-')[2]));
+      }
+    });
+
+    this.netRepository.signalRepository.updateSelectedSignals(this.selectedSignals, this.negativSelectedInputSignals);
+    this.dialogRef.close([this.selectedSignals, this.negativSelectedInputSignals]);
   }
 }

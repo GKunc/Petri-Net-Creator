@@ -22,8 +22,8 @@ export class TransitionRepository implements IRepository<Transition> {
         this.transitions.push(transition);
     }
 
-    addSignals(id: number, signals: number[]): void {
-        this.getByID(id).addSignals(signals);
+    addSignals(id: number, signals: number[], negativeSignals: number[] = []): void {
+        this.getByID(id).addSignals(signals, negativeSignals);
     }
 
     removeAll(): void {

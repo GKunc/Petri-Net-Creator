@@ -27,9 +27,12 @@ describe('Transition', () => {
 
     it('shoud add signals to transition', () => {
         const newSignals = [1, 4, 2];
-        uut.addSignals(newSignals);
+        const negativeNewSignals = [3, 2];
+        uut.addSignals(newSignals, negativeNewSignals);
         const signals = uut.getSignals();
+        const negativeignals = uut.getNegativeSignals();
         expect(signals).toEqual(newSignals);
+        expect(negativeignals).toEqual(negativeNewSignals);
     });
 
 });

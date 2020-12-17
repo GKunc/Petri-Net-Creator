@@ -70,7 +70,7 @@ export class ExampleNetsDialogComponent {
     this.netRepository.addSignal();
     this.netRepository.updateSelectedSignals([1, 2, 3]);
     this.netRepository.createSignal(0);
-    this.netRepository.updateSelectedSignals([1, 3]);
+    this.netRepository.updateSelectedSignals([1, 3], [2]);
     this.netRepository.createSignal(1);
     this.close();
   }
@@ -128,9 +128,9 @@ export class ExampleNetsDialogComponent {
     this.netRepository.addSignal();
     this.netRepository.addSignal();
     this.netRepository.addSignal();
-    this.netRepository.updateSelectedSignals([1, 3]);
+    this.netRepository.updateSelectedSignals([1, 3], [2]);
     this.netRepository.createSignal(0);
-    this.netRepository.updateSelectedSignals([2]);
+    this.netRepository.updateSelectedSignals([2], [1]);
     this.netRepository.createSignal(2);
     this.netRepository.updateSelectedSignals([1, 2, 3, 4]);
     this.netRepository.createSignal(3);

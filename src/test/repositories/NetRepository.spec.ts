@@ -103,7 +103,7 @@ describe('NetRepository', () => {
     it('should update selected signals', () => {
         spyOn(signalRepositoryInstance, 'updateSelectedSignals').and.stub();
         uut.updateSelectedSignals([1, 3]);
-        expect(signalRepositoryInstance.updateSelectedSignals).toHaveBeenCalledWith([1, 3]);
+        expect(signalRepositoryInstance.updateSelectedSignals).toHaveBeenCalledWith([1, 3], []);
     });
 
     it('should remove all elements', () => {

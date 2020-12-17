@@ -60,15 +60,25 @@ export class MenuStepTwoComponent implements OnInit {
     this.checkIfTransitionCanBeFired();
   }
 
-  checkIfSignalsAreEnabled(id: number): boolean {
-      return this.netRepository.transitionRepository.getByID(id).getSignals().every(signal =>
+  checkIfPositiveSignalsAreEnabled(id: number): boolean {
+    console.log('POSITIOVE');
+    return this.netRepository.transitionRepository.getByID(id).getSignals().every(signal =>
       this.netRepository.signalRepository.activeInputSignals.includes(signal));
   }
+
+  checkIfNegativeSignalsAreDisnabled(id: number): boolean {
+    console.log(`Transtion id: ${id}`);
+    console.log(`${this.netRepository.transitionRepository.getByID(id).getNegativeSignals()}`);
+    return this.netRepository.transitionRepository.getByID(id).getNegativeSignals().every(signal =>
+    !this.netRepository.signalRepository.activeInputSignals.includes(signal));
+}
 
   checkIfTransitionCanBeFired(): void {
     for (let id = 0; id < this.netRepository.netMatrix.length; id++) {
       const inputPlacesIDs = this.getInputPlacesIDs(id);
-      if (this.shouldTransitionBeEnabled(inputPlacesIDs) && this.checkIfSignalsAreEnabled(id)) {
+      if (this.shouldTransitionBeEnabled(inputPlacesIDs) &&
+          this.checkIfPositiveSignalsAreEnabled(id) &&
+          this.checkIfNegativeSignalsAreDisnabled(id)) {
           this.enableTransition(id);
       } else {
         this.disableTransition(id);

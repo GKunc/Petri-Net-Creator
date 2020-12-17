@@ -7,9 +7,11 @@ export class Transition implements INetElement {
     private xPosition: number;
     private yPosition: number;
     private signals: number[];
+    private negativeSignals: number[];
 
     constructor() {
         this.signals = [];
+        this.negativeSignals = [];
     }
 
     setID(id: number): void {
@@ -21,8 +23,9 @@ export class Transition implements INetElement {
         this.yPosition = yPosition;
     }
 
-    addSignals(signals: number[]): void {
+    addSignals(signals: number[], negativeSignals: number[]): void {
         this.signals = signals;
+        this.negativeSignals = negativeSignals;
     }
 
     getID(): number {
@@ -39,6 +42,10 @@ export class Transition implements INetElement {
 
     getSignals(): number[] {
         return this.signals;
+    }
+
+    getNegativeSignals(): number[] {
+        return this.negativeSignals;
     }
 
     create(id: number, xPosition: number, yPosition: number): void {

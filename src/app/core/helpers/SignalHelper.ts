@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 
 export class SignalHelper {
 
-    static createLabel(signalIDs: number[], xPosition: number, yPosition: number): Element {
+    static createLabel(signalIDs: number[], negativeSignalIDs: number[] = [], xPosition: number, yPosition: number): Element {
         const signalLabel = (document.getElementById('label-signal-cursor') as Element);
         if (signalLabel !== null) {
           document.getElementById('svg-board').removeChild(signalLabel);
@@ -21,10 +21,18 @@ export class SignalHelper {
         text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer; font-weight: bold;');
         signalIDs.forEach(id => {
-            if (signalIDs.findIndex(element => element === id) !== signalIDs.length - 1) {
+            if (signalIDs.findIndex(element => element === id) !== signalIDs.length - 1 || negativeSignalIDs.length !== 0) {
                 text.innerHTML += 'x' + id + ' &and; ';
             } else {
                 text.innerHTML += 'x' + id;
+            }
+        });
+
+        negativeSignalIDs.forEach(id => {
+            if (negativeSignalIDs.findIndex(element => element === id) !== negativeSignalIDs.length - 1) {
+                text.innerHTML += '&not; x' + id + ' &and; ';
+            } else {
+                text.innerHTML += '&not; x' + id;
             }
         });
         board.insertBefore(text, cursors);
@@ -38,7 +46,7 @@ export class SignalHelper {
         });
     }
 
-    static createLabelForTransition(transitionNumber: number, signalIDs: number[]): void {
+    static createLabelForTransition(transitionNumber: number, signalIDs: number[], negativeSignalIDs: number[] = []): void {
         const cursors = document.getElementById('cursors');
         const board = document.getElementById('svg-board');
 
@@ -62,10 +70,18 @@ export class SignalHelper {
         text.setAttribute('font-size', '14px');
         text.setAttribute('style', 'cursor: pointer; font-weight: bold;');
         signalIDs.forEach(id => {
-            if (signalIDs.findIndex(element => element === id) !== signalIDs.length - 1) {
+            if (signalIDs.findIndex(element => element === id) !== signalIDs.length - 1 || negativeSignalIDs.length !== 0) {
                 text.innerHTML += 'x' + id + ' &and; ';
             } else {
                 text.innerHTML += 'x' + id;
+            }
+        });
+
+        negativeSignalIDs.forEach(id => {
+            if (negativeSignalIDs.findIndex(element => element === id) !== negativeSignalIDs.length - 1) {
+                text.innerHTML += '&not; x' + id + ' &and; ';
+            } else {
+                text.innerHTML += '&not; x' + id;
             }
         });
         board.insertBefore(text, cursors);
