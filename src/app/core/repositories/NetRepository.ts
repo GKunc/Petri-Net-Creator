@@ -25,6 +25,7 @@ export class NetRepository {
     mainMinimizedMatrix: MinimizedNet;
     subnetMinimizedMatrices: MinimizedNet[];
 
+    netHasSignals: boolean;
     isNetMinimized: boolean;
     isMatrixBuild: boolean;
     constructor(
@@ -41,6 +42,7 @@ export class NetRepository {
 
             this.netMatrix = [];
 
+            this.netHasSignals = false;
             this.isNetMinimized = false;
             this.isMatrixBuild = false;
     }
@@ -91,6 +93,7 @@ export class NetRepository {
     }
 
     removeAllElements(): void {
+        this.netHasSignals = false;
         this.isMatrixBuild = false;
         this.isNetMinimized = false;
         this.netMatrix = [];
@@ -166,6 +169,15 @@ export class NetRepository {
         }
     }
 
+    checkIfHasAnySignals(): boolean {
+        let hasAnySignals = false;
+        this.transitionRepository.getAll().forEach(transition => {
+            if (transition.getSignals().length > 0) {
+                hasAnySignals =  true;
+            }
+        });
+        return hasAnySignals;
+    }
     private printMatrixes(): void {
         console.log('Net matrix:');
         console.log(this.netMatrix);

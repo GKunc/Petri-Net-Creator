@@ -56,7 +56,6 @@ export class MenuStepTwoComponent implements OnInit {
     $(BoardHelper.getBoard()).off();
     $('.net-element').off();
     this.startTokens = Array.from(TokenHelper.getAll());
-
     this.netRepository.buildNetMatrix();
     this.checkIfTransitionCanBeFired();
   }

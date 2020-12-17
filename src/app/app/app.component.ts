@@ -26,6 +26,7 @@ export class AppComponent {
   }
 
   public onStepChange(event: any): void {
+    this.netRepository.netHasSignals = this.netRepository.checkIfHasAnySignals();
     if (event.selectedIndex !== 1) {
       this.disableAllTransitions();
     }
