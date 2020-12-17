@@ -1,3 +1,4 @@
+import { MinimizedNetBuilder } from './../../../../../core/builders/MinimizedNetBuilder';
 import { NetHelper } from './../../../../../core/helpers/NetHelper';
 import { MinimizedNetHelper } from './../../../../../core/helpers/MinimizedNetHelper';
 import { BoardHelper } from './../../../../../core/helpers/BoardHelper';
@@ -74,5 +75,37 @@ export class MenuStepThreeComponent implements OnInit {
 
   saveNet(): void {
 
+
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.createJson())));
+    element.setAttribute('download', 'net_matrices.json');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+    console.log('SAVED');
+  }
+
+  private createJson(): {} {
+    this.netRepository.buildNetMatrix();
+    const netMatrix = this.netRepository.netMatrix;
+
+    const minimizedNetBuilder = new MinimizedNetBuilder(netMatrix);
+    const mainMinimizedMatrix = minimizedNetBuilder.createMainMatrix();
+    const subnetMinimizedMatrices = minimizedNetBuilder.createSubnetMatrices();
+
+    const subnetMatrices = [];
+    subnetMinimizedMatrices.forEach((matrix) => {
+      subnetMatrices.push(matrix.net);
+    });
+
+    return {
+      'Unminimized Matrix': JSON.stringify(netMatrix),
+      'Minimized Matrix': JSON.stringify(mainMinimizedMatrix.net),
+      'Subnet Matrices': JSON.stringify(subnetMatrices)
+    };
   }
 }
