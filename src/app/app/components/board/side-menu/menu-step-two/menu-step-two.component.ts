@@ -61,13 +61,11 @@ export class MenuStepTwoComponent implements OnInit {
   }
 
   checkIfPositiveSignalsAreEnabled(id: number): boolean {
-    console.log('POSITIOVE');
     return this.netRepository.transitionRepository.getByID(id).getSignals().every(signal =>
       this.netRepository.signalRepository.activeInputSignals.includes(signal));
   }
 
   checkIfNegativeSignalsAreDisnabled(id: number): boolean {
-    console.log(`Transtion id: ${id}`);
     console.log(`${this.netRepository.transitionRepository.getByID(id).getNegativeSignals()}`);
     return this.netRepository.transitionRepository.getByID(id).getNegativeSignals().every(signal =>
     !this.netRepository.signalRepository.activeInputSignals.includes(signal));
@@ -76,12 +74,15 @@ export class MenuStepTwoComponent implements OnInit {
   checkIfTransitionCanBeFired(): void {
     for (let id = 0; id < this.netRepository.netMatrix.length; id++) {
       const inputPlacesIDs = this.getInputPlacesIDs(id);
+      const transition = document.getElementById(`transition-${id}`);
       if (this.shouldTransitionBeEnabled(inputPlacesIDs) &&
           this.checkIfPositiveSignalsAreEnabled(id) &&
           this.checkIfNegativeSignalsAreDisnabled(id)) {
-          this.enableTransition(id);
-      } else {
-        this.disableTransition(id);
+            $(transition).on('click', () => {
+              this.runTransition(id);
+            });
+          } else {
+            $(transition).off();
       }
     }
   }

@@ -35,7 +35,6 @@ export class MenuStepThreeComponent implements OnInit {
     this.netRepository.buildNetMatrix();
     if (!this.netRepository.isNetMinimized && this.netRepository.netMatrix.length > 0) {
       this.netRepository.isNetMinimized = true;
-      // save position of elements
       this.netRepository.minimizeNet();
       this.clearBoard();
       const minimizedNetHelper = new MinimizedNetHelper(this.netRepository.transitionRepository, this.netRepository.placeRepository);
@@ -74,8 +73,6 @@ export class MenuStepThreeComponent implements OnInit {
   }
 
   saveNet(): void {
-
-
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.createJson())));
     element.setAttribute('download', 'net_matrices.json');
@@ -86,7 +83,6 @@ export class MenuStepThreeComponent implements OnInit {
     element.click();
 
     document.body.removeChild(element);
-    console.log('SAVED');
   }
 
   private createJson(): {} {

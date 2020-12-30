@@ -7,7 +7,49 @@ export class MinimizedNetBuilder {
     }
 
     createMainMatrix(): MinimizedNet {
-        return this.convertNetMatrixToMainMinimizedMatrix();
+        let minimizedNetInitial = this.createInitialMainMatrix();
+        const minimizedNetFinal: number[][] = [];
+
+        const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
+        const endRow = this.findRowOfDoubles(minimizedNetInitial, -1);
+        const indexesOfOnes = this.findIndexesOfValues(minimizedNetInitial, 1);
+        const indexesOfNegativeOnes = this.findIndexesOfValues(minimizedNetInitial, -1);
+        minimizedNetInitial = this.removeEmptyColumns(minimizedNetInitial);
+
+        for (let i = 0; i < minimizedNetInitial.length; i++) {
+            const row = [];
+            for (let j = 0; j < minimizedNetInitial[0].length; j++) {
+                if (i === startRow) {
+                    if (indexesOfOnes.includes(j)) {
+                        row.push(1);
+                    } else if (indexesOfNegativeOnes.includes(j)) {
+                        // console.log(j)
+                        continue;
+                    } else {
+                        row.push(minimizedNetInitial[i][j]);
+                    }
+                } else if (i === endRow) {
+                    if (indexesOfNegativeOnes.includes(j)) {
+                        row.push(-1);
+                    } else if (indexesOfOnes.includes(j)) {
+                        continue;
+                    } else {
+                        row.push(minimizedNetInitial[i][j]);
+                    }
+                } else {
+                    if (indexesOfNegativeOnes.includes(j)) {
+                        continue;
+                    } else {
+                        row.push(minimizedNetInitial[i][j]);
+                    }
+                }
+            }
+            minimizedNetFinal.push(row);
+        }
+        
+        const {start, end} = this.findStartAndEndOfSubnets();
+
+        return new MinimizedNet(minimizedNetFinal, this.findOriginalTransitions(start, end), this.findOriginalPlaces(start, end));
     }
 
     createSubnetMatrices(): MinimizedNet[] {
@@ -141,52 +183,6 @@ export class MinimizedNetBuilder {
         return {start, end};
     }
 
-    private convertNetMatrixToMainMinimizedMatrix(): MinimizedNet {
-        let minimizedNetInitial = this.createInitialMainMatrix();
-        const minimizedNetFinal: number[][] = [];
-
-        const startRow = this.findRowOfDoubles(minimizedNetInitial, 1);
-        const endRow = this.findRowOfDoubles(minimizedNetInitial, -1);
-
-        const indexesOfOnes = this.findIndexesOfValues(minimizedNetInitial, 1);
-        const indexesOfNegativeOnes = this.findIndexesOfValues(minimizedNetInitial, -1);
-
-        minimizedNetInitial = this.removeEmptyColumns(minimizedNetInitial);
-
-        for (let i = 0; i < minimizedNetInitial.length; i++) {
-            const row = [];
-            for (let j = 0; j < minimizedNetInitial[0].length; j++) {
-                if (i === startRow) {
-                    if (indexesOfOnes.includes(j)) {
-                        row.push(1);
-                    } else if (indexesOfNegativeOnes.includes(j)) {
-                        continue;
-                    } else {
-                        row.push(minimizedNetInitial[i][j]);
-                    }
-                } else if (i === endRow) {
-                    if (indexesOfNegativeOnes.includes(j)) {
-                        row.push(-1);
-                    } else if (indexesOfOnes.includes(j)) {
-                        continue;
-                    } else {
-                        row.push(minimizedNetInitial[i][j]);
-                    }
-                } else {
-                    if (indexesOfNegativeOnes.includes(j)) {
-                        continue;
-                    } else {
-                        row.push(minimizedNetInitial[i][j]);
-                    }
-                }
-            }
-            minimizedNetFinal.push(row);
-        }
-        const {start, end} = this.findStartAndEndOfSubnets();
-
-        return new MinimizedNet(minimizedNetFinal, this.findOriginalTransitions(start, end), this.findOriginalPlaces(start, end));
-    }
-
     private findOriginalTransitions(start: number, end: number): number[] {
         const originalTransitions: number[] = [];
 
@@ -269,7 +265,7 @@ export class MinimizedNetBuilder {
             row = this.findRowOfDoubles(minimizedNetInitial, 1);
         }
 
-        for (let i = 1; i < minimizedNetInitial[row].length - 1; i++) {
+        for (let i = 1; i < minimizedNetInitial[row].length; i++) {
             if (minimizedNetInitial[row][i] === value) {
                 indexes.push(i);
             }
